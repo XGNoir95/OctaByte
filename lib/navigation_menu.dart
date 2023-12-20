@@ -4,20 +4,11 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/instance_manager.dart';
 import 'package:iconsax/iconsax.dart';
-
-// import 'package:octa_byte/dashboard_screens/community_screen.dart';
-// import 'package:octa_byte/dashboard_screens/home_screen.dart';
-// import 'package:octa_byte/dashboard_screens/pcbuilder_screen.dart';
-// import 'package:octa_byte/dashboard_screens/profile_screen.dart';
-// import 'package:octa_byte/dashboard_screens/marketplace_screen.dart';
-// import 'package:octa_byte/dashboard_screens/tutorials_screen.dart';
-// import 'package:octa_byte/utils/color_utils.dart';
-import 'dashboard_screens/community_screen.dart';
+import 'package:octabyte_main/navibar_screens/settings_screen.dart';
+import 'package:octabyte_main/navibar_screens/trending_screen.dart';
 import 'dashboard_screens/home_screen.dart';
-import 'dashboard_screens/marketplace_screen.dart';
-import 'dashboard_screens/pcbuilder_screen.dart';
 import 'dashboard_screens/profile_screen.dart';
-import 'dashboard_screens/tutorials_screen.dart';
+// import 'navibar_screens/profile_screen.dart';
 import 'utils/color_utils.dart';
 
 class NavigationMenu extends StatelessWidget {
@@ -46,7 +37,7 @@ class NavigationMenu extends StatelessWidget {
                     color: Colors.amber,
                     size: 32,
                   ),
-                  Text('Home',style: TextStyle(color: Colors.white,fontFamily: 'RobotoCondensed',fontSize: 17,),
+                  Text('Home',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 17,letterSpacing: 1),
                   )],
               ),
               label: '',
@@ -55,8 +46,8 @@ class NavigationMenu extends StatelessWidget {
               icon: Column(
                 children: [
                   SizedBox(height: 14,),
-                  Icon(Iconsax.cpu, color: Colors.amber, size: 33),
-                  Text('Pc-Build',style: TextStyle(color: Colors.white,fontFamily: 'RobotoCondensed',fontSize: 16)),
+                  Icon(Iconsax.flash, color: Colors.amber, size: 33),
+                  Text('Trending 🔥',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 16,letterSpacing: 1)),
                 ],
               ),
               label: '',
@@ -66,43 +57,16 @@ class NavigationMenu extends StatelessWidget {
                 children: [
                   SizedBox(height: 14,),
                   Icon(
-                    Iconsax.shopping_cart,
+                    Iconsax.setting_3,
                     color: Colors.amber,
                     size: 32,
                   ),
-                  Text('Market',style: TextStyle(color: Colors.white,fontFamily: 'RobotoCondensed',fontSize: 16.5)),
+                  Text('Settings',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 16.5,letterSpacing: 1)),
                 ],
               ),
               label: '',
             ),
-            NavigationDestination(
-              icon: Column(
-                children: [
-                  SizedBox(height: 14,),
-                  Icon(
-                    Icons.group_add_outlined,
-                    color: Colors.amber,
-                    size: 32,
-                  ),
-                  Text('Groups',style: TextStyle(color: Colors.white,fontFamily: 'RobotoCondensed',fontSize: 17)),
-                ],
-              ),
-              label: '',
-            ),
-            NavigationDestination(
-              icon: Column(
-                children: [
-                  SizedBox(height: 14,),
-                  Icon(
-                    Iconsax.video_octagon,
-                    color: Colors.amber,
-                    size: 32,
-                  ),
-                  Text('Tutorial',style: TextStyle(color: Colors.white,fontFamily: 'RobotoCondensed',fontSize: 17)),
-                ],
-              ),
-              label: '',
-            ),
+
             NavigationDestination(
               icon: Column(
                 children: [
@@ -113,7 +77,7 @@ class NavigationMenu extends StatelessWidget {
                     color: Colors.amber,
                     size: 32,
                   ),
-                  Text('Profile',style: TextStyle(color: Colors.white,fontFamily: 'RobotoCondensed',fontSize: 17)),
+                  Text('Profile',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 17,letterSpacing: 1)),
                 ],
               ),
               label: '',
@@ -132,10 +96,8 @@ class NavigationController extends GetxController {
 
   final screens = [
     HomeScreen(),
-    PcBuilderScreen(),
-    MarketPlaceScreen(),
-    CommunityScreen(),
-    TutorialsScreen(),
+    TrendingScreen(),
+    SettingsScreen(),
     ProfileScreen(),
   ];
 }
