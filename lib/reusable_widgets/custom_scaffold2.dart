@@ -20,8 +20,8 @@ class CustomScaffold2 extends StatelessWidget {
             width: double.infinity,
             height: double.infinity,
           ),
-          Padding(padding: EdgeInsets.fromLTRB(60, MediaQuery.of(context).size.height*0.0005, 60, 0,),
-            child: Image.asset("assets/images/logo.png",height: 300,),
+          Padding(padding: EdgeInsets.fromLTRB(70, MediaQuery.of(context).size.height*0.0005, 60, 0,),
+            child: Image.asset("assets/images/logo.png",height: 260,),
           ),
           SafeArea(
             child: child!,
