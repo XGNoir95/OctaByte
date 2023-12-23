@@ -1,4 +1,4 @@
-
+//preliminary screen, will check if there is any user or not
 import 'package:fblogin/navigation_menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

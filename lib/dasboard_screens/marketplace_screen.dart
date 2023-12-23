@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../reusable_widgets/custom_scaffold2.dart';
 class MarketPlaceScreen extends StatelessWidget {
   const MarketPlaceScreen({super.key});

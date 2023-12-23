@@ -1,5 +1,5 @@
-import 'package:fblogin/dasboard_screens/home_screen.dart';
-import 'package:fblogin/dasboard_screens/profile_screen.dart';
+import 'package:fblogin/navibar_screens/dashboard_screen.dart';
+import 'package:fblogin/navibar_screens/homepage_screen.dart';
 import 'package:fblogin/navibar_screens/settings_screen.dart';
 import 'package:fblogin/navibar_screens/trending_screen.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +97,7 @@ class NavigationController extends GetxController {
 
   final screens = [
     HomePage(),
-    HomeScreen(),
+    DashBoardScreen(),
     TrendingScreen(),
     SettingsScreen(),
   ];
