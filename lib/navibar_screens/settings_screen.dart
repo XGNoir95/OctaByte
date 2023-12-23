@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fblogin/reusable_widgets/custom_scaffold3.dart';
 
-import '../reusable_widgets/custom_scaffold2.dart';
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 

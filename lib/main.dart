@@ -1,9 +1,7 @@
-import 'package:fblogin/user_screens/welcome_screen.dart';
+import 'package:fblogin/auth_screens/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-//import 'package:octa_byte/user_screens/welcome_screen.dart';
-//import 'package:octabyte_main/user_screens/welcome_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'SD Project',
-      home: const WelcomeScreen(),
+      home: MainPage(),
       debugShowCheckedModeBanner: false,
     );
   }

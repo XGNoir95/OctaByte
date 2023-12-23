@@ -1,5 +1,5 @@
 
-//this is the scafold with custom bg,a bit modified octabyte logo and leading icon
+//this is the scafold with custom bg,no logo and leading icon
 
 import 'package:flutter/material.dart';
 class CustomScaffold extends StatelessWidget {

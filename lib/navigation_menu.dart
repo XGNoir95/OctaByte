@@ -8,11 +8,6 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/instance_manager.dart';
 import 'package:iconsax/iconsax.dart';
-// import 'package:octabyte_main/navibar_screens/settings_screen.dart';
-// import 'package:octabyte_main/navibar_screens/trending_screen.dart';
-// import 'dashboard_screens/home_screen.dart';
-// import 'dashboard_screens/profile_screen.dart';
-// import 'navibar_screens/profile_screen.dart';
 import 'utils/color_utils.dart';
 
 class NavigationMenu extends StatelessWidget {
@@ -32,6 +27,23 @@ class NavigationMenu extends StatelessWidget {
           onDestinationSelected: (index) =>
           controller.selectedIndex.value = index,
           destinations: [
+
+            NavigationDestination(
+              icon: Column(
+                children: [
+                  SizedBox(height: 14,),
+
+                  Icon(
+                    Iconsax.security_user,
+                    color: Colors.amber,
+                    size: 32,
+                  ),
+                  Text('Profile',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 17,letterSpacing: 1)),
+                ],
+              ),
+              label: '',
+
+            ),
             NavigationDestination(
               icon: Column(
                 children: [
@@ -41,7 +53,7 @@ class NavigationMenu extends StatelessWidget {
                     color: Colors.amber,
                     size: 32,
                   ),
-                  Text('Home',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 17,letterSpacing: 1),
+                  Text('Dashboard',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 17,letterSpacing: 1),
                   )],
               ),
               label: '',
@@ -71,22 +83,7 @@ class NavigationMenu extends StatelessWidget {
               label: '',
             ),
 
-            NavigationDestination(
-              icon: Column(
-                children: [
-                  SizedBox(height: 14,),
 
-                  Icon(
-                    Iconsax.security_user,
-                    color: Colors.amber,
-                    size: 32,
-                  ),
-                  Text('Profile',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 17,letterSpacing: 1)),
-                ],
-              ),
-              label: '',
-
-            ),
           ],
         ),
       ),
@@ -99,9 +96,9 @@ class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 
   final screens = [
+    HomePage(),
     HomeScreen(),
     TrendingScreen(),
     SettingsScreen(),
-    ProfileScreen(),
   ];
 }

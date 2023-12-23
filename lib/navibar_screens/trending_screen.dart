@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../reusable_widgets/custom_scaffold3.dart';
 class TrendingScreen extends StatefulWidget {
   const TrendingScreen({super.key});
