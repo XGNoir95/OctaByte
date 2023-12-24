@@ -44,17 +44,22 @@ class _RegisterPageState extends State<RegisterPage> {
   Future signUp() async {
     try {
       if (passwordConfirmed()) {
+        UserCredential? userCredential =
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
 
-        addUserDetails(
-          _firstNameController.text.trim(),
-          _lastNameController.text.trim(),
-          _userNameController.text.trim(),
-          _emailController.text.trim(),
-        );
+        //create user credentials
+        //
+        // addUserDetails(
+        //   _firstNameController.text.trim(),
+        //   _lastNameController.text.trim(),
+        //   _userNameController.text.trim(),
+        //   _emailController.text.trim(),
+        // );
+
+        createUserDocument(userCredential);
 
         // Registration successful message
         ScaffoldMessenger.of(context).showSnackBar(
@@ -91,13 +96,27 @@ class _RegisterPageState extends State<RegisterPage> {
       );
     }
   }
-  Future addUserDetails(String firstName, String lastName, String userName,String email) async {
-    await FirebaseFirestore.instance.collection('users').add({
-      'First Name': firstName,
-      'Last Name': lastName,
-      'User Name': userName,
-      'Email': email
-    });
+  // Future addUserDetails(String firstName, String lastName, String userName,String email) async {
+  //   await FirebaseFirestore.instance.collection('users').add({
+  //     'First Name': firstName,
+  //     'Last Name': lastName,
+  //     'User Name': userName,
+  //     'Email': email
+  //   });
+  // }
+
+  Future<void> createUserDocument(UserCredential? userCredential) async{
+    if (userCredential != null && userCredential.user!= null){
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.email)
+          .set({
+        'First Name' : _firstNameController.text,
+        'Last Name' : _lastNameController.text,
+        'User Name' : _userNameController.text,
+        'Email' : userCredential.user!.email,
+      });
+    }
   }
 
   //checks if password===confirmed pass
