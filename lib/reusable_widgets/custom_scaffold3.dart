@@ -1,16 +1,17 @@
 
-//this is the scafold with custom bg,no logo and leading icon
+//this is the scafold with custom bg,octabyte logo and no leading icon
 
 import 'package:flutter/material.dart';
-class CustomScaffold extends StatelessWidget {
-  const CustomScaffold({super.key, this.child});
+class CustomScaffold3 extends StatelessWidget {
+  const CustomScaffold3({super.key, this.child});
   final Widget? child;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //iconTheme: const IconThemeData(color: Colors.white),
+        //leading: null,
         automaticallyImplyLeading: false,
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -24,7 +25,9 @@ class CustomScaffold extends StatelessWidget {
             width: double.infinity,
             height: double.infinity,
           ),
-
+          Padding(padding: EdgeInsets.fromLTRB(70, MediaQuery.of(context).size.height*0.0005, 60, 0,),
+            child: Image.asset("assets/images/logo.png",height: 260,),
+          ),
           SafeArea(
             child: child!,
           ),

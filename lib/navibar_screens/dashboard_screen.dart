@@ -1,23 +1,21 @@
+import 'package:fblogin/dasboard_screens/pcbuilder_screen.dart';
+import 'package:fblogin/dasboard_screens/tutorials_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:octabyte_main/dashboard_screens/community_screen.dart';
-import 'package:octabyte_main/dashboard_screens/marketplace_screen.dart';
-import 'package:octabyte_main/dashboard_screens/pcbuilder_screen.dart';
-import 'package:octabyte_main/dashboard_screens/tutorials_screen.dart';
-import 'package:octabyte_main/utils/color_utils.dart';
-import '../reusable_widgets/custom_scaffold.dart';
-import '../reusable_widgets/custom_scaffold2.dart';
+import '../reusable_widgets/custom_scaffold3.dart';
+import '../dasboard_screens/community_screen.dart';
+import '../dasboard_screens/marketplace_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class DashBoardScreen extends StatefulWidget {
+  const DashBoardScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<DashBoardScreen> createState() => _DashBoardScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _DashBoardScreenState extends State<DashBoardScreen> {
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold2(
+    return CustomScaffold3(
       child: Container(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(25, 108, 25, 10),

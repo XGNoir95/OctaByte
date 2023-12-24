@@ -1,6 +1,6 @@
 {
-    "name": "octabyte_main",
-    "short_name": "octabyte_main",
+    "name": "fblogin",
+    "short_name": "fblogin",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

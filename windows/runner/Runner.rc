@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "octabyte_main" "\0"
+            VALUE "FileDescription", "fblogin" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "octabyte_main" "\0"
+            VALUE "InternalName", "fblogin" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "octabyte_main.exe" "\0"
-            VALUE "ProductName", "octabyte_main" "\0"
+            VALUE "OriginalFilename", "fblogin.exe" "\0"
+            VALUE "ProductName", "fblogin" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
