@@ -1,26 +1,20 @@
-import 'package:fblogin/reusable_widgets/custom_scaffold2.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:fblogin/reusable_widgets/custom_scaffold2.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  //eta user details fetch korbe
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails(String email) async {
-    return await FirebaseFirestore.instance
-        .collection('users')
-        .doc(email)
-        .get();
+    return await FirebaseFirestore.instance.collection('users').doc(email).get();
   }
 
   void _signOut(BuildContext context) async {
     await _auth.signOut();
 
-    // Sign out successful msg
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Signed Out Successfully!'),
@@ -29,8 +23,75 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void edit(){
-    print('Eta edit korbe');
+  void _editUser(BuildContext context, Map<String, dynamic> userData) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final TextEditingController _firstNameController = TextEditingController(text: userData['First Name']);
+        final TextEditingController _lastNameController = TextEditingController(text: userData['Last Name']);
+        final TextEditingController _userNameController = TextEditingController(text: userData['User Name']);
+
+        return AlertDialog(
+          title: Text('Edit User'),
+          content: Column(
+            children: [
+              TextFormField(
+                controller: _firstNameController,
+                decoration: InputDecoration(labelText: 'First Name'),
+              ),
+              TextFormField(
+                controller: _lastNameController,
+                decoration: InputDecoration(labelText: 'Last Name'),
+              ),
+              TextFormField(
+                controller: _userNameController,
+                decoration: InputDecoration(labelText: 'User Name'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                User? currentUser = _auth.currentUser;
+                await updateUserData(
+                  currentUser!.email!,
+                  _firstNameController.text,
+                  _lastNameController.text,
+                  _userNameController.text,
+                );
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('User data updated successfully!'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> updateUserData(String email, String firstName, String lastName, String userName) async {
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(email).update({
+        'First Name': firstName,
+        'Last Name': lastName,
+        'User Name': userName,
+        // Add other fields you want to update
+      });
+    } catch (e) {
+      print('Error updating data: $e');
+    }
   }
 
   @override
@@ -43,13 +104,10 @@ class HomePage extends StatelessWidget {
             StreamBuilder<User?>(
               stream: _auth.authStateChanges(),
               builder: (context, snapshot) {
-
-                //loading circle show
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 }
 
-                //if data is there
                 if (snapshot.hasData && snapshot.data != null) {
                   User? currentUser = snapshot.data;
 
@@ -71,8 +129,6 @@ class HomePage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SizedBox(height: 50,),
-
-                                //Welcome Back text
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -95,7 +151,6 @@ class HomePage extends StatelessWidget {
                                   ],
                                 ),
                                 SizedBox(height: 25,),
-                                //profile pic
                                 Container(
                                   decoration: BoxDecoration(
                                     color: Colors.grey[900],
@@ -107,7 +162,6 @@ class HomePage extends StatelessWidget {
                                 SizedBox(
                                   height: 15,
                                 ),
-                                //details
                                 Text(
                                   'Your Details:  ',
                                   style: TextStyle(
@@ -119,8 +173,6 @@ class HomePage extends StatelessWidget {
                                 SizedBox(
                                   height: 20,
                                 ),
-
-                                //first name
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -146,8 +198,6 @@ class HomePage extends StatelessWidget {
                                 SizedBox(
                                   height: 17,
                                 ),
-
-                                //last name
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -173,8 +223,6 @@ class HomePage extends StatelessWidget {
                                 SizedBox(
                                   height: 17,
                                 ),
-
-                                //user name
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -200,8 +248,6 @@ class HomePage extends StatelessWidget {
                                 SizedBox(
                                   height: 17,
                                 ),
-
-                                //email
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -239,16 +285,15 @@ class HomePage extends StatelessWidget {
               },
             ),
             SizedBox(height: 23),
-
-
             Row(
               children: [
                 SizedBox(width: 30,),
-
-                //edit button
                 MaterialButton(
-                  onPressed: () {
-                    edit();
+                  onPressed: () async {
+                    User? currentUser = _auth.currentUser;
+                    DocumentSnapshot<Map<String, dynamic>> snapshot = await getUserDetails(currentUser!.email!);
+                    Map<String, dynamic> userData = snapshot.data()!;
+                    _editUser(context, userData);
                   },
                   color: Colors.grey[900],
                   child: Row(
@@ -261,8 +306,6 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 100,),
-
-                //sign out button
                 MaterialButton(
                   onPressed: () {
                     _signOut(context);
