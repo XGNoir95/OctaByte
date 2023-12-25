@@ -212,26 +212,25 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
 
             //sign in button
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: GestureDetector(
-                onTap: signUp,
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'SIGN UP',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'RobotoCondensed',
-                          letterSpacing: 1,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22),
-                    ),
+            MaterialButton(
+              onPressed: () {
+                signUp();
+              },
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Center(
+                  child: Text(
+                    'SIGN UP',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'RobotoCondensed',
+                        letterSpacing: 1,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22),
                   ),
                 ),
               ),

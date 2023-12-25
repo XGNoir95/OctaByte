@@ -10,9 +10,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Trending App',
+      //title: 'Trending App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.amber,
       ),
       home: TrendingScreen(),
     );
@@ -51,7 +51,6 @@ class _MyImageSliderState extends State<TrendingScreen> {
   @override
   void initState() {
     super.initState();
-    // Preload images before using them in the carousel
     _preloadImages([...myitems, ...myitems2]);
   }
 
@@ -68,12 +67,13 @@ class _MyImageSliderState extends State<TrendingScreen> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        title: Text("Trending"),
+        title: Text("  Trending & Hot Deals 🔥"),
         titleTextStyle: const TextStyle(
           color: Colors.amber,
           fontSize: 32,
           fontWeight: FontWeight.bold,
         ),
+
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -89,12 +89,18 @@ class _MyImageSliderState extends State<TrendingScreen> {
 
             Container(
               padding: EdgeInsets.only(bottom: 16),
-              child: Text(
-                "Your Passport to Trendy Discounts",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18, // Adjusted font size
-                ),
+              child: Column(
+                children: [
+                  SizedBox(height: 40,),
+                  Text(
+                    "Your Passport to Trendy Discounts",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 27,
+                      fontFamily: 'RobotoCondensed',
+                    ),
+                  ),
+                ],
               ),
             ),
 
@@ -114,34 +120,35 @@ class _MyImageSliderState extends State<TrendingScreen> {
               ),
               items: myitems.map((item) => Image.asset(item)).toList(),
             ),
-
+            SizedBox(height: 20,),
             AnimatedSmoothIndicator(
               activeIndex: myCurrentIndex,
               count: myitems.length,
               effect: WormEffect(
-                dotHeight: 8,
-                dotWidth: 8,
-                spacing: 10,
+                dotHeight: 10,
+                dotWidth: 10,
+                spacing: 12,
                 dotColor: Colors.grey.shade200,
                 activeDotColor: Colors.amber,
                 paintStyle: PaintingStyle.fill,
               ),
             ),
 
-            SizedBox(height: 100),
+            SizedBox(height: 50),
 
             Container(
               child: Text(
-                "Get the Scoop on Today's Trending Deals",
+                "Year Ending Flash Sales ⚡",
                 style: TextStyle(
+                  fontFamily: 'RobotoCondensed',
                   color: Colors.white,
-                  fontSize: 18,
+                  fontSize: 30,
                 //  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
 
-            // Second carousel slider with added space between items
+            // Second carousel slider
             CarouselSlider(
               carouselController: secondCarouselController,
               options: CarouselOptions(
@@ -160,7 +167,6 @@ class _MyImageSliderState extends State<TrendingScreen> {
               items: myitems2.map((item) => Image.asset(item)).toList(),
             ),
 
-            // Row for the "Next" and "Previous" buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -168,14 +174,15 @@ class _MyImageSliderState extends State<TrendingScreen> {
                   onPressed: () {
                     secondCarouselController.previousPage();
                   },
-                  child: Text('Previous'),
+                  child: Text('Previous',style: TextStyle(color: Colors.black,fontFamily: 'RobotoCondensed',fontSize: 20,fontWeight: FontWeight.bold)),
                 ),
                 SizedBox(width: 16),
+
                 ElevatedButton(
                   onPressed: () {
                     secondCarouselController.nextPage();
                   },
-                  child: Text('Next'),
+                  child: Text('   Next   ',style: TextStyle(color: Colors.black,fontFamily: 'RobotoCondensed',fontSize: 20,fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
