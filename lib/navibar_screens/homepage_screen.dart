@@ -3,9 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fblogin/reusable_widgets/custom_scaffold2.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails(String email) async {
@@ -27,34 +32,73 @@ class HomePage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        final TextEditingController _firstNameController = TextEditingController(text: userData['First Name']);
-        final TextEditingController _lastNameController = TextEditingController(text: userData['Last Name']);
-        final TextEditingController _userNameController = TextEditingController(text: userData['User Name']);
+        final TextEditingController _firstNameController =
+        TextEditingController(text: userData['First Name']);
+        final TextEditingController _lastNameController =
+        TextEditingController(text: userData['Last Name']);
+        final TextEditingController _userNameController =
+        TextEditingController(text: userData['User Name']);
 
         return AlertDialog(
-          title: Text('Edit User'),
-          content: Column(
-            children: [
-              TextFormField(
-                controller: _firstNameController,
-                decoration: InputDecoration(labelText: 'First Name'),
-              ),
-              TextFormField(
-                controller: _lastNameController,
-                decoration: InputDecoration(labelText: 'Last Name'),
-              ),
-              TextFormField(
-                controller: _userNameController,
-                decoration: InputDecoration(labelText: 'User Name'),
-              ),
-            ],
+          title: Center(
+            child: Text(
+              'Edit User',
+              style: TextStyle(fontFamily: 'RobotoCondensed', fontSize: 30),
+            ),
+          ),
+          content: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: _firstNameController,
+                  decoration: InputDecoration(
+                    labelText: 'First Name',
+                    labelStyle: TextStyle(
+                      fontFamily: 'RobotoCondensed',
+                      fontSize: 30,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8),
+                TextFormField(
+                  controller: _lastNameController,
+                  decoration: InputDecoration(
+                    labelText: 'Last Name',
+                    labelStyle: TextStyle(
+                      fontFamily: 'RobotoCondensed',
+                      fontSize: 30,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8),
+                TextFormField(
+                  controller: _userNameController,
+                  decoration: InputDecoration(
+                    labelText: 'User Name',
+                    labelStyle: TextStyle(
+                      fontFamily: 'RobotoCondensed',
+                      fontSize: 30,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Cancel'),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  fontFamily: 'RobotoCondensed',
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),
             ),
             TextButton(
               onPressed: () async {
@@ -68,12 +112,22 @@ class HomePage extends StatelessWidget {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('User data updated successfully!'),
+                    content: Text(
+                      'User data updated successfully!',
+                    ),
                     backgroundColor: Colors.green,
                   ),
                 );
+                setState(() {});
               },
-              child: Text('Save'),
+              child: Text(
+                'Save',
+                style: TextStyle(
+                  fontFamily: 'RobotoCondensed',
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),
             ),
           ],
         );
@@ -81,7 +135,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Future<void> updateUserData(String email, String firstName, String lastName, String userName) async {
+  Future<void> updateUserData(
+      String email, String firstName, String lastName, String userName) async {
     try {
       await FirebaseFirestore.instance.collection('users').doc(email).update({
         'First Name': firstName,
@@ -107,10 +162,10 @@ class HomePage extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
                   }
-        
+
                   if (snapshot.hasData && snapshot.data != null) {
                     User? currentUser = snapshot.data;
-        
+
                     return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                       future: getUserDetails(currentUser!.email!),
                       builder: (context, snapshot) {
@@ -122,14 +177,16 @@ class HomePage extends StatelessWidget {
                           return Text("Error: ${snapshot.error}");
                         } else if (snapshot.hasData && snapshot.data!.exists) {
                           Map<String, dynamic>? user = snapshot.data!.data();
-        
+
                           return Center(
                             child: SingleChildScrollView(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SizedBox(height: 80,),
-                                  Row(
+                                  SizedBox(
+                                    height: 80,
+                                  ),
+                                  Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
@@ -150,14 +207,18 @@ class HomePage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 25,),
+
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  //Profile picture
                                   Container(
                                     decoration: BoxDecoration(
                                       color: Colors.grey[900],
                                       borderRadius: BorderRadius.circular(24),
                                     ),
                                     padding: const EdgeInsets.all(25),
-                                    child: const Icon(Icons.person, size: 80,color: Colors.white),
+                                    child: const Icon(Icons.person, size: 80, color: Colors.white),
                                   ),
                                   SizedBox(
                                     height: 15,
@@ -171,7 +232,7 @@ class HomePage extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 20,
+                                    height: 5,
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -184,7 +245,9 @@ class HomePage extends StatelessWidget {
                                           fontFamily: 'RobotoCondensed',
                                         ),
                                       ),
-                                      SizedBox(width: 15,),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
                                       Text(
                                         user!['First Name'],
                                         style: TextStyle(
@@ -209,7 +272,9 @@ class HomePage extends StatelessWidget {
                                           fontFamily: 'RobotoCondensed',
                                         ),
                                       ),
-                                      SizedBox(width: 15,),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
                                       Text(
                                         user!['Last Name'],
                                         style: TextStyle(
@@ -234,7 +299,9 @@ class HomePage extends StatelessWidget {
                                           fontFamily: 'RobotoCondensed',
                                         ),
                                       ),
-                                      SizedBox(width: 15,),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
                                       Text(
                                         user!['User Name'],
                                         style: TextStyle(
@@ -259,7 +326,9 @@ class HomePage extends StatelessWidget {
                                           fontFamily: 'RobotoCondensed',
                                         ),
                                       ),
-                                      SizedBox(width: 15,),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
                                       Text(
                                         user!['Email'],
                                         style: TextStyle(
@@ -284,28 +353,35 @@ class HomePage extends StatelessWidget {
                   }
                 },
               ),
-              SizedBox(height: 23),
+              SizedBox(height: 13),
               Row(
                 children: [
-                  SizedBox(width: 30,),
+                  SizedBox(
+                    width: 30,
+                  ),
                   MaterialButton(
                     onPressed: () async {
                       User? currentUser = _auth.currentUser;
-                      DocumentSnapshot<Map<String, dynamic>> snapshot = await getUserDetails(currentUser!.email!);
+                      DocumentSnapshot<Map<String, dynamic>> snapshot =
+                      await getUserDetails(currentUser!.email!);
                       Map<String, dynamic> userData = snapshot.data()!;
                       _editUser(context, userData);
                     },
                     color: Colors.grey[900],
                     child: Row(
                       children: [
-                        Icon(Icons.settings_outlined,color: Colors.amber,),
-                        SizedBox(width: 10,),
+                        Icon(Icons.settings_outlined, color: Colors.amber),
+                        SizedBox(
+                          width: 10,
+                        ),
                         Text('Edit',
-                            style: TextStyle(fontSize: 22,color: Colors.white)),
+                            style: TextStyle(fontSize: 22, color: Colors.white)),
                       ],
                     ),
                   ),
-                  SizedBox(width: 100,),
+                  SizedBox(
+                    width: 100,
+                  ),
                   MaterialButton(
                     onPressed: () {
                       _signOut(context);
@@ -313,10 +389,15 @@ class HomePage extends StatelessWidget {
                     color: Colors.grey[900],
                     child: Row(
                       children: [
-                        Icon(Icons.logout,color: Colors.amber,),
-                        SizedBox(width: 10,),
+                        Icon(Icons.logout, color: Colors.amber),
+                        SizedBox(
+                          width: 10,
+                        ),
                         Text('Sign Out',
-                            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold,color: Colors.white)),
+                            style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white)),
                       ],
                     ),
                   ),

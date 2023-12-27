@@ -11,13 +11,6 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class Dashboard extends StatelessWidget{
-  @override
-  Widget build(BuildContext context){
-    return Container();
-  }
-}
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

@@ -57,7 +57,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  //for memory management
   @override
   void dispose() {
     _emailController.dispose();
