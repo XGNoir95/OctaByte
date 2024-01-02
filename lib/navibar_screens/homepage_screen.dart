@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                     labelText: 'Last Name',
                     labelStyle: TextStyle(
                       fontFamily: 'RobotoCondensed',
-                      fontSize: 30,
+                      fontSize: 31,
                     ),
                   ),
                 ),
@@ -192,7 +192,7 @@ class _HomePageState extends State<HomePage> {
                                       Text(
                                         'Welcome Back ',
                                         style: TextStyle(
-                                          fontSize: 37,
+                                          fontSize: 36,
                                           color: Colors.amber,
                                           fontFamily: 'RobotoCondensed',
                                         ),
