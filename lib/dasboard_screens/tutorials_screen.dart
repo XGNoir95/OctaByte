@@ -40,10 +40,10 @@ class _YoutubePlayerExampleState extends State<TutorialsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
         children: [
-          Expanded(
+          Container(
+            margin: EdgeInsets.only(bottom: 16.0), // Adjust the spacing as needed
             child: YoutubePlayer(
               controller: _controller,
               showVideoProgressIndicator: true,
@@ -60,7 +60,8 @@ class _YoutubePlayerExampleState extends State<TutorialsScreen> {
               ],
             ),
           ),
-          Expanded(
+          Container(
+            margin: EdgeInsets.only(bottom: 16.0), // Adjust the spacing as needed
             child: YoutubePlayer(
               controller: _controller2,
               showVideoProgressIndicator: true,
