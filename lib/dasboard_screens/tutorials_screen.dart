@@ -124,7 +124,7 @@ class _YoutubePlayerExampleState extends State<TutorialsScreen> {
             style: TextStyle(
               fontSize: 16.0,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Colors.amberAccent,
             ),
           ),
         ],
