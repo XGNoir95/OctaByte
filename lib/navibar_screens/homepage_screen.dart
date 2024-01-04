@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                     labelText: 'First Name',
                     labelStyle: TextStyle(
                       fontFamily: 'RobotoCondensed',
-                      fontSize: 30,
+                      fontSize: 31,
                     ),
                   ),
                 ),
@@ -184,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   SizedBox(
-                                    height: 80,
+                                    height: 85,
                                   ),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
