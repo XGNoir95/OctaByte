@@ -13,11 +13,14 @@ class _YoutubePlayerExampleState extends State<TutorialsScreen> {
   final videoURL2 = "https://youtu.be/9WLjJWtA27s?si=nvGgMNA50Isu5d8R";
   final videoURL3 = "https://youtu.be/5TwzXdBIPDY?si=ZmuZVoPxmNuIGtLY";
   final videoURL4 = "https://youtu.be/zLIzyP6MMBA?si=jfu7-d7tk4WvTkB2";
+  final videoURL5 = "https://youtu.be/RHcxFzqEYSg?si=2r5DZo6xE9YJPpBY";
+
 
   late YoutubePlayerController _controller1;
   late YoutubePlayerController _controller2;
   late YoutubePlayerController _controller3;
   late YoutubePlayerController _controller4;
+  late YoutubePlayerController _controller5;
 
   @override
   void initState() {
@@ -25,6 +28,7 @@ class _YoutubePlayerExampleState extends State<TutorialsScreen> {
     final videoID2 = YoutubePlayer.convertUrlToId(videoURL2);
     final videoID3 = YoutubePlayer.convertUrlToId(videoURL3);
     final videoID4 = YoutubePlayer.convertUrlToId(videoURL4);
+    final videoID5 = YoutubePlayer.convertUrlToId(videoURL5);
 
     _controller1 = YoutubePlayerController(
       initialVideoId: videoID1!,
@@ -54,6 +58,13 @@ class _YoutubePlayerExampleState extends State<TutorialsScreen> {
       ),
     );
 
+    _controller5 = YoutubePlayerController(
+      initialVideoId: videoID5!,
+      flags: const YoutubePlayerFlags(
+        autoPlay: false,
+      ),
+    );
+
     super.initState();
   }
 
@@ -63,6 +74,7 @@ class _YoutubePlayerExampleState extends State<TutorialsScreen> {
     _controller2.dispose();
     _controller3.dispose();
     _controller4.dispose();
+    _controller5.dispose();
     super.dispose();
   }
 
@@ -90,6 +102,7 @@ class _YoutubePlayerExampleState extends State<TutorialsScreen> {
               buildVideoContainer(_controller2, "DIY PC Build | EPISODE- 02"),
               buildVideoContainer(_controller3, "DIY PC Build | EPISODE- 03"),
               buildVideoContainer(_controller4, "DIY PC Build | EPISODE- 04"),
+              buildVideoContainer(_controller5, "DIY PC Build | EPISODE- 05"),
             ],
           ),
         ],
