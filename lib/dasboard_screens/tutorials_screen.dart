@@ -69,12 +69,29 @@ class _YoutubePlayerExampleState extends State<TutorialsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
+      body: Stack(
         children: [
-          buildVideoContainer(_controller1, "DIY PC Build | EPISODE- 01"),
-          buildVideoContainer(_controller2, "DIY PC Build | EPISODE- 02"),
-          buildVideoContainer(_controller3, "DIY PC Build | EPISODE- 03"),
-          buildVideoContainer(_controller4, "DIY PC Build | EPISODE- 04"),
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/bg.jpg',
+              fit: BoxFit.cover,
+            ),
+          ),
+          ListView(
+            children: [
+              Container(
+                margin: EdgeInsets.only(bottom: 16.0),
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  height: 210,
+                ),
+              ),
+              buildVideoContainer(_controller1, "DIY PC Build | EPISODE- 01"),
+              buildVideoContainer(_controller2, "DIY PC Build | EPISODE- 02"),
+              buildVideoContainer(_controller3, "DIY PC Build | EPISODE- 03"),
+              buildVideoContainer(_controller4, "DIY PC Build | EPISODE- 04"),
+            ],
+          ),
         ],
       ),
     );
@@ -104,7 +121,11 @@ class _YoutubePlayerExampleState extends State<TutorialsScreen> {
           SizedBox(height: 8.0),
           Text(
             title,
-            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
         ],
       ),
