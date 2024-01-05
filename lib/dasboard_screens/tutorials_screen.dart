@@ -1,5 +1,9 @@
+import 'package:fblogin/reusable_widgets/custom_scaffold2.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+import '../reusable_widgets/custom_scaffold.dart';
 
 class TutorialsScreen extends StatefulWidget {
   const TutorialsScreen({Key? key}) : super(key: key);
@@ -81,6 +85,14 @@ class _YoutubePlayerExampleState extends State<TutorialsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: Colors.grey[900],
+        elevation: 0,
+        //Center(child: ),
+        title: Text('TUTORIALS',style: GoogleFonts.bebasNeue(color: Colors.amber,fontSize: 40,letterSpacing: 6),),
+        centerTitle: true,
+      ),
       body: Stack(
         children: [
           Positioned.fill(
@@ -89,21 +101,26 @@ class _YoutubePlayerExampleState extends State<TutorialsScreen> {
               fit: BoxFit.cover,
             ),
           ),
-          ListView(
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 16.0),
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  height: 210,
-                ),
-              ),
-              buildVideoContainer(_controller1, "DIY PC Build | EPISODE- 01"),
-              buildVideoContainer(_controller2, "DIY PC Build | EPISODE- 02"),
-              buildVideoContainer(_controller3, "DIY PC Build | EPISODE- 03"),
-              buildVideoContainer(_controller4, "DIY PC Build | EPISODE- 04"),
-              buildVideoContainer(_controller5, "DIY PC Build | EPISODE- 05"),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: ListView(
+              children: [
+                // Container(
+                //   margin: EdgeInsets.only(bottom: 16.0),
+                //   child: Image.asset(
+                //     'assets/images/logo.png',
+                //     height: 210,
+                //   ),
+                // ),
+                //SizedBox(height: 10,),
+
+                buildVideoContainer(_controller1, "DIY PC Build | EPISODE- 01"),
+                buildVideoContainer(_controller2, "DIY PC Build | EPISODE- 02"),
+                buildVideoContainer(_controller3, "DIY PC Build | EPISODE- 03"),
+                buildVideoContainer(_controller4, "DIY PC Build | EPISODE- 04"),
+                buildVideoContainer(_controller5, "DIY PC Build | EPISODE- 05"),
+              ],
+            ),
           ),
         ],
       ),
@@ -132,12 +149,16 @@ class _YoutubePlayerExampleState extends State<TutorialsScreen> {
             ],
           ),
           SizedBox(height: 8.0),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.amberAccent,
+          Center(
+            child: Text(
+              title,
+              style: GoogleFonts.bebasNeue(
+                fontSize: 28.0,
+                //fontWeight: FontWeight.bold,
+                color: Colors.amberAccent,
+                //fontFamily: 'RobotoCondensed',
+                letterSpacing: 2.0,
+              ),
             ),
           ),
         ],
