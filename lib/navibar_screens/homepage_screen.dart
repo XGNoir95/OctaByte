@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fblogin/reusable_widgets/custom_scaffold3.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fblogin/reusable_widgets/custom_scaffold2.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../reusable_widgets/custom_scaffold.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -150,7 +154,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold2(
+    return CustomScaffold(
       child: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -183,24 +187,24 @@ class _HomePageState extends State<HomePage> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SizedBox(
-                                    height: 85,
-                                  ),
+                                  // SizedBox(
+                                  //   height: 85,
+                                  // ),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'Welcome Back ',
-                                        style: TextStyle(
-                                          fontSize: 36,
+                                        ' Welcome Back ',
+                                        style: GoogleFonts.bebasNeue(
+                                          fontSize: 62,
                                           color: Colors.amber,
-                                          fontFamily: 'RobotoCondensed',
+                                          //fontFamily: 'RobotoCondensed',
                                         ),
                                       ),
                                       Text(
                                         user!['User Name'],
                                         style: TextStyle(
-                                          fontSize: 37,
+                                          fontSize: 40,
                                           color: Colors.white,
                                           fontFamily: 'RobotoCondensed',
                                         ),
@@ -225,10 +229,10 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   Text(
                                     'Your Details:  ',
-                                    style: TextStyle(
-                                      fontSize: 35,
+                                    style: GoogleFonts.bebasNeue(
+                                      fontSize: 45,
                                       color: Colors.white,
-                                      fontFamily: 'RobotoCondensed',
+                                      //fontFamily: 'RobotoCondensed',
                                     ),
                                   ),
                                   SizedBox(
@@ -239,10 +243,10 @@ class _HomePageState extends State<HomePage> {
                                     children: [
                                       Text(
                                         'First Name: ',
-                                        style: TextStyle(
-                                          fontSize: 30,
+                                        style: GoogleFonts.bebasNeue(
+                                          fontSize: 35,
                                           color: Colors.amber,
-                                          fontFamily: 'RobotoCondensed',
+                                          //fontFamily: 'RobotoCondensed',
                                         ),
                                       ),
                                       SizedBox(
@@ -266,10 +270,10 @@ class _HomePageState extends State<HomePage> {
                                     children: [
                                       Text(
                                         'Last Name: ',
-                                        style: TextStyle(
-                                          fontSize: 30,
+                                        style: GoogleFonts.bebasNeue(
+                                          fontSize: 35,
                                           color: Colors.amber,
-                                          fontFamily: 'RobotoCondensed',
+                                          //fontFamily: 'RobotoCondensed',
                                         ),
                                       ),
                                       SizedBox(
@@ -293,10 +297,10 @@ class _HomePageState extends State<HomePage> {
                                     children: [
                                       Text(
                                         'User Name: ',
-                                        style: TextStyle(
-                                          fontSize: 30,
+                                        style: GoogleFonts.bebasNeue(
+                                          fontSize: 35,
                                           color: Colors.amber,
-                                          fontFamily: 'RobotoCondensed',
+                                          //fontFamily: 'RobotoCondensed',
                                         ),
                                       ),
                                       SizedBox(
@@ -320,10 +324,10 @@ class _HomePageState extends State<HomePage> {
                                     children: [
                                       Text(
                                         'Email: ',
-                                        style: TextStyle(
+                                        style: GoogleFonts.bebasNeue(
                                           fontSize: 30,
                                           color: Colors.amber,
-                                          fontFamily: 'RobotoCondensed',
+                                          //fontFamily: 'RobotoCondensed',
                                         ),
                                       ),
                                       SizedBox(

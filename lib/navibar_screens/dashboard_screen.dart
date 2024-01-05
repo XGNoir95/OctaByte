@@ -1,6 +1,7 @@
 import 'package:fblogin/dasboard_screens/pcbuilder_screen.dart';
 import 'package:fblogin/dasboard_screens/tutorials_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../reusable_widgets/custom_scaffold3.dart';
 import '../dasboard_screens/community_screen.dart';
 import '../dasboard_screens/marketplace_screen.dart';
@@ -23,7 +24,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             children: [
               Text(
                 'DASHBOARD: ',
-                style: TextStyle(fontSize: 35,fontFamily: 'RobotoCondensed', color: Colors.amber,letterSpacing: 1),
+                style: GoogleFonts.bebasNeue(fontSize: 52, color: Colors.amber,letterSpacing: 1),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
