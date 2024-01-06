@@ -50,7 +50,7 @@ class _WallPostState extends State<WallPost> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(color: Colors.white.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-      margin: EdgeInsets.only(top: 25, left: 25, right: 25),
+      margin: EdgeInsets.only(top: 26, left: 25, right: 25),
       padding: EdgeInsets.all(25),
       child: Row(
         children: [
