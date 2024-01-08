@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 
@@ -61,7 +62,20 @@ class _FirestoreVideoDisplayState extends State<TutorialsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: Colors.grey[900],
+        elevation: 0,
+        title: Text(
+          'OCTAHUB',
+          style: GoogleFonts.bebasNeue(
+            color: Colors.amber,
+            fontSize: 40,
+            letterSpacing: 6,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
