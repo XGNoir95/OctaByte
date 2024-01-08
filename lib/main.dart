@@ -1,15 +1,14 @@
-import 'package:fblogin/auth_screens/main_page.dart';
+import 'package:fblogin/lottie.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 
@@ -18,10 +17,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Checkpoint-1',
-      home: MainPage(),
-      debugShowCheckedModeBanner: false,
+      home: LottieAnimation(),
+    debugShowCheckedModeBanner: false,
     );
   }
 }

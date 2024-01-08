@@ -1,25 +1,48 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fblogin/database/firestore.dart';
 import 'package:fblogin/reusable_widgets/my_post_button.dart';
+import 'package:fblogin/reusable_widgets/wall_post.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../reusable_widgets/reusable_widget.dart';
 
-class CommunityScreen extends StatelessWidget {
+class CommunityScreen extends StatefulWidget {
   CommunityScreen({super.key});
 
-  final FirestoreDatabase database = FirestoreDatabase();
-  final TextEditingController newpostController = TextEditingController();
+  @override
+  State<CommunityScreen> createState() => _CommunityScreenState();
+}
 
+class _CommunityScreenState extends State<CommunityScreen> {
+  //user
+  final currentUser = FirebaseAuth.instance.currentUser!;
+
+  //text controller
+  final textController = TextEditingController();
+
+  //sign out
+  void signOut() {
+    FirebaseAuth.instance.signOut();
+  }
+
+  //post message
   void postMessage() {
-    if (newpostController.text.isNotEmpty) {
-      String message = newpostController.text;
-      database.addPost(message);
+    //only post if there is something in the textfield
+    if(textController.text.isNotEmpty){
+      //store in firebase
+      FirebaseFirestore.instance.collection('User Posts').add({
+        'UserEmail': currentUser.email,
+        'Message':textController.text,
+        'TimeStamp': Timestamp.now(),
+        'Likes': [],
+      });
+      // Clear the text field after posting
+      setState(() {
+        textController.clear();
+      });
     }
-
-    newpostController.clear();
   }
 
   @override
@@ -38,6 +61,9 @@ class CommunityScreen extends StatelessWidget {
           ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(onPressed: signOut, icon: Icon(Icons.logout)),
+        ],
       ),
       body: Stack(
         children: [
@@ -48,86 +74,66 @@ class CommunityScreen extends StatelessWidget {
             width: double.infinity,
             alignment: Alignment.center,
           ),
-          Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: Column(
-              children: [
-                Row(
+          Center(
+            child: Column(children: [
+              SizedBox(height: 20,),
+              //logged in as
+              Text('Signed in as: ' + currentUser.email!,
+                  style: TextStyle(color: Colors.white,fontFamily: 'RobotoCondensed',fontSize: 18)),
+              //post message
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Row(
                   children: [
                     Expanded(
                       child: reusableTextField("Say Something",
-                          Icons.speaker_notes, false, newpostController),
+                          Icons.speaker_notes, false, textController),
                     ),
+
                     PostButton(onTap: postMessage),
-                    SizedBox(
-                      height: 25,
-                    ),
                   ],
                 ),
-                Expanded(
+              ),
+              //octagram
+              Expanded(
                   child: StreamBuilder(
-                    stream: database.getPostsStream(),
+                    stream: FirebaseFirestore.instance
+                        .collection("User Posts")
+                        .orderBy("TimeStamp", descending: false)
+                        .snapshots(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(),
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            //get the message
+                            final post = snapshot.data!.docs[index];
+                            return WallPost(
+                                messsage: post['Message'],
+                                user: post['UserEmail'],
+                                postId: post.id,
+                                likes: List<String>.from(post['Likes']??[])
+                            );
+                          },
                         );
-                      }
-
-                      final posts = snapshot.data!.docs;
-
-                      if (snapshot.data == null || posts.isEmpty) {
+                      }else if(snapshot.hasError){
                         return Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(25),
-                            child: Text('No posts right now. Post Something!'),
-                          ),
-                        );
+                          child: Text('Error:${snapshot.error}'),);
                       }
-
-                      return Column(
-                        children: [
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: posts.length,
-                              itemBuilder: (context, index) {
-                                final post = posts[index];
-                                String message = post['PostMessage'];
-                                String userEmail = post['UserEmail'];
-                                Timestamp timestamp = post['TimeStamp'];
-
-                                return Column(
-                                  children: [
-                                    Container(
-                                      color: Colors.white.withOpacity(0.1),
-                                      child: ListTile(
-                                        title: Text(userEmail,
-                                            style: TextStyle(
-                                                color: Colors.amber, fontSize: 25,fontFamily: 'RobotoCondensed')),
-                                        subtitle: Text(message,
-                                            style: TextStyle(color: Colors.white,fontSize: 18)),
-                                      ),
-
-                                    ),
-                                    SizedBox(height: 40,),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
-                        ],
+                      return const Center(
+                        child: CircularProgressIndicator(),
                       );
                     },
-                  ),
-                ),
-              ],
-            ),
+                  )),
+
+
+
+
+            ]),
           ),
         ],
       ),
     );
+
   }
 }
