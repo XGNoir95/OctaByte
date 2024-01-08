@@ -1,5 +1,6 @@
 import 'package:fblogin/dasboard_screens/pcbuilder_screen.dart';
 import 'package:fblogin/dasboard_screens/tutorials_screen.dart';
+import 'package:fblogin/dasboard_screens/tutorials_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../reusable_widgets/custom_scaffold3.dart';
@@ -107,7 +108,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     ),
                     InkWell(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>TutorialsScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>TutorialsPage()));
                       },
                       child: Container(
                         decoration: BoxDecoration(
