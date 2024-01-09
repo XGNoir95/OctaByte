@@ -143,7 +143,7 @@ class _MyImageSliderState extends State<TrendingScreen> {
                   fontFamily: 'RobotoCondensed',
                   color: Colors.white,
                   fontSize: 30,
-                //  fontWeight: FontWeight.bold,
+                  //  fontWeight: FontWeight.bold,
                 ),
               ),
             ),

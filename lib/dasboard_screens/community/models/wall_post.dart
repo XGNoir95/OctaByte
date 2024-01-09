@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fblogin/reusable_widgets/comment.dart';
-import 'package:fblogin/reusable_widgets/commentButton.dart';
-import 'package:fblogin/reusable_widgets/helper.dart';
-import 'package:fblogin/reusable_widgets/like_button.dart';
+import 'package:fblogin/dasboard_screens/community/models/comment.dart';
+import 'package:fblogin/dasboard_screens/community/reWidgets/commentButton.dart';
+import 'package:fblogin/dasboard_screens/community/models/helper.dart';
+import 'package:fblogin/dasboard_screens/community/reWidgets/like_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -238,7 +238,7 @@ class _WallPostState extends State<WallPost> {
                         Comment(
                           text: commentDocs[index]["CommentText"],
                           user: commentDocs[index]["commentBy"],
-                          time:  formatData(commentDocs[index]["CommentTime"]),
+                          time: formatDate(commentDocs[index]["CommentTime"]),
                         ),
                     ],
                   );

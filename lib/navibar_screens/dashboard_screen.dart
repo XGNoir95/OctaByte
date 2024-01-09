@@ -1,10 +1,9 @@
 import 'package:fblogin/dasboard_screens/pcbuilder_screen.dart';
-import 'package:fblogin/dasboard_screens/tutorials_screen.dart';
-import 'package:fblogin/dasboard_screens/tutorials_page.dart';
+import 'package:fblogin/dasboard_screens/tutorials/tutorials_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../reusable_widgets/custom_scaffold3.dart';
-import '../dasboard_screens/community_screen.dart';
+import '../dasboard_screens/community/community_screen.dart';
 import '../dasboard_screens/marketplace_screen.dart';
 
 class DashBoardScreen extends StatefulWidget {
@@ -108,7 +107,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     ),
                     InkWell(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>TutorialsPage()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>TutorialsScreen()));
                       },
                       child: Container(
                         decoration: BoxDecoration(

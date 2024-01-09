@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fblogin/reusable_widgets/my_post_button.dart';
-import 'package:fblogin/reusable_widgets/wall_post.dart';
+import 'package:fblogin/dasboard_screens/community/reWidgets/my_post_button.dart';
+import 'package:fblogin/dasboard_screens/community/models/wall_post.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../reusable_widgets/reusable_widget.dart';
+import '../../reusable_widgets/reusable_widget.dart';
 
 class CommunityScreen extends StatefulWidget {
   CommunityScreen({super.key});
@@ -136,4 +136,4 @@ class _CommunityScreenState extends State<CommunityScreen> {
     );
 
   }
-} 
+}
