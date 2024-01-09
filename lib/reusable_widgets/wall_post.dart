@@ -238,7 +238,7 @@ class _WallPostState extends State<WallPost> {
                         Comment(
                           text: commentDocs[index]["CommentText"],
                           user: commentDocs[index]["commentBy"],
-                          time: formatDate(commentDocs[index]["CommentTime"]),
+                          time:  formatData(commentDocs[index]["CommentTime"]),
                         ),
                     ],
                   );
