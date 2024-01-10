@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../dasboard_screens/tutorials/tutorials_page.dart';
 import '../reusable_widgets/custom_scaffold3.dart';
 import '../dasboard_screens/community/community_screen.dart';
-import '../dasboard_screens/marketplace_screen.dart';
+import '../dasboard_screens/marketplace/marketplace_screen.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});
