@@ -16,12 +16,17 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Product Details'),
+        centerTitle: true,
       ),
-      body: SingleChildScrollView(
+      body:
+      SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(product.imageUrl),
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Image.network(product.imageUrl),
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -38,17 +43,17 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => MarketPlaceScreen()),
-            );
-          },
-          child: Text('Back to Marketplace'),
-        ),
-      ),
+      // bottomNavigationBar: BottomAppBar(
+      //   child: ElevatedButton(
+      //     onPressed: () {
+      //       Navigator.pushReplacement(
+      //         context,
+      //         MaterialPageRoute(builder: (context) => MarketPlaceScreen()),
+      //       );
+      //     },
+      //     child: Text('Back to Marketplace'),
+      //   ),
+      // ),
     );
   }
 }

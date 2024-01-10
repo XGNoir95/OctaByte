@@ -28,7 +28,7 @@ class TutorialsPage extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/bg.jpg'),
-            fit: BoxFit.fill,  // Use BoxFit.fill to cover the entire screen
+            fit: BoxFit.fill,
           ),
         ),
         child: Column(

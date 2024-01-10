@@ -88,19 +88,22 @@ class _FirestoreVideoDisplayState extends State<TutorialsScreen> {
           itemBuilder: (context, index) {
             return Column(
               children: [
-                SizedBox(
-                  height: 300,
-                  child: FlickVideoPlayer(
-                    flickManager: _flickManagers[index],
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: SizedBox(
+                    height: 280,
+                    child: FlickVideoPlayer(
+                      flickManager: _flickManagers[index],
+                    ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 20),  // Add this line
+                  padding: EdgeInsets.only(bottom: 20),
                   child: Text(
                     'DIY PC Build_EPISODE- 0${index + 1}',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.amberAccent,
+                    style: GoogleFonts.bebasNeue(
+                      fontSize: 33,
+                      color: Colors.amber,
                     ),
                   ),
                 ),

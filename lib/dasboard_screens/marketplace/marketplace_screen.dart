@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../navigation_menu.dart';
 import 'product.dart';
 import 'product_Item_Widget.dart';
 
 class MarketPlaceScreen extends StatelessWidget {
-  const MarketPlaceScreen({super.key});
+  const MarketPlaceScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -50,23 +51,43 @@ class MarketPlaceScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Marketplace'),
+        backgroundColor: Colors.grey[900],
+        title: Text('Marketplace', style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 40)),
+        centerTitle: true,
       ),
-      body: ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          return ProductItem(product: products[index]);
-        },
+      body: Stack(
+        children: [
+          Image.asset(
+            'assets/images/bg.jpg',
+            fit: BoxFit.cover,
+            height: double.infinity,
+            width: double.infinity,
+            alignment: Alignment.center,
+          ),
+          ListView.builder(
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: ProductItem(product: products[index]),
+              );
+            },
+          ),
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
+        color: Colors.grey[900],
         child: ElevatedButton(
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) =>NavigationMenu()),
+              MaterialPageRoute(builder: (context) => NavigationMenu()),
             );
           },
-          child: Text('Back to Dashboard'),
+          style: ElevatedButton.styleFrom(
+            primary: Colors.grey[800],
+          ),
+          child: Text('Back to Dashboard', style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 30)),
         ),
       ),
     );

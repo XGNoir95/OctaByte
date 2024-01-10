@@ -22,10 +22,10 @@ class _CommunityScreenState extends State<CommunityScreen> {
   //text controller
   final textController = TextEditingController();
 
-  //sign out
-  void signOut() {
-    FirebaseAuth.instance.signOut();
-  }
+  // //sign out
+  // void signOut() {
+  //   FirebaseAuth.instance.signOut();
+  // }
 
   //post message
   void postMessage() {
@@ -61,9 +61,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
           ),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(onPressed: signOut, icon: Icon(Icons.logout)),
-        ],
+        // actions: [
+        //   IconButton(onPressed: signOut, icon: Icon(Icons.logout)),
+        // ],
       ),
       body: Stack(
         children: [
