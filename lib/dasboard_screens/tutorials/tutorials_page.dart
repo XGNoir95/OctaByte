@@ -1,6 +1,8 @@
+import 'package:fblogin/dasboard_screens/tutorials/tutorials_screen2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'tutorials_screen.dart';  // Import the tutorials screen file
+import 'tutorials_screen2.dart';  // Import the tutorials screen file
 
 class TutorialsPage extends StatelessWidget {
   const TutorialsPage({Key? key}) : super(key: key);
@@ -29,26 +31,38 @@ class TutorialsPage extends StatelessWidget {
             fit: BoxFit.fill,  // Use BoxFit.fill to cover the entire screen
           ),
         ),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => TutorialsScreen()),  // Navigate to the tutorials screen on tap
-            );
-          },
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TutorialsScreen()),
+                );
+              },
+              child: Center(
+                child: Padding(
                   padding: const EdgeInsets.only(),
                   child: Image.asset('assets/banner/thumb.jpg', width: 250, height: 350),
                 ),
-
-
-              ],
+              ),
             ),
-          ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TutorialsScreen2()),
+                );
+              },
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(),
+                  child: Image.asset('assets/banner/thumb.jpg', width: 250, height: 350),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
