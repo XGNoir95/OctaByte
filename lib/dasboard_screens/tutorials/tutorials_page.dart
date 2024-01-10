@@ -44,7 +44,7 @@ class TutorialsPage extends StatelessWidget {
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.only(),
-                  child: Image.asset('assets/banner/thumb.jpg', width: 250, height: 350),
+                  child: Image.asset('assets/banner/thumb.jpg', width: 300, height: 350),
                 ),
               ),
             ),
@@ -58,7 +58,7 @@ class TutorialsPage extends StatelessWidget {
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.only(),
-                  child: Image.asset('assets/banner/thumb.jpg', width: 250, height: 350),
+                  child: Image.asset('assets/banner/thumb2.jpg', width: 300, height: 350),
                 ),
               ),
             ),
