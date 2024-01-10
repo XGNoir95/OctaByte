@@ -32,7 +32,9 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
               ),
             ),
             Divider(),
-            ChatBox(),
+            Center(
+              child: ChatBox(),
+            ),
           ],
         ),
       ),

@@ -22,7 +22,7 @@ class MarketPlaceScreen extends StatelessWidget {
       ),
       Product(
         name: 'Product 3',
-        imageUrl: 'https://static-01.daraz.lk/p/b7613c4958782c1965f2051b6fc90987.jp',
+        imageUrl: 'https://static-01.daraz.lk/p/b7613c4958782c1965f2051b6fc90987.jpg',
         price: 29.99,
       ),
       Product(
