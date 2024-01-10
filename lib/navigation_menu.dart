@@ -26,7 +26,7 @@ class NavigationMenu extends StatelessWidget {
           selectedIndex: controller.selectedIndex.value,
           onDestinationSelected: (index) =>
           controller.selectedIndex.value = index,
-          destinations: [
+          destinations: const [
 
             NavigationDestination(
               icon: Column(
@@ -97,8 +97,8 @@ class NavigationController extends GetxController {
 
   final screens = [
     HomePage(),
-    DashBoardScreen(),
-    TrendingScreen(),
-    SettingsScreen(),
+    const DashBoardScreen(),
+    const TrendingScreen(),
+    const SettingsScreen(),
   ];
 }
