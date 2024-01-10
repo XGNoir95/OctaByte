@@ -41,14 +41,11 @@ class TutorialsPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 45),  // Add padding to the top of the image
-                  child: Image.asset('assets/images/DIY.jpg', width: 200, height: 200),
+                  padding: const EdgeInsets.only(),
+                  child: Image.asset('assets/banner/thumb.jpg', width: 250, height: 350),
                 ),
-                SizedBox(height: 3),  // Adjust the gap between the image and text
-                Text(
-                  'DIY PC Build Guide',
-                  style: TextStyle(fontSize: 18, color: Colors.amberAccent),
-                ),
+
+
               ],
             ),
           ),
