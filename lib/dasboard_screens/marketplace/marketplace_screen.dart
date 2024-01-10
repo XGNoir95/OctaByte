@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../navigation_menu.dart';
-import '../product.dart';
-import '../product_Item_Widget.dart';
+import '../../navigation_menu.dart';
+import 'product.dart';
+import 'product_Item_Widget.dart';
 
 class MarketPlaceScreen extends StatelessWidget {
   const MarketPlaceScreen({super.key});
