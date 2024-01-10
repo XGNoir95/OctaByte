@@ -1,4 +1,4 @@
-// lib/screens/product_details_with_chat_screen.dart
+
 import 'package:flutter/material.dart';
 
 

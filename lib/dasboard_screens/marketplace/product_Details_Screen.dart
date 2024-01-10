@@ -1,4 +1,4 @@
-// lib/screens/product_details_screen.dart
+
 import 'package:flutter/material.dart';
 import 'ChatBox.dart';
 import 'ProductDetailsWithChatScreen.dart';
@@ -28,7 +28,6 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
                 children: [
                   Text(product.name, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                   Text('\$${product.price.toString()}', style: TextStyle(fontSize: 18)),
-                  // Add more details as needed
                 ],
               ),
             ),
@@ -40,7 +39,7 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
       bottomNavigationBar: BottomAppBar(
         child: ElevatedButton(
           onPressed: () {
-            // Navigate to the MarketplaceScreen
+
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => MarketPlaceScreen()),

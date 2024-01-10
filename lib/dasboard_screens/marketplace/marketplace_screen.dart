@@ -9,7 +9,6 @@ class MarketPlaceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Placeholder list of products
     List<Product> products = [
       Product(
         name: 'Product 1',
@@ -46,7 +45,6 @@ class MarketPlaceScreen extends StatelessWidget {
         imageUrl: 'https://ns1.full.am/uploads/posting_image/user_32001/product_311539/9d4854a2e0685f3b59d12ac1eb5baa75.jpg',
         price: 29.99,
       ),
-      // Add more products as needed
     ];
 
     return Scaffold(
@@ -63,7 +61,6 @@ class MarketPlaceScreen extends StatelessWidget {
       bottomNavigationBar: BottomAppBar(
         child: ElevatedButton(
           onPressed: () {
-            // Navigate to the MarketplaceScreen
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) =>NavigationMenu()),
