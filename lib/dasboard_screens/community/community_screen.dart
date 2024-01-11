@@ -29,7 +29,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
 
   //post message
   void postMessage() {
-    //only post if there is something in the textfield
+
     if(textController.text.isNotEmpty){
       //store in firebase
       FirebaseFirestore.instance.collection('User Posts').add({
@@ -38,7 +38,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
         'TimeStamp': Timestamp.now(),
         'Likes': [],
       });
-      // Clear the text field after posting
+
       setState(() {
         textController.clear();
       });
@@ -104,6 +104,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return ListView.builder(
+                          reverse: true,
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
                             //get the message

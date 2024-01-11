@@ -1,8 +1,8 @@
 import 'package:fblogin/dasboard_screens/tutorials/tutorials_screen2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'tutorials_screen.dart';  // Import the tutorials screen file
-import 'tutorials_screen2.dart';  // Import the tutorials screen file
+import 'tutorials_screen.dart';
+import 'tutorials_screen2.dart';
 
 class TutorialsPage extends StatelessWidget {
   const TutorialsPage({Key? key}) : super(key: key);

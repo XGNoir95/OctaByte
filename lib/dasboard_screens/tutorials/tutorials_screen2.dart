@@ -94,7 +94,7 @@ class _FirestoreVideoDisplayState extends State<TutorialsScreen2> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 20),  // Add this line
+                  padding: EdgeInsets.only(bottom: 20),
                   child: Text(
                     'PC Build Guide- 0${index + 1}',
                     style: GoogleFonts.bebasNeue(

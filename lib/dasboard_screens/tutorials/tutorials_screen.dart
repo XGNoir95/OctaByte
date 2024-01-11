@@ -36,7 +36,7 @@ class _FirestoreVideoDisplayState extends State<TutorialsScreen> {
       try {
         final Reference ref = storage.ref().child('video/$videoName');
         final String videoUrl = await ref.getDownloadURL();
-        // Update the FlickManager with the new video URL
+
         FlickManager flickManager = FlickManager(
           videoPlayerController: VideoPlayerController.network(videoUrl),
           autoPlay: false,
