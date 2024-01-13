@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flick_video_player/flick_video_player.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TutorialsScreen2 extends StatefulWidget {
   const TutorialsScreen2({Key? key}) : super(key: key);
