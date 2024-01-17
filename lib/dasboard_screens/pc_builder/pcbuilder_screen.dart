@@ -36,20 +36,27 @@ class _PcBuilderScreenState extends State<PcBuilderScreen> {
             width: double.infinity,
             alignment: Alignment.center,
           ),
-
           SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Text(
-                    'Core-Components: ',
-                    style: GoogleFonts.bebasNeue(color: Colors.white,fontSize: 35),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Container(
+                    color: Colors.grey[800],
+                    child: Text(
+                      '  Core-Components:                            ',
+                      style: GoogleFonts.bebasNeue(
+                          color: Colors.white, fontSize: 35),
+                    ),
                   ),
                 ),
-                SizedBox(height: 5,),
+                SizedBox(
+                  height: 5,
+                ),
                 buildCard(
                   title: 'CPU',
                   imagePath: 'assets/builder/cpu.png',
@@ -92,10 +99,59 @@ class _PcBuilderScreenState extends State<PcBuilderScreen> {
                     // Your onPressed logic here
                   },
                 ),
+                SizedBox(height: 10,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                  child: Container(
+                    color: Colors.grey[800],
+                    child: Text(
+                      '  Peripheral-Components:                            ',
+                      style: GoogleFonts.bebasNeue(
+                          color: Colors.white, fontSize: 35),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                buildCard(
+                  title: 'Monitor',
+                  imagePath: 'assets/builder/monitor.png',
+                  onPressed: () {
+                    // Your onPressed logic here
+                  },
+                ),
+                buildCard(
+                  title: 'Keyboard',
+                  imagePath: 'assets/builder/keyboard.png',
+                  onPressed: () {
+                    // Your onPressed logic here
+                  },
+                ),
+                buildCard(
+                  title: 'Mouse',
+                  imagePath: 'assets/builder/mouse.png',
+                  onPressed: () {
+                    // Your onPressed logic here
+                  },
+                ),
+                buildCard(
+                  title: 'Headphones',
+                  imagePath: 'assets/builder/hx.png',
+                  onPressed: () {
+                    // Your onPressed logic here
+                  },
+                ),
+                buildCard(
+                  title: 'Casing Coolers',
+                  imagePath: 'assets/builder/cooler.png',
+                  onPressed: () {
+                    // Your onPressed logic here
+                  },
+                ),
               ],
             ),
           ),
-
         ]));
   }
 }
