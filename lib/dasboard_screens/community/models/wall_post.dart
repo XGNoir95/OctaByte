@@ -12,6 +12,7 @@ class WallPost extends StatefulWidget {
   final String user;
   final String postId;
   final List<String> likes;
+  final Timestamp postTime;
 
   const WallPost({
     Key? key,
@@ -19,6 +20,7 @@ class WallPost extends StatefulWidget {
     required this.user,
     required this.postId,
     required this.likes,
+    required this.postTime,
   }) : super(key: key);
 
   @override
@@ -139,22 +141,47 @@ class _WallPostState extends State<WallPost> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.user,
-                        style: TextStyle(
-                          color: Colors.amber,
-                          fontSize: 25,
-                          fontFamily: 'RobotoCondensed',
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            fit: FlexFit.loose,
+                            child: Text(
+                              widget.user,
+                              style: TextStyle(
+                                color: Colors.amber,
+                                fontSize: 25,
+                                fontFamily: 'RobotoCondensed',
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 20,),
+                          Text(
+                            formatDate(widget.postTime),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'RobotoCondensed',
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 10),
-                      Text(
-                        widget.messsage,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 19,
-                          fontFamily: 'RobotoCondensed',
-                        ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            fit: FlexFit.loose,
+                            child: Text(
+                              widget.messsage,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 19,
+                                fontFamily: 'RobotoCondensed',
+                              ),
+                            ),
+                          ),
+                          // Add any additional widgets here if needed
+                        ],
                       ),
                     ],
                   ),
@@ -211,8 +238,6 @@ class _WallPostState extends State<WallPost> {
               ],
             ),
             const SizedBox(height: 10),
-            // Text('Comments:',style: TextStyle(color: Colors.amber,fontFamily: 'RobotoCondensed',fontSize: 25)),
-            // const SizedBox(height: 8),
             // Comments displayed
             Container(
               child: StreamBuilder<QuerySnapshot>(

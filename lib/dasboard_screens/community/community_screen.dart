@@ -16,25 +16,14 @@ class CommunityScreen extends StatefulWidget {
 }
 
 class _CommunityScreenState extends State<CommunityScreen> {
-  //user
   final currentUser = FirebaseAuth.instance.currentUser!;
-
-  //text controller
   final textController = TextEditingController();
 
-  // //sign out
-  // void signOut() {
-  //   FirebaseAuth.instance.signOut();
-  // }
-
-  //post message
   void postMessage() {
-
-    if(textController.text.isNotEmpty){
-      //store in firebase
+    if (textController.text.isNotEmpty) {
       FirebaseFirestore.instance.collection('User Posts').add({
         'UserEmail': currentUser.email,
-        'Message':textController.text,
+        'Message': textController.text,
         'TimeStamp': Timestamp.now(),
         'Likes': [],
       });
@@ -61,9 +50,6 @@ class _CommunityScreenState extends State<CommunityScreen> {
           ),
         ),
         centerTitle: true,
-        // actions: [
-        //   IconButton(onPressed: signOut, icon: Icon(Icons.logout)),
-        // ],
       ),
       body: Stack(
         children: [
@@ -75,66 +61,62 @@ class _CommunityScreenState extends State<CommunityScreen> {
             alignment: Alignment.center,
           ),
           Center(
-            child: Column(children: [
-              SizedBox(height: 20,),
-              //logged in as
-              Text('Signed in as: ' + currentUser.email!,
-                  style: TextStyle(color: Colors.white,fontFamily: 'RobotoCondensed',fontSize: 18)),
-              //post message
-              Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: reusableTextField("Say Something",
-                          Icons.speaker_notes, false, textController),
-                    ),
-
-                    PostButton(onTap: postMessage),
-                  ],
+            child: Column(
+              children: [
+                SizedBox(height: 20,),
+                Text(
+                  'Signed in as: ' + currentUser.email!,
+                  style: TextStyle(color: Colors.white, fontFamily: 'RobotoCondensed', fontSize: 18),
                 ),
-              ),
-              //octagram
-              Expanded(
+                Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: reusableTextField("Say Something", Icons.speaker_notes, false, textController),
+                      ),
+                      PostButton(onTap: postMessage),
+                    ],
+                  ),
+                ),
+                Expanded(
                   child: StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection("User Posts")
-                        .orderBy("TimeStamp", descending: false)
+                        .orderBy("TimeStamp", descending: true)
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return ListView.builder(
-                          reverse: true,
+                          reverse: false,
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
-                            //get the message
                             final post = snapshot.data!.docs[index];
                             return WallPost(
-                                messsage: post['Message'],
-                                user: post['UserEmail'],
-                                postId: post.id,
-                                likes: List<String>.from(post['Likes']??[])
+                              messsage: post['Message'],
+                              user: post['UserEmail'],
+                              postId: post.id,
+                              likes: List<String>.from(post['Likes'] ?? []),
+                              postTime: post['TimeStamp'], // Include the post time
                             );
                           },
                         );
-                      }else if(snapshot.hasError){
+                      } else if (snapshot.hasError) {
                         return Center(
-                          child: Text('Error:${snapshot.error}'),);
+                          child: Text('Error: ${snapshot.error}'),
+                        );
                       }
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
                     },
-                  )),
-
-
-
-
-            ]),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
-
   }
 }
