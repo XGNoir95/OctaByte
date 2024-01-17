@@ -20,8 +20,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails(String email) async {
-    return await FirebaseFirestore.instance.collection('users').doc(email).get();
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails(
+      String email) async {
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(email)
+        .get();
   }
 
   void _signOut(BuildContext context) async {
@@ -43,11 +47,11 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (BuildContext context) {
         final TextEditingController _firstNameController =
-        TextEditingController(text: userData['First Name']);
+            TextEditingController(text: userData['First Name']);
         final TextEditingController _lastNameController =
-        TextEditingController(text: userData['Last Name']);
+            TextEditingController(text: userData['Last Name']);
         final TextEditingController _userNameController =
-        TextEditingController(text: userData['User Name']);
+            TextEditingController(text: userData['User Name']);
 
         return AlertDialog(
           title: Center(
@@ -176,10 +180,12 @@ class _HomePageState extends State<HomePage> {
                   if (snapshot.hasData && snapshot.data != null) {
                     User? currentUser = snapshot.data;
 
-                    return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                    return FutureBuilder<
+                        DocumentSnapshot<Map<String, dynamic>>>(
                       future: getUserDetails(currentUser!.email!),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
@@ -188,169 +194,239 @@ class _HomePageState extends State<HomePage> {
                         } else if (snapshot.hasData && snapshot.data!.exists) {
                           Map<String, dynamic>? user = snapshot.data!.data();
 
-                          return Center(
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  // SizedBox(
-                                  //   height: 85,
-                                  // ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        ' Welcome Back ',
-                                        style: GoogleFonts.bebasNeue(
-                                          fontSize: 62,
-                                          color: Colors.amber,
-                                          //fontFamily: 'RobotoCondensed',
-                                        ),
-                                      ),
-                                      Text(
-                                        user!['User Name'],
-                                        style: TextStyle(
-                                          fontSize: 40,
-                                          color: Colors.white,
-                                          fontFamily: 'RobotoCondensed',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                          return SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              //crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // SizedBox(
+                                //   height: 85,
+                                // ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [],
+                                ),
 
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  //Profile picture
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[900],
-                                      borderRadius: BorderRadius.circular(24),
-                                    ),
-                                    padding: const EdgeInsets.all(25),
-                                    child: const Icon(Icons.person, size: 80, color: Colors.white),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  Text(
-                                    'Your Details:  ',
-                                    style: GoogleFonts.bebasNeue(
-                                      fontSize: 45,
-                                      color: Colors.white,
-                                      //fontFamily: 'RobotoCondensed',
+                                SizedBox(
+                                  height: 0,
+                                ),
+                                //Profile picture
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[900],
+                                    borderRadius: BorderRadius.circular(50),
+                                    border: Border.all(
+                                      color: Colors.grey[700]!,
+                                      width: 2.0,
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 5,
+                                  padding: const EdgeInsets.all(25),
+                                  child: const Icon(Icons.person,
+                                      size: 80, color: Colors.white),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  user!['User Name'],
+                                  style: GoogleFonts.bebasNeue(
+                                    fontSize: 53,
+                                    color: Colors.amber,
+                                    letterSpacing: 2,
+                                    //fontFamily: 'RobotoCondensed',
                                   ),
-                                  Row(
+                                ),
+                                Text(currentUser.email!,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'RobotoCondensed',
+                                        fontSize: 20)),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                                  child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'First Name: ',
-                                        style: GoogleFonts.bebasNeue(
-                                          fontSize: 35,
-                                          color: Colors.amber,
-                                          //fontFamily: 'RobotoCondensed',
+                                      Row(
+                                        children: [
+                                          Text(
+                                            ' User Information:',
+                                            style: GoogleFonts.bebasNeue(
+                                              color: Colors.white,
+                                              fontSize: 40,
+                                            ),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                          SizedBox(width: 80,),
+                                             GestureDetector(child: Icon(Icons.settings_outlined, color: Colors.amber),onTap: () async {
+                                              User? currentUser = _auth.currentUser;
+                                              DocumentSnapshot<Map<String, dynamic>> snapshot =
+                                              await getUserDetails(currentUser!.email!);
+                                              Map<String, dynamic> userData = snapshot.data()!;
+                                              _editUser(context, userData);
+                                            },),
+
+                                        ],
+                                      ),
+                                      SizedBox(height: 10,),
+
+
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height: 50, // Adjust the height as needed
+                                              margin: EdgeInsets.symmetric(vertical: 5),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[800],
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  SizedBox(width: 10),
+                                                  Icon(Icons.first_page, color: Colors.white),
+                                                  SizedBox(width: 10),
+                                                  Text(
+                                                    'First Name: ',
+                                                    style: TextStyle(
+                                                      fontSize: 24,
+                                                      color: Colors.amber,
+                                                      fontFamily: 'RobotoCondensed',
+                                                    ),
+                                                  ),
+                                                  Spacer(),
+                                                  Text(
+                                                    user!['First Name'],
+                                                    style: TextStyle(
+                                                      fontSize: 24,
+                                                      color: Colors.white,
+                                                      fontFamily: 'RobotoCondensed',
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 10,),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            // Repeat the same pattern for other Container widgets
+                                            Container(
+                                              height: 50, // Adjust the height as needed
+                                              margin: EdgeInsets.symmetric(vertical: 5),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[800],
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  SizedBox(width: 10),
+                                                  Icon(Icons.info_outline, color: Colors.white),
+                                                  SizedBox(width: 10),
+                                                  Text(
+                                                    'Last Name: ',
+                                                    style: TextStyle(
+                                                      fontSize: 24,
+                                                      color: Colors.amber,
+                                                      fontFamily: 'RobotoCondensed',
+                                                    ),
+                                                  ),
+                                                  Spacer(),
+                                                  Text(
+                                                    user!['Last Name'],
+                                                    style: TextStyle(
+                                                      fontSize: 24,
+                                                      color: Colors.white,
+                                                      fontFamily: 'RobotoCondensed',
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 10,),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            // Repeat the same pattern for other Container widgets
+                                            Container(
+                                              height: 50, // Adjust the height as needed
+                                              margin: EdgeInsets.symmetric(vertical: 5),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[800],
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  SizedBox(width: 10),
+                                                  Icon(Icons.android_outlined, color: Colors.white),
+                                                  SizedBox(width: 10),
+                                                  Text(
+                                                    'User Name: ',
+                                                    style: TextStyle(
+                                                      fontSize: 24,
+                                                      color: Colors.amber,
+                                                      fontFamily: 'RobotoCondensed',
+                                                    ),
+                                                  ),
+                                                  Spacer(),
+                                                  Text(
+                                                    user!['User Name'],
+                                                    style: TextStyle(
+                                                      fontSize: 24,
+                                                      color: Colors.white,
+                                                      fontFamily: 'RobotoCondensed',
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 10,),
+                                                ],
+                                              ),
+
+                                            ),
+                                            SizedBox(height: 5),
+                                            // Repeat the same pattern for other Container widgets
+                                            Container(
+                                              height: 50, // Adjust the height as needed
+                                              margin: EdgeInsets.symmetric(vertical: 5),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[800],
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  SizedBox(width: 10),
+                                                  Icon(Icons.email_outlined, color: Colors.white),
+                                                  SizedBox(width: 10),
+                                                  Text(
+                                                    'Email- ID: ',
+                                                    style: TextStyle(
+                                                      fontSize: 24,
+                                                      color: Colors.amber,
+                                                      fontFamily: 'RobotoCondensed',
+                                                    ),
+                                                  ),
+                                                  Spacer(),
+                                                  Text(
+                                                    user!['Email'],
+                                                    style: TextStyle(
+                                                      fontSize: 24,
+                                                      color: Colors.white,
+                                                      fontFamily: 'RobotoCondensed',
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 10,),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: 15,
-                                      ),
-                                      Text(
-                                        user!['First Name'],
-                                        style: TextStyle(
-                                          fontSize: 30,
-                                          color: Colors.white,
-                                          fontFamily: 'RobotoCondensed',
-                                        ),
-                                      ),
+
+
                                     ],
                                   ),
-                                  SizedBox(
-                                    height: 17,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Last Name: ',
-                                        style: GoogleFonts.bebasNeue(
-                                          fontSize: 35,
-                                          color: Colors.amber,
-                                          //fontFamily: 'RobotoCondensed',
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 15,
-                                      ),
-                                      Text(
-                                        user!['Last Name'],
-                                        style: TextStyle(
-                                          fontSize: 30,
-                                          color: Colors.white,
-                                          fontFamily: 'RobotoCondensed',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 17,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'User Name: ',
-                                        style: GoogleFonts.bebasNeue(
-                                          fontSize: 35,
-                                          color: Colors.amber,
-                                          //fontFamily: 'RobotoCondensed',
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 15,
-                                      ),
-                                      Text(
-                                        user!['User Name'],
-                                        style: TextStyle(
-                                          fontSize: 30,
-                                          color: Colors.white,
-                                          fontFamily: 'RobotoCondensed',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 17,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Email: ',
-                                        style: GoogleFonts.bebasNeue(
-                                          fontSize: 30,
-                                          color: Colors.amber,
-                                          //fontFamily: 'RobotoCondensed',
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 15,
-                                      ),
-                                      Text(
-                                        user!['Email'],
-                                        style: TextStyle(
-                                          fontSize: 30,
-                                          color: Colors.white,
-                                          fontFamily: 'RobotoCondensed',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           );
                         } else {
@@ -363,34 +439,11 @@ class _HomePageState extends State<HomePage> {
                   }
                 },
               ),
-              SizedBox(height: 5),
+              SizedBox(height: 15),
               Row(
                 children: [
                   SizedBox(
-                    width: 30,
-                  ),
-                  MaterialButton(
-                    onPressed: () async {
-                      User? currentUser = _auth.currentUser;
-                      DocumentSnapshot<Map<String, dynamic>> snapshot =
-                      await getUserDetails(currentUser!.email!);
-                      Map<String, dynamic> userData = snapshot.data()!;
-                      _editUser(context, userData);
-                    },
-                    color: Colors.grey[900],
-                    child: Row(
-                      children: [
-                        Icon(Icons.settings_outlined, color: Colors.amber),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text('Edit',
-                            style: TextStyle(fontSize: 22, color: Colors.white)),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 100,
+                    width: 130,
                   ),
                   MaterialButton(
                     onPressed: () {
@@ -399,13 +452,14 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.grey[900],
                     child: Row(
                       children: [
-                        Icon(Icons.logout, color: Colors.amber),
+                        Icon(Icons.logout, color: Colors.amber,size: 30),
                         SizedBox(
                           width: 10,
                         ),
                         Text('Sign Out',
-                            style: TextStyle(
-                                fontSize: 22,
+                            style: GoogleFonts.bebasNeue(
+                                fontSize: 30,
+                                letterSpacing: 1,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white)),
                       ],
