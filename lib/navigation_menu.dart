@@ -11,11 +11,12 @@ import 'package:iconsax/iconsax.dart';
 import 'utils/color_utils.dart';
 
 class NavigationMenu extends StatelessWidget {
-  const NavigationMenu({super.key});
+  const NavigationMenu({Key? key});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(NavigationController());
+
     return Scaffold(
       bottomNavigationBar: Obx(
             () => NavigationBar(
@@ -24,26 +25,8 @@ class NavigationMenu extends StatelessWidget {
           indicatorColor: Colors.white.withOpacity(0.1),
           elevation: 0,
           selectedIndex: controller.selectedIndex.value,
-          onDestinationSelected: (index) =>
-          controller.selectedIndex.value = index,
+          onDestinationSelected: (index) => controller.selectedIndex.value = index,
           destinations: const [
-
-            NavigationDestination(
-              icon: Column(
-                children: [
-                  SizedBox(height: 14,),
-
-                  Icon(
-                    Iconsax.security_user,
-                    color: Colors.amber,
-                    size: 32,
-                  ),
-                  Text('Profile',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 17,letterSpacing: 1)),
-                ],
-              ),
-              label: '',
-
-            ),
             NavigationDestination(
               icon: Column(
                 children: [
@@ -82,8 +65,20 @@ class NavigationMenu extends StatelessWidget {
               ),
               label: '',
             ),
-
-
+            NavigationDestination(
+              icon: Column(
+                children: [
+                  SizedBox(height: 14,),
+                  Icon(
+                    Iconsax.security_user,
+                    color: Colors.amber,
+                    size: 32,
+                  ),
+                  Text('Profile',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 17,letterSpacing: 1)),
+                ],
+              ),
+              label: '',
+            ),
           ],
         ),
       ),
@@ -96,9 +91,13 @@ class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 
   final screens = [
-    HomePage(),
     const DashBoardScreen(),
     const TrendingScreen(),
     const SettingsScreen(),
+    HomePage(),
   ];
+
+  void resetToDashboard() {
+    selectedIndex.value = 0;
+  }
 }

@@ -13,7 +13,7 @@ class _LottieAnimationState extends State<LottieAnimation> {
   @override
   void initState(){
     super.initState();
-    Timer( const Duration(seconds: 8), () {
+    Timer( const Duration(seconds: 5), () {
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ((context) => const MainPage())));
     });
   }

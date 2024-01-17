@@ -3,8 +3,11 @@ import 'package:fblogin/reusable_widgets/custom_scaffold3.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fblogin/reusable_widgets/custom_scaffold2.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../navigation_menu.dart';
 import '../reusable_widgets/custom_scaffold.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,6 +33,9 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.green,
       ),
     );
+    // Reset to the dashboard screen when signing out
+    final navigationController = Get.find<NavigationController>();
+    navigationController.resetToDashboard();
   }
 
   void _editUser(BuildContext context, Map<String, dynamic> userData) {
