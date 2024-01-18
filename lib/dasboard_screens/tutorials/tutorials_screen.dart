@@ -14,16 +14,7 @@ class TutorialsScreen extends StatefulWidget {
 class _FirestoreVideoDisplayState extends State<TutorialsScreen> {
   late List<FlickManager> _flickManagers = [];
   final storage = FirebaseStorage.instance;
-  final videoName = [
-    'DIY PC Build_EPISODE- 01.mp4',
-    'DIY PC Build_EPISODE- 02.mp4',
-    'DIY PC Build_EPISODE- 03.mp4',
-    'DIY PC Build_EPISODE- 04.mp4',
-    'DIY PC Build_EPISODE- 05.mp4',
-    'DIY PC Build_EPISODE- 06.mp4',
-    'DIY PC Build_EPISODE- 07.mp4',
-  ];
-
+  final String storageFolder = 'video';
 
   @override
   void initState() {
@@ -32,24 +23,26 @@ class _FirestoreVideoDisplayState extends State<TutorialsScreen> {
   }
 
   Future<void> getVideoUrls() async {
-    for (var videoName in videoName) {
-      try {
-        final Reference ref = storage.ref().child('video/$videoName');
-        final String videoUrl = await ref.getDownloadURL();
+    try {
+      ListResult result = await storage.ref(storageFolder).listAll();
 
+      for (var item in result.items) {
+        final String videoUrl = await item.getDownloadURL();
+
+        // Update the FlickManager with the new video URL
         FlickManager flickManager = FlickManager(
           videoPlayerController: VideoPlayerController.network(videoUrl),
           autoPlay: false,
         );
 
         _flickManagers.add(flickManager);
-        setState(() {});
-      } catch (error) {
-        print('Error getting video URL: $error');
       }
+
+      setState(() {});
+    } catch (error) {
+      print('Error getting video URLs: $error');
     }
   }
-
 
   @override
   void dispose() {

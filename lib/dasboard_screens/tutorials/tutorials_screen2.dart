@@ -3,7 +3,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flick_video_player/flick_video_player.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TutorialsScreen2 extends StatefulWidget {
   const TutorialsScreen2({Key? key}) : super(key: key);
@@ -15,12 +14,7 @@ class TutorialsScreen2 extends StatefulWidget {
 class _FirestoreVideoDisplayState extends State<TutorialsScreen2> {
   late List<FlickManager> _flickManagers = [];
   final storage = FirebaseStorage.instance;
-  final videoName = [
-    'PC Build Guide.mp4',
-    'PC Build Guide 2.mp4',
-
-  ];
-
+  final String storageFolder = 'pc_guide';
 
   @override
   void initState() {
@@ -29,10 +23,12 @@ class _FirestoreVideoDisplayState extends State<TutorialsScreen2> {
   }
 
   Future<void> getVideoUrls() async {
-    for (var videoName in videoName) {
-      try {
-        final Reference ref = storage.ref().child('video/$videoName');
-        final String videoUrl = await ref.getDownloadURL();
+    try {
+      ListResult result = await storage.ref(storageFolder).listAll();
+
+      for (var item in result.items) {
+        final String videoUrl = await item.getDownloadURL();
+
         // Update the FlickManager with the new video URL
         FlickManager flickManager = FlickManager(
           videoPlayerController: VideoPlayerController.network(videoUrl),
@@ -40,13 +36,13 @@ class _FirestoreVideoDisplayState extends State<TutorialsScreen2> {
         );
 
         _flickManagers.add(flickManager);
-        setState(() {});
-      } catch (error) {
-        print('Error getting video URL: $error');
       }
+
+      setState(() {});
+    } catch (error) {
+      print('Error getting video URLs: $error');
     }
   }
-
 
   @override
   void dispose() {
