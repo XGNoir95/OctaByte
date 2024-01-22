@@ -1,58 +1,35 @@
+// market_place_screen.dart
+import 'package:fblogin/dasboard_screens/marketplace/product_Item_Widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import '../../navigation_menu.dart';
 import 'product.dart';
-import 'product_Item_Widget.dart';
 
-class MarketPlaceScreen extends StatelessWidget {
-  const MarketPlaceScreen({Key? key});
+
+class MarketPlaceScreen extends StatefulWidget {
+  const MarketPlaceScreen({Key? key}) : super(key: key);
+
+  @override
+  _MarketPlaceScreenState createState() => _MarketPlaceScreenState();
+}
+
+class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
+  final TextEditingController _productNameController = TextEditingController();
+  final TextEditingController _productPriceController = TextEditingController();
+  File? _imageFile;
 
   @override
   Widget build(BuildContext context) {
-    List<Product> products = [
-      Product(
-        name: 'Product 1',
-        imageUrl: 'https://media.cnn.com/api/v1/images/stellar/prod/keychron-q1-pro-qmk-via-wireless-custom-mechanical-keyboard-75-layout-full-aluminum-black-frame-for-mac-w-indows-linux-with-rgb-backlight-and-hot-swappable-k-pro-switch-banana-1800x1800.jpg?c=16x9&q=h_720,w_1280,c_fill',
-        price: 19.99,
-      ),
-      Product(
-        name: 'Product 2',
-        imageUrl: 'https://www.tahaeshop.com/storage/a4tech/a4tech-krs-83-usb-keyboard-01.jpeg',
-        price: 29.99,
-      ),
-      Product(
-        name: 'Product 3',
-        imageUrl: 'https://static-01.daraz.lk/p/b7613c4958782c1965f2051b6fc90987.jpg',
-        price: 29.99,
-      ),
-      Product(
-        name: 'Product 4',
-        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrW70D7v_ghpKXBJWs7Xez4vohezemPQ7E5g&usqp=CAU',
-        price: 29.99,
-      ),
-      Product(
-        name: 'Product 5',
-        imageUrl: 'https://static-01.daraz.lk/p/b7613c4958782c1965f2051b6fc90987.jpg',
-        price: 29.99,
-      ),
-      Product(
-        name: 'Product 6',
-        imageUrl: 'https://1.bp.blogspot.com/-6HV7kuziOHI/XThjLmTddAI/AAAAAAAAAHI/9qYEJOXMlM0R99BTbrebSH415plWGIXVwCLcBGAs/s1600/Slide4.JPG',
-        price: 29.99,
-      ),
-      Product(
-        name: 'Product 7',
-        imageUrl: 'https://ns1.full.am/uploads/posting_image/user_32001/product_311539/9d4854a2e0685f3b59d12ac1eb5baa75.jpg',
-        price: 29.99,
-      ),
-    ];
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.grey[900],
-        title: Text('Marketplace', style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 40)),
+        title: Text('Marketplace',
+            style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 40)),
         centerTitle: true,
       ),
       body: Stack(
@@ -64,14 +41,59 @@ class MarketPlaceScreen extends StatelessWidget {
             width: double.infinity,
             alignment: Alignment.center,
           ),
-          ListView.builder(
-            itemCount: products.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: ProductItem(product: products[index]),
-              );
-            },
+          Column(
+            children: [
+              _buildProductUploadSection(),
+              Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance.collection('products')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+
+                    List<Product> products = snapshot.data!.docs.map((doc) {
+                      Map<String, dynamic> data = doc.data() as Map<
+                          String,
+                          dynamic>;
+
+                      // Handle potential null values
+                      String productName = data['name']?.toString() ??
+                          'Default Name';
+                      String imageUrl = data['imageUrl']?.toString() ??
+                          'No Image';
+
+                      return Product(
+                        id: doc.id,
+                        name: productName,
+                        imageUrl: imageUrl,
+                        price: (data['price'] as num?)?.toDouble() ?? 0.0,
+                        chatRoomId: data['chatRoomId']?.toString() ??
+                            'Default Chat Room ID',
+                        sellerId: data['sellerId']
+                            ?.toString(), // Use sellerId if available
+                      );
+                    }).toList();
+
+                    return ListView.builder(
+                      itemCount: products.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 16.0),
+                          child: ProductItem(product: products[index]),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -87,9 +109,113 @@ class MarketPlaceScreen extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             primary: Colors.grey[800],
           ),
-          child: Text('Back to Dashboard', style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 30)),
+          child: Text('Back to Dashboard',
+              style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 30)),
         ),
       ),
     );
+  }
+
+  Widget _buildProductUploadSection() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Upload a new product',
+              style: GoogleFonts.bebasNeue(fontSize: 24, color: Colors.amber)),
+          SizedBox(height: 10),
+          TextField(
+            controller: _productNameController,
+            decoration: InputDecoration(
+              labelText: 'Product Name',
+              filled: true,
+              fillColor: Colors.white,
+            ),
+          ),
+          SizedBox(height: 10),
+          TextField(
+            controller: _productPriceController,
+            decoration: InputDecoration(
+              labelText: 'Product Price',
+              filled: true,
+              fillColor: Colors.white,
+            ),
+            keyboardType: TextInputType.number,
+          ),
+          SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () async {
+              await _uploadProduct();
+            },
+            child: Text('Upload'),
+          ),
+          SizedBox(height: 20),
+          _imageFile == null
+              ? ElevatedButton(
+            onPressed: () async {
+              await _pickImage();
+            },
+            child: Text('Pick Image'),
+          )
+              : Image.file(_imageFile!, height: 100, width: 100),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(
+        source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<void> _uploadProduct() async {
+    if (_productNameController.text.isEmpty ||
+        _productPriceController.text.isEmpty || _imageFile == null) {
+      return;
+    }
+
+    try {
+      String fileName = DateTime
+          .now()
+          .millisecondsSinceEpoch
+          .toString();
+      Reference storageReference = FirebaseStorage.instance.ref().child(
+          'product_images/$fileName');
+      UploadTask uploadTask = storageReference.putFile(_imageFile!);
+
+      // Wait for the image upload to complete
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
+
+      // Check if the upload was successful
+      if (taskSnapshot.state == TaskState.success) {
+        // Get the image URL
+        String imageUrl = await storageReference.getDownloadURL();
+
+        // Add product details to Firestore
+        await FirebaseFirestore.instance.collection('products').add({
+          'name': _productNameController.text,
+          'price': double.parse(_productPriceController.text),
+          'imageUrl': imageUrl,
+        });
+
+        // Clear text controllers and image file after uploading
+        _productNameController.clear();
+        _productPriceController.clear();
+        setState(() {
+          _imageFile = null;
+        });
+      } else {
+        print('Error uploading image: Upload task not successful');
+      }
+    } catch (error) {
+      print('Error uploading product: $error');
+    }
   }
 }

@@ -1,21 +1,15 @@
-import 'package:flutter/material.dart';
+// chat_message.dart
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ChatBox extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Text('Chat with Seller', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          SizedBox(height: 10),
-          // Add chat messages here (you might want to use a ListView.builder)
-          // Example:
-          Text('Seller: Hello! How can I help you?'),
-          Text('You: I have a question about the product.'),
-          // Add more messages as needed
-        ],
-      ),
-    );
-  }
+class ChatMessage {
+  final String text;
+  final DateTime timestamp;
+  final String senderId;
+
+  ChatMessage({required this.text, required this.timestamp, required this.senderId});
+}
+// utilities.dart
+String generateChatRoomId(String sellerId, String buyerId) {
+  List<String> sortedIds = [sellerId, buyerId]..sort();
+  return '${sortedIds[0]}_${sortedIds[1]}';
 }
