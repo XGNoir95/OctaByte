@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'Chatbox.dart';
 import 'chat_message.dart';
 
 class ChatBox extends StatelessWidget {
