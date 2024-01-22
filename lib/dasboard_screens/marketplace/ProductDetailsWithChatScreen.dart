@@ -1,53 +1,20 @@
-import 'package:fblogin/dasboard_screens/marketplace/chat_message.dart';
+// product_details.dart
+
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fblogin/dasboard_screens/marketplace/chatpage.dart';
 import 'package:fblogin/dasboard_screens/marketplace/product.dart';
 
-class ProductDetailsWithChatScreen extends StatefulWidget {
+class ProductDetailsWithChatScreen extends StatelessWidget {
   final Product product;
   final String currentUserId;
+  final String sellerEmail;
 
-  ProductDetailsWithChatScreen(
-      {required this.product, required this.currentUserId});
-
-  @override
-  _ProductDetailsWithChatScreenState createState() =>
-      _ProductDetailsWithChatScreenState();
-}
-
-class _ProductDetailsWithChatScreenState
-    extends State<ProductDetailsWithChatScreen> {
-  TextEditingController messageController = TextEditingController();
-  late String chatRoomId;
-  String sellerName = 'Unknown';
-
-  void initState() {
-    super.initState();
-    // Call fetchSellerName when the screen is initialized
-    fetchSellerName();
-    // Generate chatRoomId using productId and currentUserId
-    chatRoomId = generateChatRoomId(widget.product.id, widget.currentUserId);
-  }
-
-  Future<void> fetchSellerName() async {
-    try {
-      print('Fetching seller ID: ${widget.product.sellerId}');
-      DocumentSnapshot sellerSnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(widget.product.sellerId)
-          .get();
-      print('Seller document data: ${sellerSnapshot.data()}');
-
-      setState(() {
-        sellerName = sellerSnapshot['name'] ?? 'Unknown';
-      });
-    } catch (error) {
-      print('Error fetching seller name: $error');
-    }
-  }
+  ProductDetailsWithChatScreen({
+    required this.product,
+    required this.currentUserId,
+    required this.sellerEmail,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -85,10 +52,11 @@ class _ProductDetailsWithChatScreenState
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(height: 20,),
                       Padding(
-                        padding: const EdgeInsets.all(18.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 120.0),
                         child: Image.network(
-                          widget.product.imageUrl ?? 'No Image',
+                          product.imageUrl ?? 'No Image',
                           height: 200,
                           width: 200,
                         ),
@@ -99,23 +67,28 @@ class _ProductDetailsWithChatScreenState
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.product.name ?? 'Default Name',
+                              product.name ?? 'Default Name',
                               style: GoogleFonts.bebasNeue(
                                   fontSize: 40, color: Colors.amber),
                             ),
                             Text(
-                              '\$${widget.product.price.toString()}',
+                              '\$${product.price.toString()}',
                               style: GoogleFonts.bebasNeue(
                                   fontSize: 28, color: Colors.grey),
                             ),
+                            // Display seller's email
                             Text(
-                              'Seller: $sellerName',
-                              style: TextStyle(fontSize: 18, color: Colors.grey),
+                              'Seller Email: $sellerEmail',
+                              style: GoogleFonts.bebasNeue(fontSize: 25, color: Colors.white),
                             ),
                             // Display product description
-                            Text('Description: ',style: GoogleFonts.bebasNeue(fontSize: 35,color: Colors.amber),),
                             Text(
-                              '${widget.product.description ?? 'No Description'}',
+                              'Description: ',
+                              style:
+                              GoogleFonts.bebasNeue(fontSize: 35, color: Colors.amber),
+                            ),
+                            Text(
+                              '${product.description ?? 'No Description'}',
                               style: TextStyle(fontSize: 24, color: Colors.white),
                             ),
                             SizedBox(
@@ -144,8 +117,8 @@ class _ProductDetailsWithChatScreenState
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ChatPage(
-                                        product: widget.product,
-                                        currentUserId: widget.currentUserId),
+                                        product: product,
+                                        currentUserId: currentUserId),
                                   ),
                                 );
                               },

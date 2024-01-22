@@ -1,5 +1,5 @@
-// market_place_screen.dart
 import 'package:fblogin/dasboard_screens/marketplace/product_Item_Widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,15 +22,13 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
   final TextEditingController _productDescriptionController = TextEditingController();
   File? _imageFile;
 
-  void uploadProductXX(BuildContext context) {
+  void uploadProduct(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           content: SingleChildScrollView(
             child: Container(
-              // width: 300, // Set the width as needed
-              // height: 400, // Set the height as needed
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -96,16 +94,12 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
         );
       },
     );
-
-
-}
-
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //automaticallyImplyLeading: false,
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.grey[900],
         title: Text('Marketplace',
@@ -123,12 +117,9 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
           ),
           Column(
             children: [
-
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('products')
-                      .snapshots(),
+                  stream: FirebaseFirestore.instance.collection('products').snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
@@ -144,16 +135,18 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
                       // Handle potential null values
                       String productName = data['name']?.toString() ?? 'Default Name';
                       String imageUrl = data['imageUrl']?.toString() ?? 'No Image';
-                      String description = data['description']?.toString() ?? 'No Description'; // Get the description
+                      String description = data['description']?.toString() ?? 'No Description';
+                      double price = (data['price'] as num?)?.toDouble() ?? 0.0;
+                      String sellerId = data['sellerId']?.toString() ?? 'Unknown'; // Get the seller's email
 
                       return Product(
                         id: doc.id,
                         name: productName,
                         imageUrl: imageUrl,
-                        price: (data['price'] as num?)?.toDouble() ?? 0.0,
-                        description: description, // Include the description
+                        price: price,
+                        description: description,
                         chatRoomId: data['chatRoomId']?.toString() ?? 'Default Chat Room ID',
-                        sellerId: data['sellerId']?.toString(),
+                        sellerId: sellerId,
                       );
                     }).toList();
 
@@ -163,31 +156,36 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 16.0),
-                          child: ProductItem(product: products[index]),
+                            vertical: 8.0,
+                            horizontal: 16.0,
+                          ),
+                          child: ProductItem(
+                            product: products[index],
+                            sellerEmail: products[index].sellerId, // Pass the seller's email from the product
+                          ),
                         );
                       },
                     );
+
                   },
                 ),
               ),
               SizedBox(height: 10,),
               Container(
                 height: 88,
-                  color: Colors.grey[900],
-                  child: Row(
-                    children: [
-                      SizedBox(width: 75,),
-                      _buildProductUploadSection(),
-                      //Icon(Icons.add,color: Colors.amber),
-                      SizedBox(width: 50,),
-                    ],
-                  )),
+                color: Colors.grey[900],
+                child: Row(
+                  children: [
+                    SizedBox(width: 75,),
+                    _buildProductUploadSection(),
+                    SizedBox(width: 50,),
+                  ],
+                ),
+              ),
             ],
           ),
         ],
       ),
-
     );
   }
 
@@ -199,9 +197,8 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
         children: [
           GestureDetector(
             child: Text('Upload a new product',
-                style:
-                    GoogleFonts.bebasNeue(fontSize: 32, color: Colors.amber)),
-            onTap: () => uploadProductXX(context),
+                style: GoogleFonts.bebasNeue(fontSize: 32, color: Colors.amber)),
+            onTap: () => uploadProduct(context),
           ),
           SizedBox(height: 10),
         ],
@@ -210,8 +207,7 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
   }
 
   Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
@@ -241,12 +237,16 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
         // Get the image URL
         String imageUrl = await storageReference.getDownloadURL();
 
-        // Add product details to Firestore
+        // Get the current user
+        final User? user = FirebaseAuth.instance.currentUser;
+
+        // Add product details to Firestore along with the seller's email
         await FirebaseFirestore.instance.collection('products').add({
           'name': _productNameController.text,
           'price': double.parse(_productPriceController.text),
           'imageUrl': imageUrl,
-          'description': _productDescriptionController.text, // Include description
+          'description': _productDescriptionController.text,
+          'sellerId': user?.email, // Include the seller's email
         });
 
         // Clear text controllers and image file after uploading
@@ -256,6 +256,7 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
         setState(() {
           _imageFile = null;
         });
+        Navigator.pop(context); // Close the dialog after uploading
       } else {
         print('Error uploading image: Upload task not successful');
       }
@@ -263,5 +264,4 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
       print('Error uploading product: $error');
     }
   }
-
 }

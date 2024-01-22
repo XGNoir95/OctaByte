@@ -1,19 +1,23 @@
+// product.dart
+
 class Product {
   final String id;
   final String name;
   final String imageUrl;
   final double price;
-  final String description; // New field for product description
+  final String description;
   final String chatRoomId;
-  final String? sellerId;
+  final String sellerId;
+  final String sellerEmail; // Add sellerEmail property
 
   Product({
     required this.id,
     required this.name,
     required this.imageUrl,
     required this.price,
-    required this.description, // Include the description in the constructor
+    required this.description,
     required this.chatRoomId,
-    this.sellerId,
+    required this.sellerId,
+    this.sellerEmail = 'Unknown', // Provide a default value
   });
 }

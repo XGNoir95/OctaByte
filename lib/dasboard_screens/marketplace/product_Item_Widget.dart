@@ -1,13 +1,17 @@
+// product_item.dart
+
 import 'package:fblogin/dasboard_screens/marketplace/ProductDetailsWithChatScreen.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'product.dart'; // Import the Product class
+import 'package:fblogin/dasboard_screens/marketplace/product.dart';
+//import 'package:fblogin/dasboard_screens/marketplace/product_details_with_chat.dart';
 
 class ProductItem extends StatelessWidget {
   final Product product;
+  final String sellerEmail;
 
-  ProductItem({required this.product});
+  ProductItem({required this.product, required this.sellerEmail});
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +30,10 @@ class ProductItem extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('\$${product.price.toString()}', style: GoogleFonts.bebasNeue(color: Colors.grey[700], fontSize: 24)),
-            Text('Seller: ${product.sellerId ?? 'Unknown'}', style: GoogleFonts.bebasNeue(fontSize: 16)),
-            Text('Description:',style: GoogleFonts.bebasNeue(fontSize: 24,color: Colors.amber),),
-            Text('${product.description}', style: GoogleFonts.bebasNeue(fontSize: 22, color: Colors.grey)), // Display the description
+            Text('\$${product.price.toString()}', style: GoogleFonts.bebasNeue(color: Colors.grey, fontSize: 24)),
+            Text('Seller: ${product.sellerId ?? 'Unknown'}', style: GoogleFonts.bebasNeue(fontSize: 22,color: Colors.white)),
+            Text('Description:', style: GoogleFonts.bebasNeue(fontSize: 24, color: Colors.amber)),
+            Text('${product.description}', style: GoogleFonts.bebasNeue(fontSize: 23, color: Colors.white)),
           ],
         ),
         onTap: () async {
@@ -41,7 +45,11 @@ class ProductItem extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ProductDetailsWithChatScreen(product: product, currentUserId: currentUserId),
+                builder: (context) => ProductDetailsWithChatScreen(
+                  product: product,
+                  currentUserId: currentUserId,
+                  sellerEmail: sellerEmail, // Pass the sellerEmail parameter
+                ),
               ),
             );
           } else {
