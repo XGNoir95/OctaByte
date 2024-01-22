@@ -21,7 +21,7 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.grey[700],
+          color: Colors.grey[700], // Set to a lighter grey shade
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
