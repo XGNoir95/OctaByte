@@ -1,16 +1,15 @@
-// chat_message.dart
-import 'package:cloud_firestore/cloud_firestore.dart';
+// chat.dart
 
-class ChatMessage {
-  final String text;
-  final DateTime timestamp;
+class Chat {
   final String senderId;
+  final String receiverId;
+  final String message;
+  final DateTime timestamp;
 
-  ChatMessage({required this.text, required this.timestamp, required this.senderId});
+  Chat({
+    required this.senderId,
+    required this.receiverId,
+    required this.message,
+    required this.timestamp,
+  });
 }
-// utilities.dart
-String generateChatRoomId(String sellerId, String buyerId) {
-  List<String> sortedIds = [sellerId, buyerId]..sort();
-  return '${sortedIds[0]}_${sortedIds[1]}';
-}
-

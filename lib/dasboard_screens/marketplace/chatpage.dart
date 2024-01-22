@@ -1,133 +1,86 @@
-import 'package:fblogin/dasboard_screens/marketplace/Chatbox.dart';
-import 'package:fblogin/dasboard_screens/marketplace/product.dart';
+// chat_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import 'chat_message.dart';
+import 'Chatbox.dart';
+
 
 class ChatPage extends StatefulWidget {
-  final Product product;
-  final String currentUserId;  // Add the currentUserId property
+  final String chatRoomId;
+  final String currentUserId;
 
-  ChatPage({required this.product, required this.currentUserId});  // Constructor to initialize currentUserId
+  ChatPage({required this.chatRoomId, required this.currentUserId});
 
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
-  TextEditingController messageController = TextEditingController();
-  late String chatRoomId;
-
-  @override
-  void initState() {
-    super.initState();
-    // Generate chatRoomId using productId and currentUserId
-    chatRoomId = generateChatRoomId(widget.product.id, widget.currentUserId);
-
-    // Add additional initialization logic here if needed
-  }
+  final TextEditingController _messageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
+        title: Text('Chat'),
         backgroundColor: Colors.grey[900],
-        elevation: 0,
-        title: Text(
-          'chat with seller',
-          style: GoogleFonts.bebasNeue(
-            color: Colors.amber,
-            fontSize: 40,
-            //letterSpacing: 6,
-          ),
-        ),
-        centerTitle: true,
       ),
-      body: Stack(
-
+      body: Column(
         children: [
-          Image.asset(
-            'assets/images/bg.jpg',
-            fit: BoxFit.cover,
-            width: 411.4, // Specify an appropriate width
-            height: 770.3, // Specify an appropriate height
-            alignment: Alignment.center,
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('chatRooms')
+                  .doc(widget.chatRoomId)
+                  .collection('messages')
+                  .orderBy('timestamp')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                List<ChatBox> messages = snapshot.data!.docs.map((doc) {
+                  Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+                  String message = data['message']?.toString() ?? '';
+                  String senderId = data['senderId']?.toString() ?? '';
+                  return ChatBox(
+                    message: message,
+                    isSentByCurrentUser: senderId == widget.currentUserId,
+                  );
+                }).toList();
+
+                return ListView(
+                  children: messages,
+                );
+              },
+            ),
           ),
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              /*
-              Expanded(
-                child: StreamBuilder(
-                  stream: FirebaseFirestore.instance.collection('privateChats').doc(chatRoomId).collection('messages').snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    // TODO: Implement chat message display
-                    return snapshot.hasData
-                        ? ListView.builder(
-                      itemCount: snapshot.data.docs.length,
-                      itemBuilder: (context, index) {
-                        // Customize the chat message widget
-                        var messageData = snapshot.data.docs[index].data() as Map<String, dynamic>;
-                        return ChatMessage(
-                          // Extract necessary data from messageData
-                          message: messageData['message'],
-                          // Customize other parameters if needed
-                        );
-                      },
-                    )
-                        : Center(
-                      // Optionally show a loading indicator or a message when data is null
-                      child: CircularProgressIndicator(),
-                    );
-          
-                  },
-                ),
-              ),
-               */
-              Divider(),
-              ChatBox(productId: widget.product.id, chatRoomId: chatRoomId, currentUserId: widget.currentUserId),
-          
-              _buildMessageInput(),
-            ],
-          ),
-        ),
+          _buildMessageInput(),
         ],
       ),
     );
   }
 
   Widget _buildMessageInput() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+    return Container(
+      padding: EdgeInsets.all(8.0),
       child: Row(
         children: [
           Expanded(
             child: TextField(
-              controller: messageController,
+              controller: _messageController,
               decoration: InputDecoration(
                 hintText: 'Type your message...',
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
               ),
             ),
           ),
-          SizedBox(width: 10),
-          ElevatedButton(
+          IconButton(
+            icon: Icon(Icons.send),
             onPressed: () {
               _sendMessage();
             },
-            child: Text('Send'),
           ),
         ],
       ),
@@ -135,14 +88,21 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _sendMessage() {
-    String message = messageController.text.trim();
+    String message = _messageController.text.trim();
+
     if (message.isNotEmpty) {
-      FirebaseFirestore.instance.collection('privateChats').doc(chatRoomId).collection('messages').add({
+      FirebaseFirestore.instance
+          .collection('chatRooms')
+          .doc(widget.chatRoomId)
+          .collection('messages')
+          .add({
         'message': message,
-        'timestamp': FieldValue.serverTimestamp(),
         'senderId': widget.currentUserId,
+        'timestamp': FieldValue.serverTimestamp(),
       });
-      messageController.clear();
+
+      // Clear the message input field
+      _messageController.clear();
     }
   }
 }

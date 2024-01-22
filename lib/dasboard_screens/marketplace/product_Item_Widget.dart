@@ -1,5 +1,3 @@
-// product_item.dart
-
 import 'package:fblogin/dasboard_screens/marketplace/ProductDetailsWithChatScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

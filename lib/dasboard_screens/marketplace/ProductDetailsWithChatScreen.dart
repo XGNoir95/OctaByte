@@ -1,9 +1,9 @@
-// product_details.dart
+//product_details_with_chat_screen.dart
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fblogin/dasboard_screens/marketplace/chatpage.dart';
-import 'package:fblogin/dasboard_screens/marketplace/product.dart';
+import 'chatpage.dart';
+import 'product.dart';
 
 class ProductDetailsWithChatScreen extends StatelessWidget {
   final Product product;
@@ -117,8 +117,9 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ChatPage(
-                                        product: product,
-                                        currentUserId: currentUserId),
+                                      chatRoomId: product.chatRoomId,
+                                      currentUserId: currentUserId,
+                                    ),
                                   ),
                                 );
                               },
@@ -133,6 +134,20 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatPage(
+                chatRoomId: product.chatRoomId,
+                currentUserId: currentUserId,
+              ),
+            ),
+          );
+        },
+        child: Icon(Icons.message),
       ),
     );
   }
