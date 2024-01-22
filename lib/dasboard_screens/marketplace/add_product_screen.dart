@@ -16,6 +16,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController imageUrlController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController(); // New controller
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +46,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
               decoration: InputDecoration(labelText: 'Price'),
               keyboardType: TextInputType.number,
             ),
+            SizedBox(height: 10),
+            TextField(
+              controller: descriptionController, // New text field for description
+              decoration: InputDecoration(labelText: 'Product Description'),
+            ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -62,7 +68,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   bool validateForm() {
-    return true; // Add your validation logic here
+    // Add your validation logic here
+    // Example: Check if required fields are not empty
+    if (nameController.text.isEmpty || priceController.text.isEmpty) {
+      return false;
+    }
+    return true;
   }
 
   void saveProduct(BuildContext context) {
@@ -72,13 +83,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
         'name': nameController.text,
         'imageUrl': imageUrlController.text,
         'price': double.parse(priceController.text),
-        'buyerName': widget.userData['User Name'], // Use buyer name from userData
+        'description': descriptionController.text, // Save the description
+        'buyerName': widget.userData['User Name'],
       });
 
       // Clear the controllers
       nameController.clear();
       imageUrlController.clear();
       priceController.clear();
+      descriptionController.clear(); // Clear the description controller
     } catch (error) {
       print('Error saving product: $error');
     }

@@ -19,6 +19,7 @@ class MarketPlaceScreen extends StatefulWidget {
 class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
   final TextEditingController _productNameController = TextEditingController();
   final TextEditingController _productPriceController = TextEditingController();
+  final TextEditingController _productDescriptionController = TextEditingController();
   File? _imageFile;
 
   void uploadProductXX(BuildContext context) {
@@ -26,67 +27,79 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Container(
-            width: 300, // Set the width as needed
-            height: 340, // Set the height as needed
-            //color: Colors.black,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Text(
-                    'Upload a new product',
-                    style: GoogleFonts.bebasNeue(
-                        fontSize: 34, color: Colors.black),
+          content: SingleChildScrollView(
+            child: Container(
+              // width: 300, // Set the width as needed
+              // height: 400, // Set the height as needed
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Text(
+                      'Upload a new product',
+                      style: GoogleFonts.bebasNeue(fontSize: 34, color: Colors.black),
+                    ),
                   ),
-                ),
-                SizedBox(height: 15),
-                TextField(
-                  controller: _productNameController,
-                  decoration: InputDecoration(
-                    labelText: 'Product Name',
-                    filled: true,
-                    fillColor: Colors.white,
+                  SizedBox(height: 15),
+                  TextField(
+                    controller: _productNameController,
+                    decoration: InputDecoration(
+                      labelText: 'Product Name',
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
                   ),
-                ),
-                SizedBox(height: 15),
-                TextField(
-                  controller: _productPriceController,
-                  decoration: InputDecoration(
-                    labelText: 'Product Price',
-                    filled: true,
-                    fillColor: Colors.white,
+                  SizedBox(height: 15),
+                  TextField(
+                    controller: _productPriceController,
+                    decoration: InputDecoration(
+                      labelText: 'Product Price',
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    keyboardType: TextInputType.number,
                   ),
-                  keyboardType: TextInputType.number,
-                ),
-                SizedBox(height: 20),
-                _imageFile == null
-                    ? Center(
-                      child: ElevatedButton(
-                                        onPressed: () async {
-                      await _pickImage();
-                                        },
-                                        child: Text('Pick Image',style: TextStyle(color: Colors.black)),
-                                      ),
-                    )
-                    : Image.file(_imageFile!, height: 100, width: 100),
-                SizedBox(height: 10),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      await _uploadProduct();
-                    },
-                    child: Text('Upload',style: TextStyle(color: Colors.black)),
+                  SizedBox(height: 15),
+                  TextField(
+                    controller: _productDescriptionController,
+                    decoration: InputDecoration(
+                      labelText: 'Product Description',
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    maxLines: 3,
                   ),
-                ),
-              ],
-
+                  SizedBox(height: 20),
+                  _imageFile == null
+                      ? Center(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await _pickImage();
+                      },
+                      child: Text('Pick Image', style: TextStyle(color: Colors.black)),
+                    ),
+                  )
+                      : Image.file(_imageFile!, height: 100, width: 100),
+                  SizedBox(height: 10),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await _uploadProduct();
+                      },
+                      child: Text('Upload', style: TextStyle(color: Colors.black)),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
       },
     );
-  }
+
+
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -126,26 +139,24 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
                     }
 
                     List<Product> products = snapshot.data!.docs.map((doc) {
-                      Map<String, dynamic> data =
-                          doc.data() as Map<String, dynamic>;
+                      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
                       // Handle potential null values
-                      String productName =
-                          data['name']?.toString() ?? 'Default Name';
-                      String imageUrl =
-                          data['imageUrl']?.toString() ?? 'No Image';
+                      String productName = data['name']?.toString() ?? 'Default Name';
+                      String imageUrl = data['imageUrl']?.toString() ?? 'No Image';
+                      String description = data['description']?.toString() ?? 'No Description'; // Get the description
 
                       return Product(
                         id: doc.id,
                         name: productName,
                         imageUrl: imageUrl,
                         price: (data['price'] as num?)?.toDouble() ?? 0.0,
-                        chatRoomId: data['chatRoomId']?.toString() ??
-                            'Default Chat Room ID',
-                        sellerId: data['sellerId']
-                            ?.toString(), // Use sellerId if available
+                        description: description, // Include the description
+                        chatRoomId: data['chatRoomId']?.toString() ?? 'Default Chat Room ID',
+                        sellerId: data['sellerId']?.toString(),
                       );
                     }).toList();
+
 
                     return ListView.builder(
                       itemCount: products.length,
@@ -219,7 +230,7 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
     try {
       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
       Reference storageReference =
-          FirebaseStorage.instance.ref().child('product_images/$fileName');
+      FirebaseStorage.instance.ref().child('product_images/$fileName');
       UploadTask uploadTask = storageReference.putFile(_imageFile!);
 
       // Wait for the image upload to complete
@@ -235,11 +246,13 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
           'name': _productNameController.text,
           'price': double.parse(_productPriceController.text),
           'imageUrl': imageUrl,
+          'description': _productDescriptionController.text, // Include description
         });
 
         // Clear text controllers and image file after uploading
         _productNameController.clear();
         _productPriceController.clear();
+        _productDescriptionController.clear();
         setState(() {
           _imageFile = null;
         });
@@ -250,4 +263,5 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
       print('Error uploading product: $error');
     }
   }
+
 }
