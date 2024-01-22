@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fblogin/dasboard_screens/marketplace/chatpage.dart';
 import 'package:fblogin/dasboard_screens/marketplace/product.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 
 import 'Chatbox.dart';
 import 'chat_message.dart';
@@ -12,13 +12,16 @@ class ProductDetailsWithChatScreen extends StatefulWidget {
   final Product product;
   final String currentUserId;
 
-  ProductDetailsWithChatScreen({required this.product, required this.currentUserId});
+  ProductDetailsWithChatScreen(
+      {required this.product, required this.currentUserId});
 
   @override
-  _ProductDetailsWithChatScreenState createState() => _ProductDetailsWithChatScreenState();
+  _ProductDetailsWithChatScreenState createState() =>
+      _ProductDetailsWithChatScreenState();
 }
 
-class _ProductDetailsWithChatScreenState extends State<ProductDetailsWithChatScreen> {
+class _ProductDetailsWithChatScreenState
+    extends State<ProductDetailsWithChatScreen> {
   TextEditingController messageController = TextEditingController();
   late String chatRoomId;
   String sellerName = 'Unknown';
@@ -34,7 +37,10 @@ class _ProductDetailsWithChatScreenState extends State<ProductDetailsWithChatScr
   Future<void> fetchSellerName() async {
     try {
       print('Fetching seller ID: ${widget.product.sellerId}');
-      DocumentSnapshot sellerSnapshot = await FirebaseFirestore.instance.collection('users').doc(widget.product.sellerId).get();
+      DocumentSnapshot sellerSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.product.sellerId)
+          .get();
       print('Seller document data: ${sellerSnapshot.data()}');
 
       setState(() {
@@ -56,34 +62,92 @@ class _ProductDetailsWithChatScreenState extends State<ProductDetailsWithChatScr
             style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 40)),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          color: Colors.grey[700],
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Image.network(widget.product.imageUrl ?? 'No Image', height: 200, width: 200),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(widget.product.name ?? 'Default Name', style: GoogleFonts.bebasNeue(fontSize: 40, fontWeight: FontWeight.bold, letterSpacing: 0)),
-                    Text('\$${widget.product.price.toString()}', style: GoogleFonts.bebasNeue(fontSize: 28)),
-                    Text('Seller: $sellerName', style: TextStyle(fontSize: 18)),
-                  ],
-                ),
-              ),
-              Divider(),
-              ChatBox(productId: widget.product.id, chatRoomId: chatRoomId, currentUserId: widget.currentUserId),
-              Divider(),
-              _buildMessageInput(),
-            ],
+      body: Stack(
+        children: [
+          Image.asset(
+            'assets/images/bg.jpg',
+            fit: BoxFit.cover,
+            width: 411.4, // Specify an appropriate width
+            height: 770.3, // Specify an appropriate height
+            alignment: Alignment.center,
           ),
-        ),
+          SingleChildScrollView(
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[900],
+                    borderRadius: BorderRadius.circular(0),
+                    border: Border.all(
+                      color: Colors.grey[700]!,
+                      width: 2.0,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Image.network(
+                            widget.product.imageUrl ?? 'No Image',
+                            height: 200,
+                            width: 200),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(widget.product.name ?? 'Default Name',
+                                style: GoogleFonts.bebasNeue(
+                                    fontSize: 40, color: Colors.amber)),
+                            Text('\$${widget.product.price.toString()}',
+                                style: GoogleFonts.bebasNeue(
+                                    fontSize: 28, color: Colors.grey)),
+                            Text('Seller: $sellerName',
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.grey)),
+                            SizedBox(
+                              height: 50,
+                            ),
+                            GestureDetector(
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 40,
+                                  ),
+                                  Text(' Chat with Seller!',
+                                      style: GoogleFonts.bebasNeue(
+                                          fontSize: 40, color: Colors.amber)),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Icon(Icons.message,
+                                      color: Colors.amber, size: 40),
+                                ],
+                              ),
+                              // In the calling widget
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatPage(
+                                        product: widget.product,
+                                        currentUserId: widget.currentUserId),
+                                  ),
+                                );
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -121,7 +185,11 @@ class _ProductDetailsWithChatScreenState extends State<ProductDetailsWithChatScr
   void _sendMessage() {
     String message = messageController.text.trim();
     if (message.isNotEmpty) {
-      FirebaseFirestore.instance.collection('privateChats').doc(chatRoomId).collection('messages').add({
+      FirebaseFirestore.instance
+          .collection('privateChats')
+          .doc(chatRoomId)
+          .collection('messages')
+          .add({
         'message': message,
         'timestamp': FieldValue.serverTimestamp(),
         'senderId': widget.currentUserId,
@@ -129,5 +197,4 @@ class _ProductDetailsWithChatScreenState extends State<ProductDetailsWithChatScr
       messageController.clear();
     }
   }
-
 }

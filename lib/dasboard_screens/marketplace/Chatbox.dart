@@ -40,7 +40,7 @@ class ChatBox extends StatelessWidget {
             for (var message in messages)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: Text('${message.text} - ${message.senderId}', style: TextStyle(fontSize: 16)),
+                child: Text('${message.text} - ${message.senderId}', style: TextStyle(fontSize: 16,color: Colors.white)),
               ),
           ],
         );
