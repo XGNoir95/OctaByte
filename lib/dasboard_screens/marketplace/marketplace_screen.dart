@@ -9,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../navigation_menu.dart';
 import 'product.dart';
 
-
 class MarketPlaceScreen extends StatefulWidget {
   const MarketPlaceScreen({Key? key}) : super(key: key);
 
@@ -22,11 +21,79 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
   final TextEditingController _productPriceController = TextEditingController();
   File? _imageFile;
 
+  void uploadProductXX(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            width: 300, // Set the width as needed
+            height: 340, // Set the height as needed
+            //color: Colors.black,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Text(
+                    'Upload a new product',
+                    style: GoogleFonts.bebasNeue(
+                        fontSize: 34, color: Colors.black),
+                  ),
+                ),
+                SizedBox(height: 15),
+                TextField(
+                  controller: _productNameController,
+                  decoration: InputDecoration(
+                    labelText: 'Product Name',
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 15),
+                TextField(
+                  controller: _productPriceController,
+                  decoration: InputDecoration(
+                    labelText: 'Product Price',
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(height: 20),
+                _imageFile == null
+                    ? Center(
+                      child: ElevatedButton(
+                                        onPressed: () async {
+                      await _pickImage();
+                                        },
+                                        child: Text('Pick Image',style: TextStyle(color: Colors.black)),
+                                      ),
+                    )
+                    : Image.file(_imageFile!, height: 100, width: 100),
+                SizedBox(height: 10),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await _uploadProduct();
+                    },
+                    child: Text('Upload',style: TextStyle(color: Colors.black)),
+                  ),
+                ),
+              ],
+
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        //automaticallyImplyLeading: false,
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.grey[900],
         title: Text('Marketplace',
             style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 40)),
@@ -43,10 +110,11 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
           ),
           Column(
             children: [
-              _buildProductUploadSection(),
+
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance.collection('products')
+                  stream: FirebaseFirestore.instance
+                      .collection('products')
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -58,15 +126,14 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
                     }
 
                     List<Product> products = snapshot.data!.docs.map((doc) {
-                      Map<String, dynamic> data = doc.data() as Map<
-                          String,
-                          dynamic>;
+                      Map<String, dynamic> data =
+                          doc.data() as Map<String, dynamic>;
 
                       // Handle potential null values
-                      String productName = data['name']?.toString() ??
-                          'Default Name';
-                      String imageUrl = data['imageUrl']?.toString() ??
-                          'No Image';
+                      String productName =
+                          data['name']?.toString() ?? 'Default Name';
+                      String imageUrl =
+                          data['imageUrl']?.toString() ?? 'No Image';
 
                       return Product(
                         id: doc.id,
@@ -93,26 +160,23 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
                   },
                 ),
               ),
+              SizedBox(height: 10,),
+              Container(
+                height: 88,
+                  color: Colors.grey[900],
+                  child: Row(
+                    children: [
+                      SizedBox(width: 75,),
+                      _buildProductUploadSection(),
+                      //Icon(Icons.add,color: Colors.amber),
+                      SizedBox(width: 50,),
+                    ],
+                  )),
             ],
           ),
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.grey[900],
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => NavigationMenu()),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            primary: Colors.grey[800],
-          ),
-          child: Text('Back to Dashboard',
-              style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 30)),
-        ),
-      ),
+
     );
   }
 
@@ -122,51 +186,21 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Upload a new product',
-              style: GoogleFonts.bebasNeue(fontSize: 24, color: Colors.amber)),
-          SizedBox(height: 10),
-          TextField(
-            controller: _productNameController,
-            decoration: InputDecoration(
-              labelText: 'Product Name',
-              filled: true,
-              fillColor: Colors.white,
-            ),
+          GestureDetector(
+            child: Text('Upload a new product',
+                style:
+                    GoogleFonts.bebasNeue(fontSize: 32, color: Colors.amber)),
+            onTap: () => uploadProductXX(context),
           ),
           SizedBox(height: 10),
-          TextField(
-            controller: _productPriceController,
-            decoration: InputDecoration(
-              labelText: 'Product Price',
-              filled: true,
-              fillColor: Colors.white,
-            ),
-            keyboardType: TextInputType.number,
-          ),
-          SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () async {
-              await _uploadProduct();
-            },
-            child: Text('Upload'),
-          ),
-          SizedBox(height: 20),
-          _imageFile == null
-              ? ElevatedButton(
-            onPressed: () async {
-              await _pickImage();
-            },
-            child: Text('Pick Image'),
-          )
-              : Image.file(_imageFile!, height: 100, width: 100),
         ],
       ),
     );
   }
 
   Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(
-        source: ImageSource.gallery);
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
@@ -177,17 +211,15 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
 
   Future<void> _uploadProduct() async {
     if (_productNameController.text.isEmpty ||
-        _productPriceController.text.isEmpty || _imageFile == null) {
+        _productPriceController.text.isEmpty ||
+        _imageFile == null) {
       return;
     }
 
     try {
-      String fileName = DateTime
-          .now()
-          .millisecondsSinceEpoch
-          .toString();
-      Reference storageReference = FirebaseStorage.instance.ref().child(
-          'product_images/$fileName');
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child('product_images/$fileName');
       UploadTask uploadTask = storageReference.putFile(_imageFile!);
 
       // Wait for the image upload to complete

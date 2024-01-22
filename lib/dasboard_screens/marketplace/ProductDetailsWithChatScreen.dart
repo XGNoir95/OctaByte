@@ -49,10 +49,12 @@ class _ProductDetailsWithChatScreenState extends State<ProductDetailsWithChatScr
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Product Details', style: GoogleFonts.bebasNeue(fontSize: 35, color: Colors.amber)),
-        centerTitle: true,
+        //automaticallyImplyLeading: false,
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.grey[900],
-        automaticallyImplyLeading: false,
+        title: Text('Product Details',
+            style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 40)),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -81,21 +83,6 @@ class _ProductDetailsWithChatScreenState extends State<ProductDetailsWithChatScr
               _buildMessageInput(),
             ],
           ),
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.grey[900],
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => MarketPlaceScreen()),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.grey[800],
-          ),
-          child: Text('Back to Marketplace', style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 30)),
         ),
       ),
     );

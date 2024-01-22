@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fblogin/auth_screens/auth_page.dart';
 import 'package:fblogin/reusable_widgets/custom_scaffold3.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +38,9 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.green,
       ),
     );
-    // Reset to the dashboard screen when signing out
-    final navigationController = Get.find<NavigationController>();
-    navigationController.resetToDashboard();
+
+    // Navigate to the login page after signing out
+    Get.offAllNamed(AuthPage as String); // Replace '/login' with your login route
   }
 
   void _editUser(BuildContext context, Map<String, dynamic> userData) {
@@ -47,11 +48,11 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (BuildContext context) {
         final TextEditingController _firstNameController =
-            TextEditingController(text: userData['First Name']);
+        TextEditingController(text: userData['First Name']);
         final TextEditingController _lastNameController =
-            TextEditingController(text: userData['Last Name']);
+        TextEditingController(text: userData['Last Name']);
         final TextEditingController _userNameController =
-            TextEditingController(text: userData['User Name']);
+        TextEditingController(text: userData['User Name']);
 
         return AlertDialog(
           title: Center(
@@ -261,13 +262,13 @@ class _HomePageState extends State<HomePage> {
                                             textAlign: TextAlign.left,
                                           ),
                                           SizedBox(width: 80,),
-                                             GestureDetector(child: Icon(Icons.settings_outlined, color: Colors.amber),onTap: () async {
-                                              User? currentUser = _auth.currentUser;
-                                              DocumentSnapshot<Map<String, dynamic>> snapshot =
-                                              await getUserDetails(currentUser!.email!);
-                                              Map<String, dynamic> userData = snapshot.data()!;
-                                              _editUser(context, userData);
-                                            },),
+                                          GestureDetector(child: Icon(Icons.settings_outlined, color: Colors.amber),onTap: () async {
+                                            User? currentUser = _auth.currentUser;
+                                            DocumentSnapshot<Map<String, dynamic>> snapshot =
+                                            await getUserDetails(currentUser!.email!);
+                                            Map<String, dynamic> userData = snapshot.data()!;
+                                            _editUser(context, userData);
+                                          },),
 
                                         ],
                                       ),
@@ -398,7 +399,7 @@ class _HomePageState extends State<HomePage> {
                                                   Icon(Icons.email_outlined, color: Colors.white),
                                                   SizedBox(width: 10),
                                                   Text(
-                                                    'Email- ID: ',
+                                                    'Email:',
                                                     style: TextStyle(
                                                       fontSize: 24,
                                                       color: Colors.amber,
