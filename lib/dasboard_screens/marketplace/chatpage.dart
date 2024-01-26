@@ -47,16 +47,27 @@ class _ChatPageState extends State<ChatPage> {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        color: Colors.grey[900], // Change this line to set the background color of the body
-        child: Column(
-          children: [
-            Expanded(
-              child: _buildMessageList(),
-            ),
-            _buildMessageInput(),
-          ],
+      body: Stack(
+        children:[
+          Image.asset(
+            'assets/images/bg.jpg',
+            fit: BoxFit.cover,
+            height: double.infinity,
+            width: double.infinity,
+            alignment: Alignment.center,
+          ),
+        Container(
+          //color: Colors.grey[900], // Change this line to set the background color of the body
+          child: Column(
+            children: [
+              Expanded(
+                child: _buildMessageList(),
+              ),
+              _buildMessageInput(),
+            ],
+          ),
         ),
+      ],
       ),
     );
   }
@@ -97,39 +108,83 @@ class _ChatPageState extends State<ChatPage> {
         child: Column(
           crossAxisAlignment: alignment,
           children: [
-            Text(
-              data['senderEmail'],
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 4),
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: (data['senderEmail'] == currentUserEmail)
-                      ? Colors.amber//[600]
-                      : Colors.amber//[600],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    data['message'],
-                    style: TextStyle(fontSize: 15, color: Colors.black),
+            Row(
+              mainAxisAlignment: (data['senderEmail'] == currentUserEmail)
+                  ? MainAxisAlignment.end
+                  : MainAxisAlignment.start,
+              children: [
+                if (data['senderEmail'] != currentUserEmail)
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.grey[900],
+                    // You can customize the user avatar based on the senderEmail or other information
+                    // For now, using a generic user icon
+                    child: Icon(Icons.account_circle, size: 40,color: Colors.amber),
                   ),
-                  SizedBox(height: 4),
-                  Text(
-                    _formatTimestamp(data['timestamp']),
-                    style: TextStyle(fontSize: 12, color: Colors.black),
+                SizedBox(width: 8),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.7, // Adjust the width based on your needs
+                  child: Column(
+                    crossAxisAlignment: (data['senderEmail'] == currentUserEmail)
+                        ? CrossAxisAlignment.end
+                        : CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        data['senderEmail'],
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amber,
+                          fontSize: 16,
+                          fontFamily: 'RobotoCondensed',
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 4),
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.grey[800]!),
+                          color: (data['senderEmail'] == currentUserEmail)
+                              ? Colors.grey[900]
+                              : Colors.grey[900],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              data['message'],
+                              style: TextStyle(fontSize: 18, color: Colors.white, fontFamily: 'RobotoCondensed'),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              _formatTimestamp(data['timestamp']),
+                              style: TextStyle(fontSize: 12, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                SizedBox(width: 8),
+                if (data['senderEmail'] == currentUserEmail)
+
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.grey[900],
+                    // You can customize the user avatar based on the senderEmail or other information
+                    // For now, using a generic user icon
+                    child: Icon(Icons.account_circle, size: 40,color: Colors.amber),
+                  ),
+              ],
             ),
           ],
         ),
       ),
     );
   }
+
+
 
 
   String _formatTimestamp(Timestamp timestamp) {
@@ -142,14 +197,27 @@ class _ChatPageState extends State<ChatPage> {
       children: [
         Container(
           child: Expanded(
-            child:
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(8,20,8,20),
               child: Container(
-                color: Colors.grey[600],
-                child: TextField(
-                  controller: _messageController,
-                  decoration: InputDecoration(hintText: '  Type a message...',),
+                decoration: BoxDecoration(
+                  color: Colors.grey[800],
+                  borderRadius: BorderRadius.circular(30), // Set border radius
+                  border: Border.all(color: Colors.grey[800]!), // Set border color
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: TextField(
+                    controller: _messageController,
+                    style: TextStyle(color: Colors.white),
+                    cursorColor: Colors.amber,// Set text color
+                    decoration: InputDecoration(
+                      hintText: 'Type a message...',
+                      hintStyle: TextStyle(color: Colors.white,fontSize: 18),
+
+                      border: InputBorder.none, // Remove default border
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -157,9 +225,10 @@ class _ChatPageState extends State<ChatPage> {
         ),
         IconButton(
           onPressed: sendMessage,
-          icon: Icon(Icons.send, size: 30,color: Colors.amber,),
+          icon: Icon(Icons.send, size: 35, color: Colors.amber),
         )
       ],
     );
   }
+
 }

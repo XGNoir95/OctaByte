@@ -40,6 +40,7 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
           SingleChildScrollView(
             child: Stack(
               children: [
+
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[900],
