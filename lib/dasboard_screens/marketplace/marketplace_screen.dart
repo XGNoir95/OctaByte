@@ -36,7 +36,8 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
                   Center(
                     child: Text(
                       'Upload a new product',
-                      style: GoogleFonts.bebasNeue(fontSize: 34, color: Colors.black),
+                      style: GoogleFonts.bebasNeue(
+                          fontSize: 34, color: Colors.black),
                     ),
                   ),
                   SizedBox(height: 15),
@@ -75,7 +76,8 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
                       onPressed: () async {
                         await _pickImage();
                       },
-                      child: Text('Pick Image', style: TextStyle(color: Colors.black)),
+                      child: Text('Pick Image', style: TextStyle(color: Colors
+                          .black)),
                     ),
                   )
                       : Image.file(_imageFile!, height: 100, width: 100),
@@ -85,7 +87,8 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
                       onPressed: () async {
                         await _uploadProduct();
                       },
-                      child: Text('Upload', style: TextStyle(color: Colors.black)),
+                      child: Text('Upload', style: TextStyle(color: Colors
+                          .black)),
                     ),
                   ),
                 ],
@@ -120,7 +123,8 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
             children: [
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance.collection('products').snapshots(),
+                  stream: FirebaseFirestore.instance.collection('products')
+                      .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
@@ -131,14 +135,20 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
                     }
 
                     List<Product> products = snapshot.data!.docs.map((doc) {
-                      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+                      Map<String, dynamic> data = doc.data() as Map<
+                          String,
+                          dynamic>;
 
                       // Handle potential null values
-                      String productName = data['name']?.toString() ?? 'Default Name';
-                      String imageUrl = data['imageUrl']?.toString() ?? 'No Image';
-                      String description = data['description']?.toString() ?? 'No Description';
+                      String productName = data['name']?.toString() ??
+                          'Default Name';
+                      String imageUrl = data['imageUrl']?.toString() ??
+                          'No Image';
+                      String description = data['description']?.toString() ??
+                          'No Description';
                       double price = (data['price'] as num?)?.toDouble() ?? 0.0;
-                      String sellerId = data['sellerId']?.toString() ?? 'Unknown'; // Get the seller's email
+                      String sellerId = data['sellerId']?.toString() ??
+                          'Unknown'; // Get the seller's email
 
                       return Product(
                         id: doc.id,
@@ -146,7 +156,8 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
                         imageUrl: imageUrl,
                         price: price,
                         description: description,
-                        chatRoomId: data['chatRoomId']?.toString() ?? 'Default Chat Room ID',
+                        chatRoomId: data['chatRoomId']?.toString() ??
+                            'Default Chat Room ID',
                         sellerId: sellerId,
                       );
                     }).toList();
@@ -162,12 +173,12 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
                           ),
                           child: ProductItem(
                             product: products[index],
-                            sellerEmail: products[index].sellerId, // Pass the seller's email from the product
+                            sellerEmail: products[index]
+                                .sellerId, // Pass the seller's email from the product
                           ),
                         );
                       },
                     );
-
                   },
                 ),
               ),
@@ -198,7 +209,8 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
         children: [
           GestureDetector(
             child: Text('Upload a new product',
-                style: GoogleFonts.bebasNeue(fontSize: 32, color: Colors.amber)),
+                style: GoogleFonts.bebasNeue(
+                    fontSize: 32, color: Colors.amber)),
             onTap: () => uploadProduct(context),
           ),
           SizedBox(height: 10),
@@ -208,7 +220,8 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
   }
 
   Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(
+        source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
@@ -225,7 +238,10 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
     }
 
     try {
-      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      String fileName = DateTime
+          .now()
+          .millisecondsSinceEpoch
+          .toString();
       Reference storageReference =
       FirebaseStorage.instance.ref().child('product_images/$fileName');
       UploadTask uploadTask = storageReference.putFile(_imageFile!);
@@ -260,6 +276,9 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
         Navigator.pop(context); // Close the dialog after uploading
       } else {
         print('Error uploading image: Upload task not successful');
+        // Print additional details for troubleshooting
+        // print('Error code: ${taskSnapshot.error?.code}');
+        // print('Error message: ${taskSnapshot.error?.message}');
       }
     } catch (error) {
       print('Error uploading product: $error');

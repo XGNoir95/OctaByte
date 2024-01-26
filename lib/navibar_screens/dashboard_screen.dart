@@ -107,9 +107,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       ),
                     ),
                     InkWell(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>TutorialsPage()));
-                      },
+                      // onTap: (){
+                      //   Navigator.push(context, MaterialPageRoute(builder: (context)=>TutorialsPage()));
+                      // },
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),

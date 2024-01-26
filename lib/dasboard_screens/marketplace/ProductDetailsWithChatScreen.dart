@@ -1,4 +1,4 @@
-//product_details_with_chat_screen.dart
+// product_details_with_chat_screen.dart
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -117,8 +117,7 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ChatPage(
-                                      chatRoomId: product.chatRoomId,
-                                      currentUserId: currentUserId,
+                                      receiverUserEmail: sellerEmail, // Provide the seller's email as the receiverUserEmail
                                     ),
                                   ),
                                 );
@@ -135,20 +134,19 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ChatPage(
-                chatRoomId: product.chatRoomId,
-                currentUserId: currentUserId,
-              ),
-            ),
-          );
-        },
-        child: Icon(Icons.message),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => ChatPage(
+      //           receiverUserEmail: sellerEmail, // Provide the seller's email as the receiverUserEmail
+      //         ),
+      //       ),
+      //     );
+      //   },
+      //   child: Icon(Icons.message),
+      //),
     );
   }
 }
