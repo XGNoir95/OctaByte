@@ -224,7 +224,21 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ),
         IconButton(
-          onPressed: sendMessage,
+          onPressed: (){
+            sendMessage();
+            FirebaseFirestore.instance
+                .collection('users')
+                .doc(FirebaseAuth.instance.currentUser?.email)
+                .collection("inbox")
+                .doc(widget.receiverUserEmail)
+                .set({});
+            FirebaseFirestore.instance
+                .collection('users')
+                .doc(widget.receiverUserEmail)
+                .collection("inbox")
+                .doc(FirebaseAuth.instance.currentUser?.email)
+                .set({});
+          },
           icon: Icon(Icons.send, size: 35, color: Colors.amber),
         )
       ],

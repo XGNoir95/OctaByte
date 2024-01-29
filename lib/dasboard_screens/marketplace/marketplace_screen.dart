@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '../../navigation_menu.dart';
+import 'Chatbox.dart';
 import 'product.dart';
 
 class MarketPlaceScreen extends StatefulWidget {
@@ -106,9 +107,22 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.grey[900],
-        title: Text('Marketplace',
+        title: Text('OCTANE',
             style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 40)),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.chat),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Inbox(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Stack(
         children: [
