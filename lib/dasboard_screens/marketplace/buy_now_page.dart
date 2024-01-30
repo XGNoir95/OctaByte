@@ -102,6 +102,84 @@ class _BuyNowPageState extends State<BuyNowPage> {
     );
   }
 
+  Widget _buildCardFields() {
+    return Column(
+      children: [
+        if (selectedPaymentSystem == 'Card') ...[
+          TextFormField(
+            controller: cardNumberController,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              labelText: 'Card Number',
+              labelStyle: TextStyle(color: Colors.white),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty || value.length != 16) {
+                return 'Enter a valid 16-digit card number.';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            controller: expirationDateController,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              labelText: 'Expiration Date (MM/YYYY)',
+              labelStyle: TextStyle(color: Colors.white),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Enter a valid expiration date.';
+              }
+              RegExp regExp = RegExp(r'^\d{2}/\d{4}$');
+              if (!regExp.hasMatch(value)) {
+                return 'Enter a valid expiration date (MM/YYYY).';
+              }
+              List<String> parts = value.split('/');
+              int month = int.tryParse(parts[0] ?? '') ?? 0;
+              int year = int.tryParse(parts[1] ?? '') ?? 0;
+              if (month < 1 || month > 12) {
+                return 'Invalid month. Enter a value between 1 and 12.';
+              }
+              if (year < 2024 || year > 2034) {
+                return 'Invalid year. Enter a value between 2024 and 2034.';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            controller: cvvController,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              labelText: 'CVV',
+              labelStyle: TextStyle(color: Colors.white),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty || value.length != 3) {
+                return 'Enter a valid 3-digit CVV.';
+              }
+              return null;
+            },
+          ),
+        ],
+        TextFormField(
+          controller: addressController,
+          style: TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            labelText: 'Home Address',
+            labelStyle: TextStyle(color: Colors.white),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Enter your home address.';
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+
 
 
   void _proceedToPayment() async {
