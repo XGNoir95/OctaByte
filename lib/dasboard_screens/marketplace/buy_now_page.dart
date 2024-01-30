@@ -180,7 +180,30 @@ class _BuyNowPageState extends State<BuyNowPage> {
     );
   }
 
-
+  Widget _buildPhoneNumberField() {
+    if (['BKASH', 'NAGAD', 'ROCKET'].contains(selectedPaymentSystem)) {
+      return TextFormField(
+        controller: phoneNumberController,
+        style: TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          labelText: 'Phone Number',
+          labelStyle: TextStyle(color: Colors.white),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty || value.length != 11) {
+            return 'Enter a valid 11-digit phone number.';
+          }
+          List<String> allowedPrefixes = ['017', '016', '019', '018', '015', '013'];
+          if (!allowedPrefixes.any((prefix) => value.startsWith(prefix))) {
+            return 'Enter valid phone number.';
+          }
+          return null;
+        },
+      );
+    } else {
+      return SizedBox();
+    }
+  }
 
   void _proceedToPayment() async {
     bool paymentSuccessful = true;
