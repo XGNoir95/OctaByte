@@ -209,6 +209,7 @@ class _BuyNowPageState extends State<BuyNowPage> {
     bool paymentSuccessful = true;
 
     if (paymentSuccessful) {
+      await savePaymentInfoToFirebase();
 
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -228,6 +229,30 @@ class _BuyNowPageState extends State<BuyNowPage> {
           duration: Duration(seconds: 2),
         ),
       );
+    }
+  }
+  Future<void> savePaymentInfoToFirebase() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      String documentId = user.email ?? '';
+
+      // Get a reference to the user's payments subcollection
+      CollectionReference paymentsCollection = FirebaseFirestore.instance.collection('users').doc(documentId).collection('payments');
+
+      // Create a new document for each payment with a unique ID
+      DocumentReference newPaymentRef = paymentsCollection.doc();
+
+      // Set the payment information in the new document
+      await newPaymentRef.set({
+        'Selected Payment System': selectedPaymentSystem,
+        'Card Number': cardNumberController.text,
+        'Expiration Date': expirationDateController.text,
+        'CVV': cvvController.text,
+        'Home Address': addressController.text,
+        'Phone Number': phoneNumberController.text,
+        'Product Name': _productNameController.text,
+      });
     }
   }
 
