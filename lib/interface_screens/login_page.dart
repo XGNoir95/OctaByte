@@ -1,4 +1,6 @@
 //user login page
+import 'package:fblogin/navibar_screens/dashboard_screen.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../reusable_widgets/reusable_widget.dart';
@@ -55,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
     }
+    Get.offAllNamed(DashBoardScreen() as String);
   }
 
   @override
