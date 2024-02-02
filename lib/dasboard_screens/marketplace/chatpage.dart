@@ -56,18 +56,18 @@ class _ChatPageState extends State<ChatPage> {
             width: double.infinity,
             alignment: Alignment.center,
           ),
-        Container(
-          //color: Colors.grey[900], // Change this line to set the background color of the body
-          child: Column(
-            children: [
-              Expanded(
-                child: _buildMessageList(),
-              ),
-              _buildMessageInput(),
-            ],
+          Container(
+            //color: Colors.grey[900], // Change this line to set the background color of the body
+            child: Column(
+              children: [
+                Expanded(
+                  child: _buildMessageList(),
+                ),
+                _buildMessageInput(),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
       ),
     );
   }

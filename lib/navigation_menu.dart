@@ -91,13 +91,13 @@ class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 
   final screens = [
-    const DashBoardScreen(),
+    DashBoardScreen(),
     const TrendingScreen(),
     const SettingsScreen(),
     HomePage(),
   ];
 
-  // void resetToDashboard() {
-  //   selectedIndex.value = 0;
-  // }
+// void resetToDashboard() {
+//   selectedIndex.value = 0;
+// }
 }

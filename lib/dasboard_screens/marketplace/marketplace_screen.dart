@@ -112,7 +112,7 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.chat),
+            icon: Icon(Icons.chat,color: Colors.amber,size: 30),
             onPressed: () {
               Navigator.push(
                 context,
@@ -196,18 +196,27 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
                   },
                 ),
               ),
-              SizedBox(height: 10,),
+              //SizedBox(height: 10,),
               Container(
-                height: 88,
-                color: Colors.grey[900],
+                decoration: BoxDecoration(
+                  color: Colors.grey[900],
+                  borderRadius: BorderRadius.circular(0),
+                  border: Border.all(
+                    color: Colors.grey[700]!,
+                    width: 2.0,
+                  ),
+                ),
+                height: 95, // Adjust the height as needed
                 child: Row(
                   children: [
-                    SizedBox(width: 75,),
+                    SizedBox(width: 75),
                     _buildProductUploadSection(),
-                    SizedBox(width: 50,),
+                    SizedBox(width: 50),
                   ],
                 ),
               ),
+
+
             ],
           ),
         ],

@@ -28,7 +28,6 @@ class Message {
   }
 }
 
-
 class ChatService extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -53,7 +52,6 @@ class ChatService extends ChangeNotifier {
 
   Stream<QuerySnapshot> getMessage(String? userEmail, String otherUserEmail) {
     if (userEmail == null) {
-      // Handle the case where userEmail is null (provide a default or throw an error)
       throw ArgumentError('userEmail cannot be null');
     }
 
@@ -64,6 +62,34 @@ class ChatService extends ChangeNotifier {
         .collection('messages')
         .orderBy('timestamp', descending: true)
         .snapshots();
+  }
+
+  Future<List<String>> getBuyersForSeller(String sellerEmail) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> chatRoomsSnapshot = await _firestore
+          .collection('chatRoom')
+          .where('sellerEmail', isEqualTo: sellerEmail)
+          .get();
+
+      List<String> buyers = [];
+
+      for (QueryDocumentSnapshot<Map<String, dynamic>> chatRoomSnapshot
+      in chatRoomsSnapshot.docs) {
+        String buyerEmail = extractBuyerEmail(chatRoomSnapshot.id, sellerEmail);
+        buyers.add(buyerEmail);
+      }
+
+      return buyers;
+    } catch (error) {
+      print('Error getting buyers for seller: $error');
+      return [];
+    }
+  }
+
+  String extractBuyerEmail(String chatRoomId, String sellerEmail) {
+    String emailsPart = chatRoomId.replaceAll('$sellerEmail-', '');
+    List<String> emailParts = emailsPart.split('-');
+    return emailParts[0]; // Assuming the buyer's email is the first part
   }
 
   String getChatRoomId(String userEmail1, String userEmail2) {

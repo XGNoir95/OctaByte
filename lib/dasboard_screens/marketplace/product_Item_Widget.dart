@@ -23,7 +23,7 @@ class ProductItem extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        leading: Image.network(product.imageUrl, width: 100, height: 100),
+        leading: Image.network(product.imageUrl, fit: BoxFit.cover,width: 100, height: 300),
         title: Text(product.name, style: GoogleFonts.bebasNeue(fontSize: 32, color: Colors.amber)),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

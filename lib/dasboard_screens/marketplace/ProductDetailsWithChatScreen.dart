@@ -1,5 +1,3 @@
-// product_details_with_chat_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'chatpage.dart';
@@ -19,6 +17,42 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Function to show an enlarged image in a dialog
+    void _showEnlargedImage() {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding: EdgeInsets.zero,
+            child: Container(
+              padding: EdgeInsets.all(16),
+              color: Colors.grey[900],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.close, color: Colors.white),
+                    onPressed: () {
+                      Navigator.pop(context); // Close the dialog
+                    },
+                  ),
+                  Expanded(
+                    child: Image.network(
+                      product.imageUrl ?? 'No Image',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
+
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
@@ -39,125 +73,120 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
             alignment: Alignment.center,
           ),
           SingleChildScrollView(
-            child: Stack(
-              children: [
 
-                Container(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 25),
+              child: Container(
+                padding: EdgeInsets.all(16),
+                child: Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[900],
-                    borderRadius: BorderRadius.circular(0),
+                    borderRadius: BorderRadius.circular(15),
                     border: Border.all(
                       color: Colors.grey[700]!,
                       width: 2.0,
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 20,),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 120.0),
-                        child: Image.network(
-                          product.imageUrl ?? 'No Image',
-                          height: 200,
-                          width: 200,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        GestureDetector(
+                          onTap: _showEnlargedImage,
+                          child: AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.network(
+                                product.imageUrl ?? 'No Image',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
+                        SizedBox(height: 16),
+                        Text(
+                          product.name ?? 'Default Name',
+                          style: GoogleFonts.bebasNeue(fontSize: 40, color: Colors.amber),
+                        ),
+                        Divider(color: Colors.white),
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              product.name ?? 'Default Name',
-                              style: GoogleFonts.bebasNeue(
-                                  fontSize: 40, color: Colors.amber),
-                            ),
-                            Text(
-                              '\$${product.price.toString()}',
-                              style: GoogleFonts.bebasNeue(
-                                  fontSize: 28, color: Colors.grey),
-                            ),
-                            // Display seller's email
-                            Text(
-                              'Seller Email: $sellerEmail',
-                              style: GoogleFonts.bebasNeue(fontSize: 25, color: Colors.white),
-                            ),
-                            // Display product description
-                            Text(
-                              'Description: ',
-                              style:
-                              GoogleFonts.bebasNeue(fontSize: 35, color: Colors.amber),
+                              '               About the product:',
+                              style: GoogleFonts.bebasNeue(fontSize: 30, color: Colors.amber),
                             ),
                             Text(
                               '${product.description ?? 'No Description'}',
-                              style: TextStyle(fontSize: 24, color: Colors.white),
+                              style: TextStyle(fontSize: 22, color: Colors.white),
                             ),
-                            SizedBox(
-                              height: 50,
+                            SizedBox(height: 16),
+                            Text(
+                              '\$${product.price.toString()}',
+                              style: GoogleFonts.bebasNeue(fontSize: 35, color: Colors.grey),
                             ),
-                            Divider(),
-                            GestureDetector(
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 40,
-                                  ),
-                                  Text(
-                                    ' Chat with Seller!',
-                                    style: GoogleFonts.bebasNeue(
-                                        fontSize: 40, color: Colors.amber),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Icon(Icons.message,
-                                      color: Colors.amber, size: 40),
-                                ],
-                              ),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ChatPage(
-                                      receiverUserEmail: sellerEmail, // Provide the seller's email as the receiverUserEmail
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            Divider(),
-                            SizedBox(height: 100,),
-                            Divider(),
-                            GestureDetector(
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(130.0,0,100.0,0),
-                                child: Row(
-                                  children: [
-                                    Text("Buy Now!",style: GoogleFonts.bebasNeue(color: Colors.amber,fontSize: 30),),
-                                    SizedBox(width: 20,),
-                                    Icon(Icons.shopping_cart,color: Colors.amber,size: 30),
-                                  ],
+                            SizedBox(height: 8),
+                            Row(
+                              children: [
+                                Text(
+                                  'Seller Email: ',
+                                  style: GoogleFonts.bebasNeue(fontSize: 25, color: Colors.amber),
+                                ),Text(
+                                  ' $sellerEmail ',
+                                  style: TextStyle(fontSize: 20, color: Colors.white),
                                 ),
-                              ),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BuyNowPage(),
-                                  ),
-                                );
-                              },
-
+                              ],
                             ),
-                            Divider(),
                           ],
                         ),
-                      ),
-                    ],
+                        Divider(color: Colors.white),
+                        SizedBox(height: 16),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatPage(
+                                  receiverUserEmail: sellerEmail,
+                                ),
+                              ),
+                            );
+                          },
+                          icon: Icon(Icons.message,color: Colors.amber),
+                          label: Text('Chat with Seller',style: GoogleFonts.bebasNeue(color: Colors.white,fontSize: 25)),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.grey[800],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BuyNowPage(),
+                              ),
+                            );
+                          },
+                          icon: Icon(Icons.shopping_cart,color: Colors.amber,),
+                          label: Text('Buy Now',style: GoogleFonts.bebasNeue(color: Colors.white,fontSize: 25)),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.grey[800],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         ],
