@@ -1,5 +1,3 @@
-// buy_now_page.dart
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,17 +5,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fblogin/dasboard_screens/marketplace/products/product_Item_Widget.dart';
 import 'products/product.dart';
 
-
 class BuyNowPage extends StatefulWidget {
   final String productId;
   final String productName;
   final double productPrice;
-
+  final String productImageUrl; // Add this line
 
   BuyNowPage({
     required this.productId,
     required this.productName,
     required this.productPrice,
+    required this.productImageUrl, // Add this line
   });
 
   @override
@@ -25,18 +23,14 @@ class BuyNowPage extends StatefulWidget {
 }
 
 class _BuyNowPageState extends State<BuyNowPage> {
-  String selectedPaymentSystem = "COD"; // Default selected payment system
+  String selectedPaymentSystem = "COD";
   final _formKey = GlobalKey<FormState>();
-
-  // Controllers for text fields
   TextEditingController cardNumberController = TextEditingController();
   TextEditingController expirationDateController = TextEditingController();
   TextEditingController cvvController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
-
   TextEditingController _productNameController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -220,9 +214,6 @@ class _BuyNowPageState extends State<BuyNowPage> {
     bool paymentSuccessful = true;
 
     if (paymentSuccessful) {
-      //await savePaymentInfoToFirebase();
-
-      // Save product information to Firebase after successful payment
       await saveProductInfoToFirebase();
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -251,23 +242,16 @@ class _BuyNowPageState extends State<BuyNowPage> {
     if (user != null) {
       String documentId = user.email ?? '';
 
-      // Get a reference to the user's products subcollection
       CollectionReference productsCollection = FirebaseFirestore.instance.collection('users').doc(documentId).collection('purchases');
-
-      // Create a new document for each product with a unique ID
       DocumentReference newProductRef = productsCollection.doc();
 
-      // Set the product information in the new document
       await newProductRef.set({
         'Product ID': widget.productId,
         'Product Name': widget.productName,
         'Product Price': widget.productPrice,
-        'Timestamp': FieldValue.serverTimestamp(), // You can use this to track when the product was purchased
+        'Product Image': widget.productImageUrl,
+        'Timestamp': FieldValue.serverTimestamp(),
       });
     }
   }
-
-
-
-
 }

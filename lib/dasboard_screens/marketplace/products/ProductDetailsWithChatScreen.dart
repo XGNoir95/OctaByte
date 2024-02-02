@@ -17,7 +17,6 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Function to show an enlarged image in a dialog
     void _showEnlargedImage() {
       showDialog(
         context: context,
@@ -34,7 +33,7 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.close, color: Colors.white),
                     onPressed: () {
-                      Navigator.pop(context); // Close the dialog
+                      Navigator.pop(context);
                     },
                   ),
                   Expanded(
@@ -50,8 +49,6 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
         },
       );
     }
-
-
 
     return Scaffold(
       appBar: AppBar(
@@ -73,7 +70,6 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
             alignment: Alignment.center,
           ),
           SingleChildScrollView(
-
             child: Padding(
               padding: const EdgeInsets.only(top: 25),
               child: Container(
@@ -133,7 +129,8 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
                                 Text(
                                   'Seller Email: ',
                                   style: GoogleFonts.bebasNeue(fontSize: 25, color: Colors.amber),
-                                ),Text(
+                                ),
+                                Text(
                                   ' $sellerEmail ',
                                   style: TextStyle(fontSize: 20, color: Colors.white),
                                 ),
@@ -154,8 +151,8 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
                               ),
                             );
                           },
-                          icon: Icon(Icons.message,color: Colors.amber),
-                          label: Text('Chat with Seller',style: GoogleFonts.bebasNeue(color: Colors.white,fontSize: 25)),
+                          icon: Icon(Icons.message, color: Colors.amber),
+                          label: Text('Chat with Seller', style: GoogleFonts.bebasNeue(color: Colors.white, fontSize: 25)),
                           style: ElevatedButton.styleFrom(
                             primary: Colors.grey[800],
                             shape: RoundedRectangleBorder(
@@ -169,12 +166,17 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => BuyNowPage(productId: product.id, productName: product.name, productPrice: product.price),
+                                builder: (context) => BuyNowPage(
+                                  productId: product.id,
+                                  productName: product.name,
+                                  productPrice: product.price,
+                                  productImageUrl: product.imageUrl ?? 'No Image',
+                                ),
                               ),
                             );
                           },
-                          icon: Icon(Icons.shopping_cart,color: Colors.amber,),
-                          label: Text('Buy Now',style: GoogleFonts.bebasNeue(color: Colors.white,fontSize: 25)),
+                          icon: Icon(Icons.shopping_cart, color: Colors.amber),
+                          label: Text('Buy Now', style: GoogleFonts.bebasNeue(color: Colors.white, fontSize: 25)),
                           style: ElevatedButton.styleFrom(
                             primary: Colors.grey[800],
                             shape: RoundedRectangleBorder(
