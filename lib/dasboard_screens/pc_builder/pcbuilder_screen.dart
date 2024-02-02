@@ -1,3 +1,4 @@
+import 'package:fblogin/dasboard_screens/pc_builder/cpu.dart';
 import 'package:fblogin/dasboard_screens/pc_builder/reuseableBuildfield.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -61,7 +62,10 @@ class _PcBuilderScreenState extends State<PcBuilderScreen> {
                   title: 'CPU',
                   imagePath: 'assets/builder/cpu.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CpuScreen()),
+                    );
                   },
                 ),
                 buildCard(

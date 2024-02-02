@@ -19,34 +19,35 @@ class NavigationMenu extends StatelessWidget {
 
     return Scaffold(
       bottomNavigationBar: Obx(
-            () => NavigationBar(
+        () => NavigationBar(
           height: 70,
           backgroundColor: hexStringToColor('212121'),
           indicatorColor: Colors.white.withOpacity(0.1),
           elevation: 0,
           selectedIndex: controller.selectedIndex.value,
-          onDestinationSelected: (index) => controller.selectedIndex.value = index,
+          onDestinationSelected: (index) =>
+              controller.selectedIndex.value = index,
           destinations: const [
             NavigationDestination(
               icon: Column(
                 children: [
-                  SizedBox(height: 14,),
+                  SizedBox(
+                    height: 14,
+                  ),
                   Icon(
                     Iconsax.home_1,
                     color: Colors.amber,
                     size: 32,
                   ),
-                  Text('Dashboard',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 17,letterSpacing: 1),
-                  )],
-              ),
-              label: '',
-            ),
-            NavigationDestination(
-              icon: Column(
-                children: [
-                  SizedBox(height: 14,),
-                  Icon(Iconsax.flash, color: Colors.amber, size: 33),
-                  Text('Trending',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 16,letterSpacing: 1)),
+                  Text(
+                    'Dashboard',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'RobotoCondensed',
+                        fontSize: 17,
+                        letterSpacing: 1),
+                  )
                 ],
               ),
               label: '',
@@ -54,13 +55,39 @@ class NavigationMenu extends StatelessWidget {
             NavigationDestination(
               icon: Column(
                 children: [
-                  SizedBox(height: 14,),
+                  SizedBox(
+                    height: 14,
+                  ),
+                  Icon(Iconsax.flash, color: Colors.amber, size: 33),
+                  Text('Trending',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'RobotoCondensed',
+                          fontSize: 16,
+                          letterSpacing: 1)),
+                ],
+              ),
+              label: '',
+            ),
+            NavigationDestination(
+              icon: Column(
+                children: [
+                  SizedBox(
+                    height: 14,
+                  ),
                   Icon(
-                    Iconsax.setting_3,
+                    Iconsax.notification,
                     color: Colors.amber,
                     size: 32,
                   ),
-                  Text('Settings',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 16.5,letterSpacing: 1)),
+                  Text('Notifications',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'RobotoCondensed',
+                          fontSize: 16.5,
+                          letterSpacing: 1)),
                 ],
               ),
               label: '',
@@ -68,13 +95,21 @@ class NavigationMenu extends StatelessWidget {
             NavigationDestination(
               icon: Column(
                 children: [
-                  SizedBox(height: 14,),
+                  SizedBox(
+                    height: 14,
+                  ),
                   Icon(
                     Iconsax.security_user,
                     color: Colors.amber,
                     size: 32,
                   ),
-                  Text('Profile',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 17,letterSpacing: 1)),
+                  Text('Profile',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'RobotoCondensed',
+                          fontSize: 17,
+                          letterSpacing: 1)),
                 ],
               ),
               label: '',

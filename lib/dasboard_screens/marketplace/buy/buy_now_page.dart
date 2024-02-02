@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fblogin/dasboard_screens/marketplace/products/product_Item_Widget.dart';
-import 'products/product.dart';
+import '../products/product.dart';
 
 class BuyNowPage extends StatefulWidget {
   final String productId;
@@ -61,7 +61,7 @@ class _BuyNowPageState extends State<BuyNowPage> {
               children: [
                 Text(
                   'Payment Information',
-                  style: GoogleFonts.bebasNeue(fontSize: 40, color: Colors.white),
+                  style: GoogleFonts.bebasNeue(fontSize: 40, color: Colors.amber),
                 ),
                 SizedBox(height: 20),
                 DropdownButton<String>(
@@ -91,13 +91,13 @@ class _BuyNowPageState extends State<BuyNowPage> {
                   },
                   child: Text(
                     'Proceed to Payment',
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20,color: Colors.black),
                   ),
                 ),
                 SizedBox(height: 20),
                 Text(
                   'Selected Payment System: $selectedPaymentSystem',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  style: GoogleFonts.bebasNeue(color: Colors.white,fontSize: 24),
                 ),
               ],
             ),
@@ -116,7 +116,7 @@ class _BuyNowPageState extends State<BuyNowPage> {
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               labelText: 'Card Number',
-              labelStyle: TextStyle(color: Colors.white),
+              labelStyle: GoogleFonts.bebasNeue(color: Colors.white,fontSize: 24),
             ),
             validator: (value) {
               if (value == null || value.isEmpty || value.length != 16) {
@@ -130,7 +130,7 @@ class _BuyNowPageState extends State<BuyNowPage> {
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               labelText: 'Expiration Date (MM/YYYY)',
-              labelStyle: TextStyle(color: Colors.white),
+              labelStyle: GoogleFonts.bebasNeue(color: Colors.white,fontSize: 24),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -157,7 +157,7 @@ class _BuyNowPageState extends State<BuyNowPage> {
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               labelText: 'CVV',
-              labelStyle: TextStyle(color: Colors.white),
+              labelStyle: GoogleFonts.bebasNeue(color: Colors.white,fontSize: 24),
             ),
             validator: (value) {
               if (value == null || value.isEmpty || value.length != 3) {
@@ -172,7 +172,7 @@ class _BuyNowPageState extends State<BuyNowPage> {
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
             labelText: 'Home Address',
-            labelStyle: TextStyle(color: Colors.white),
+            labelStyle: GoogleFonts.bebasNeue(color: Colors.white,fontSize: 24),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -192,7 +192,7 @@ class _BuyNowPageState extends State<BuyNowPage> {
         style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
           labelText: 'Phone Number',
-          labelStyle: TextStyle(color: Colors.white),
+          labelStyle: GoogleFonts.bebasNeue(color: Colors.white,fontSize: 24),
         ),
         validator: (value) {
           if (value == null || value.isEmpty || value.length != 11) {

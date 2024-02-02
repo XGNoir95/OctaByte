@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../chat/chatpage.dart';
 import 'product.dart';
-import '../buy_now_page.dart';
+import '../buy/buy_now_page.dart';
 
 class ProductDetailsWithChatScreen extends StatelessWidget {
   final Product product;

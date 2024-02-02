@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../dasboard_screens/marketplace/products/purchasehistory.dart';
+import '../dasboard_screens/marketplace/buy/purchasehistory.dart';
 import '../navigation_menu.dart';
 import '../reusable_widgets/custom_scaffold.dart';
 
