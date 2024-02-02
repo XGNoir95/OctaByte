@@ -1,4 +1,4 @@
-import 'package:fblogin/dasboard_screens/pc_builder/component_screen.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/models/component_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fblogin/navibar_screens/settings_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

@@ -70,8 +70,8 @@ class _ComponentScreenState extends State<ComponentScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.grey,
-                      border: Border.all(color: Colors.grey[800]!, width: 1.0),
+                      color: Colors.grey[900],
+                      border: Border.all(color: Colors.grey[800]!, width: 2.0),
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                     child: Column(
@@ -81,7 +81,12 @@ class _ComponentScreenState extends State<ComponentScreen> {
                           aspectRatio: 2,
                           child: Container(
                             decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('assets/images/bg.jpg',), // Replace with the actual path to your image
+                                fit: BoxFit.fitWidth,
+                              ),
                               color: Colors.grey[900],
+                             // border: Border.all(color: Colors.grey[800]!, width: 2.0),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: Image.network(
@@ -97,11 +102,11 @@ class _ComponentScreenState extends State<ComponentScreen> {
                             children: [
                               Text(
                                 "${_products[index]["product-name"]}",
-                                style: GoogleFonts.bebasNeue(fontSize: 27),
+                                style: GoogleFonts.bebasNeue(fontSize: 27,color: Colors.amber),
                               ),
                               Text(
                                 "${_products[index]["product-price"].toString()}",
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
                               ),
                             ],
                           ),
