@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'chatpage.dart';
+import '../chat/chatpage.dart';
 import 'product.dart';
-import 'buy_now_page.dart';
+import '../buy_now_page.dart';
 
 class ProductDetailsWithChatScreen extends StatelessWidget {
   final Product product;
@@ -169,7 +169,7 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => BuyNowPage(),
+                                builder: (context) => BuyNowPage(productId: product.id, productName: product.name, productPrice: product.price),
                               ),
                             );
                           },

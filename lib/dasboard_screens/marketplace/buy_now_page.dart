@@ -4,11 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fblogin/dasboard_screens/marketplace/product_Item_Widget.dart';
-import 'product.dart';
+import 'package:fblogin/dasboard_screens/marketplace/products/product_Item_Widget.dart';
+import 'products/product.dart';
 
 
 class BuyNowPage extends StatefulWidget {
+  final String productId;
+  final String productName;
+  final double productPrice;
+
+
+  BuyNowPage({
+    required this.productId,
+    required this.productName,
+    required this.productPrice,
+  });
+
   @override
   _BuyNowPageState createState() => _BuyNowPageState();
 }
@@ -209,8 +220,10 @@ class _BuyNowPageState extends State<BuyNowPage> {
     bool paymentSuccessful = true;
 
     if (paymentSuccessful) {
-      await savePaymentInfoToFirebase();
+      //await savePaymentInfoToFirebase();
 
+      // Save product information to Firebase after successful payment
+      await saveProductInfoToFirebase();
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -231,30 +244,29 @@ class _BuyNowPageState extends State<BuyNowPage> {
       );
     }
   }
-  Future<void> savePaymentInfoToFirebase() async {
+
+  Future<void> saveProductInfoToFirebase() async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
       String documentId = user.email ?? '';
 
-      // Get a reference to the user's payments subcollection
-      CollectionReference paymentsCollection = FirebaseFirestore.instance.collection('users').doc(documentId).collection('payments');
+      // Get a reference to the user's products subcollection
+      CollectionReference productsCollection = FirebaseFirestore.instance.collection('users').doc(documentId).collection('purchases');
 
-      // Create a new document for each payment with a unique ID
-      DocumentReference newPaymentRef = paymentsCollection.doc();
+      // Create a new document for each product with a unique ID
+      DocumentReference newProductRef = productsCollection.doc();
 
-      // Set the payment information in the new document
-      await newPaymentRef.set({
-        'Selected Payment System': selectedPaymentSystem,
-        'Card Number': cardNumberController.text,
-        'Expiration Date': expirationDateController.text,
-        'CVV': cvvController.text,
-        'Home Address': addressController.text,
-        'Phone Number': phoneNumberController.text,
-        'Product Name': _productNameController.text,
+      // Set the product information in the new document
+      await newProductRef.set({
+        'Product ID': widget.productId,
+        'Product Name': widget.productName,
+        'Product Price': widget.productPrice,
+        'Timestamp': FieldValue.serverTimestamp(), // You can use this to track when the product was purchased
       });
     }
   }
+
 
 
 

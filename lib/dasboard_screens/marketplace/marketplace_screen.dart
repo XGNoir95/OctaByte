@@ -1,5 +1,5 @@
 
-import 'package:fblogin/dasboard_screens/marketplace/product_Item_Widget.dart';
+import 'package:fblogin/dasboard_screens/marketplace/products/product_Item_Widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,8 +8,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '../../navigation_menu.dart';
-import 'Chatbox.dart';
-import 'product.dart';
+import 'chat/Chatbox.dart';
+import 'products/product.dart';
 
 class MarketPlaceScreen extends StatefulWidget {
   const MarketPlaceScreen({Key? key}) : super(key: key);

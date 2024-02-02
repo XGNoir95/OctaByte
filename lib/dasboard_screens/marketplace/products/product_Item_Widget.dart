@@ -1,8 +1,8 @@
-import 'package:fblogin/dasboard_screens/marketplace/ProductDetailsWithChatScreen.dart';
+import 'package:fblogin/dasboard_screens/marketplace/products/ProductDetailsWithChatScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fblogin/dasboard_screens/marketplace/product.dart';
+import 'package:fblogin/dasboard_screens/marketplace/products/product.dart';
 //import 'package:fblogin/dasboard_screens/marketplace/product_details_with_chat.dart';
 
 class ProductItem extends StatelessWidget {

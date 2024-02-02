@@ -181,8 +181,7 @@ class _HomePageState extends State<HomePage> {
                   if (snapshot.hasData && snapshot.data != null) {
                     User? currentUser = snapshot.data;
 
-                    return FutureBuilder<
-                        DocumentSnapshot<Map<String, dynamic>>>(
+                    return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                       future: getUserDetails(currentUser!.email!),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
@@ -441,6 +440,30 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               SizedBox(height: 15),
+              // Add a button to view purchase history
+              ElevatedButton.icon(
+                onPressed: () {
+                  // Navigate to the purchase history page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PurchaseHistoryPage()),
+                  );
+                },
+                icon: Icon(Icons.shopping_cart, size: 30),
+                label: Text(
+                  'View Purchase History',
+                  style: GoogleFonts.bebasNeue(
+                    fontSize: 25,
+                    letterSpacing: 1,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.amber,
+                  onPrimary: Colors.black,
+                ),
+              ),
+              SizedBox(height: 15),
               Row(
                 children: [
                   SizedBox(
@@ -475,3 +498,79 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+class PurchaseHistoryPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Purchase History'),
+      ),
+      body: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, userSnapshot) {
+          if (userSnapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (userSnapshot.hasError) {
+            return Center(
+              child: Text('Error: ${userSnapshot.error}'),
+            );
+          }
+
+          if (!userSnapshot.hasData || userSnapshot.data == null) {
+            return Center(
+              child: Text('User not signed in.'),
+            );
+          }
+
+          User? currentUser = userSnapshot.data;
+
+          return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .doc(currentUser?.email)
+                .collection('purchases')
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              }
+
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return Center(
+                  child: Text('No purchase history available.'),
+                );
+              }
+
+              // Display the purchase history
+              return ListView(
+                children: snapshot.data!.docs.map((DocumentSnapshot<Map<String, dynamic>> doc) {
+                  Map<String, dynamic> purchaseData = doc.data()!;
+                  // Customize the UI based on your purchase data structure
+                  return ListTile(
+                    title: Text('Product Name: ${purchaseData['Product Name']}'),
+                    subtitle: Text('Price: ${purchaseData['Product Price']}'),
+                    // Add more details as needed
+                  );
+                }).toList(),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+

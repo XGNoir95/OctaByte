@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fblogin/dasboard_screens/marketplace/chat_message.dart';
+import 'package:fblogin/dasboard_screens/marketplace/chat/chat_message.dart';
 import 'package:fblogin/reusable_widgets/reusable_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
