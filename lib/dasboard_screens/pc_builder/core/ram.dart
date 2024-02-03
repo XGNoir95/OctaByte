@@ -4,6 +4,6 @@ import 'package:flutter/material.dart';
 class RAM extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ComponentScreen(collectionName: "ram");
+    return ComponentScreen(collectionName: "ram",appBarTitle: "RAM");
   }
 }

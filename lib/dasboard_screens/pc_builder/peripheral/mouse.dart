@@ -7,6 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 class MouseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ComponentScreen(collectionName: "mouse");
+    return ComponentScreen(collectionName: "mouse",appBarTitle: "Mouse");
   }
 }

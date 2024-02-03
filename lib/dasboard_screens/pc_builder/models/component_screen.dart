@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/collection_page.dart';
 import 'package:fblogin/navibar_screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,8 +8,9 @@ import 'details.dart';
 
 class ComponentScreen extends StatefulWidget {
   final String collectionName;
+  final String appBarTitle;
 
-  const ComponentScreen({Key? key, required this.collectionName})
+  const ComponentScreen({Key? key, required this.collectionName, required this.appBarTitle})
       : super(key: key);
 
   @override
@@ -23,15 +25,15 @@ class _ComponentScreenState extends State<ComponentScreen> {
 
   fetchProducts() async {
     QuerySnapshot qn =
-        await _firestoreInstance.collection(widget.collectionName).get();
+    await _firestoreInstance.collection(widget.collectionName).get();
     setState(() {
       _products = qn.docs
           .map((doc) => {
-                "product-name": doc["product-name"],
-                "product-description": doc["product-description"],
-                "product-price": doc["product-price"],
-                "product-img": doc["product-img"],
-              })
+        "product-name": doc["product-name"],
+        "product-description": doc["product-description"],
+        "product-price": doc["product-price"],
+        "product-img": doc["product-img"],
+      })
           .toList();
     });
   }
@@ -49,10 +51,16 @@ class _ComponentScreenState extends State<ComponentScreen> {
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.grey[900],
         title: Text(
-          widget.collectionName.capitalize(),
+          widget.appBarTitle,
           style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 40),
         ),
         centerTitle: true,
+        actions: [
+          MaterialButton(
+            onPressed: () => navigateToCollectionPage(widget.appBarTitle),
+            child: Icon(Icons.collections, color: Colors.amber, size: 28),
+          )
+        ],
       ),
       body: Stack(
         children: [
@@ -104,6 +112,7 @@ class _ComponentScreenState extends State<ComponentScreen> {
                                     });
                                     Navigator.of(context).pop();
                                   },
+                                  navigateToCollectionPage: navigateToCollectionPage,
                                 ),
                               );
                             },
@@ -132,6 +141,7 @@ class _ComponentScreenState extends State<ComponentScreen> {
                                 });
                                 Navigator.of(context).pop();
                               },
+                              navigateToCollectionPage: navigateToCollectionPage,
                             ),
                           );
                         },
@@ -149,119 +159,129 @@ class _ComponentScreenState extends State<ComponentScreen> {
               Expanded(
                 child: showSearchResults
                     ? Container(
-                        child: StreamBuilder(
-                          stream: FirebaseFirestore.instance
-                              .collection(widget.collectionName)
-                              .where("product-name",
-                                  isGreaterThanOrEqualTo: inputText)
-                              .where("product-name",
-                                  isLessThan: inputText + 'z')
-                              .snapshots(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<QuerySnapshot> snapshot) {
-                            if (snapshot.hasError) {
-                              return Center(
-                                child: Text("Something went wrong"),
-                              );
-                            }
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection(widget.collectionName)
+                        .where("product-name",
+                        isGreaterThanOrEqualTo: inputText)
+                        .where("product-name",
+                        isLessThan: inputText + 'z')
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text("Something went wrong"),
+                        );
+                      }
 
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(
-                                child: Text("Loading"),
-                              );
-                            }
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return Center(
+                          child: Text("Loading"),
+                        );
+                      }
 
-                            return ListView(
-                              children: snapshot.data!.docs
-                                  .map((DocumentSnapshot document) {
-                                Map<String, dynamic> data =
-                                    document.data() as Map<String, dynamic>;
-                                return Card(
-                                  elevation: 5,
-                                  child: ListTile(
-                                    title: Text(data['product-name']),
-                                    leading: Image.network(data['product-img']),
-                                  ),
-                                );
-                              }).toList(),
-                            );
-                          },
-                        ),
-                      )
+                      return ListView(
+                        children: snapshot.data!.docs
+                            .map((DocumentSnapshot document) {
+                          Map<String, dynamic> data =
+                          document.data() as Map<String, dynamic>;
+                          return Card(
+                            elevation: 5,
+                            child: ListTile(
+                              title: Text(data['product-name']),
+                              leading: Image.network(data['product-img']),
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    },
+                  ),
+                )
                     : ListView.builder(
-                        itemCount: _products.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) =>
-                                        ProductDetails(_products[index]))),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[900],
-                                  border: Border.all(
-                                      color: Colors.grey[800]!, width: 2.0),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    AspectRatio(
-                                      aspectRatio: 2,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: AssetImage(
-                                                'assets/images/bg.jpg'),
-                                            fit: BoxFit.fitWidth,
-                                          ),
-                                          color: Colors.grey[900],
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        child: Image.network(
-                                          _products[index]["product-img"],
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
+                  itemCount: _products.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => ProductDetails(_products[index], appBarTitle: widget.appBarTitle))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[900],
+                            border: Border.all(
+                                color: Colors.grey[800]!, width: 2.0),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AspectRatio(
+                                aspectRatio: 2,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/bg.jpg'),
+                                      fit: BoxFit.fitWidth,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "${_products[index]["product-name"]}",
-                                            style: GoogleFonts.bebasNeue(
-                                                fontSize: 27,
-                                                color: Colors.amber),
-                                          ),
-                                          Text(
-                                            "${_products[index]["product-price"].toString()}",
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
-                                          ),
-                                        ],
-                                      ),
+                                    color: Colors.grey[900],
+                                    borderRadius:
+                                    BorderRadius.circular(10.0),
+                                  ),
+                                  child: Image.network(
+                                    _products[index]["product-img"],
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${_products[index]["product-name"]}",
+                                      style: GoogleFonts.bebasNeue(
+                                          fontSize: 27,
+                                          color: Colors.amber),
+                                    ),
+                                    Text(
+                                      "${_products[index]["product-price"].toString()}",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            ],
+                          ),
+                        ),
                       ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  void navigateToCollectionPage(String appBarTitle) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CollectionPage(
+          appBarTitle: appBarTitle,
+        ),
       ),
     );
   }
@@ -270,9 +290,10 @@ class _ComponentScreenState extends State<ComponentScreen> {
 class SearchDialog extends StatefulWidget {
   final String collectionName;
   final VoidCallback onClose;
+  final Function(String) navigateToCollectionPage;
 
   const SearchDialog(
-      {Key? key, required this.collectionName, required this.onClose})
+      {Key? key, required this.collectionName, required this.onClose, required this.navigateToCollectionPage})
       : super(key: key);
 
   @override
@@ -292,8 +313,7 @@ class _SearchDialogState extends State<SearchDialog> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/bg.jpg'),
-            // Replace with the path to your image asset
-            fit: BoxFit.cover, // Adjust the BoxFit property as needed
+            fit: BoxFit.cover,
           ),
         ),
         child: Padding(
@@ -311,10 +331,8 @@ class _SearchDialogState extends State<SearchDialog> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.grey[800],
-                  // Set the background color
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    //borderSide: BorderSide(color: Colors.amber),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -336,7 +354,7 @@ class _SearchDialogState extends State<SearchDialog> {
                     stream: FirebaseFirestore.instance
                         .collection(widget.collectionName)
                         .where("product-name",
-                            isGreaterThanOrEqualTo: inputText)
+                        isGreaterThanOrEqualTo: inputText)
                         .where("product-name", isLessThan: inputText + 'z')
                         .snapshots(),
                     builder: (BuildContext context,
@@ -355,27 +373,23 @@ class _SearchDialogState extends State<SearchDialog> {
 
                       return ListView(
                         children: snapshot.data!.docs.map(
-                          (DocumentSnapshot document) {
+                              (DocumentSnapshot document) {
                             Map<String, dynamic> data =
-                                document.data() as Map<String, dynamic>;
+                            document.data() as Map<String, dynamic>;
                             return Padding(
                               padding: EdgeInsets.symmetric(vertical: 8),
                               child: Container(
-                                //color: Colors.grey[900],
-
                                 decoration: BoxDecoration(
                                     color: Colors.grey[900],
                                     border: Border.all(
                                       color: Colors.grey[800]!,
                                       width: 2.0,
                                     )),
-
                                 child: ListTile(
-                                  //title:
                                   leading: Image.network(data['product-img']),
                                   subtitle: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         data['product-name'],
@@ -409,7 +423,7 @@ class _SearchDialogState extends State<SearchDialog> {
               Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.grey[800], // Light grey shade
+                  color: Colors.grey[800],
                 ),
                 child: IconButton(
                   icon: Icon(
@@ -420,6 +434,14 @@ class _SearchDialogState extends State<SearchDialog> {
                   onPressed: widget.onClose,
                 ),
               ),
+              // Container(
+              //   child: ElevatedButton(
+              //     onPressed: () {
+              //       widget.navigateToCollectionPage(widget.collectionName);
+              //     },
+              //     child: Text('Navigate to Collection Page'),
+              //   ),
+              // ),
             ],
           ),
         ),

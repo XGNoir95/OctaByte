@@ -4,6 +4,6 @@ import 'package:flutter/material.dart';
 class Storage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ComponentScreen(collectionName: "storage");
+    return ComponentScreen(collectionName: "storage",appBarTitle: "Storage");
   }
 }

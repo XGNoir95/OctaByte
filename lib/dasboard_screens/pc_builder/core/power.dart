@@ -4,6 +4,6 @@ import 'package:flutter/material.dart';
 class PowerSupply extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ComponentScreen(collectionName: "power");
+    return ComponentScreen(collectionName: "power",appBarTitle: "Power Supply");
   }
 }

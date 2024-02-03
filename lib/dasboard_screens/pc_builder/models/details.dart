@@ -1,19 +1,22 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/collection_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProductDetails extends StatefulWidget {
   var _product;
+  final String appBarTitle;
 
-  ProductDetails(this._product);
+  ProductDetails(this._product, {required this.appBarTitle});
 
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  List<Map<String, dynamic>> collection = [];
 
   @override
   Widget build(BuildContext context) {
@@ -30,39 +33,15 @@ class _ProductDetailsState extends State<ProductDetails> {
                 color: Colors.white,
               )),
         ),
+        actions: [
+          MaterialButton(
+            onPressed: () => navigateToCollectionPage(widget.appBarTitle),
+            child: Icon(Icons.collections, color: Colors.amber, size: 28),
+          )
+        ],
         title: Text('Product Details',
             style: GoogleFonts.bebasNeue(fontSize: 40, color: Colors.amber)),
         centerTitle: true,
-        /*
-        actions: [
-          StreamBuilder(
-            stream: FirebaseFirestore.instance.collection("users-favourite-items").doc(FirebaseAuth.instance.currentUser!.email)
-                .collection("items").where("name",isEqualTo: widget._product['product-name']).snapshots(),
-            builder: (BuildContext context, AsyncSnapshot snapshot){
-              if(snapshot.data==null){
-                return Text("");
-              }
-              return Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: CircleAvatar(
-                  backgroundColor: Colors.red,
-                  child: IconButton(
-                    onPressed: () => snapshot.data.docs.length==0?addToFavourite():print("Already Added"),
-                    icon: snapshot.data.docs.length==0? Icon(
-                      Icons.favorite_outline,
-                      color: Colors.white,
-                    ):Icon(
-                      Icons.favorite,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              );
-            },
-
-          ),
-        ],
-        */
       ),
       body: Stack(
         children: [
@@ -75,71 +54,139 @@ class _ProductDetailsState extends State<ProductDetails> {
           ),
           SingleChildScrollView(
             child: SafeArea(
-                child: Padding(
-              padding: const EdgeInsets.only(left: 12, right: 12, top: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 50.0),
-                    child: Image.network(
-                      widget._product['product-img'],
-                      //fit: BoxFit.contain,
-                      height: 300,
-                      width: 300,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12, right: 12, top: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 50.0),
+                      child: Image.network(
+                        widget._product['product-img'],
+                        height: 300,
+                        width: 300,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    widget._product['product-name'],
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                        color: Colors.amber),
-                  ),
-                  SizedBox(
-                    height: 7,
-                  ),
-                  Divider(),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 3.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      widget._product['product-name'],
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                          color: Colors.amber),
+                    ),
+                    SizedBox(
+                      height: 7,
+                    ),
+                    Divider(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 3.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'About the product:',
+                            style: GoogleFonts.bebasNeue(
+                                color: Colors.amber, fontSize: 30),
+                          ),
+                          Text(
+                            widget._product['product-description'],
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Divider(),
+                    Row(
                       children: [
+                        SizedBox(width: 10,),
                         Text(
-                          'About the product:',
+                          "${widget._product['product-price'].toString()}",
                           style: GoogleFonts.bebasNeue(
-                              color: Colors.amber, fontSize: 30),
+                              //fontWeight: FontWeight.bold,
+                              letterSpacing: 2,
+                              fontSize: 35,
+                              color: Colors.amber),
                         ),
-                        Text(widget._product['product-description'],
-                            style: TextStyle(
-                                //fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.white)),
+                        SizedBox(
+                          width: 40,
+                        ),
+                        MaterialButton(
+                          onPressed: saveToCollection,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.add,
+                                color: Colors.amber,
+                              ),
+                              Text('Add to collection',
+                                  style: GoogleFonts.bebasNeue(
+                                      color: Colors.amber, fontSize: 27)),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Divider(),
-                  Text(
-                    "${widget._product['product-price'].toString()}",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                        color: Colors.amber),
-                  ),
-                  Divider(),
-
-                ],
+                    Divider(),
+                  ],
+                ),
               ),
-            )),
+            ),
           ),
         ],
+      ),
+    );
+  }
+
+  void saveToCollection() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final userEmail = user.email;
+        final appBarTitle = widget.appBarTitle;
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userEmail)
+            .collection('collections')
+            .doc(appBarTitle) // Set the document ID to appBarTitle
+            .set(widget._product); // Use set instead of add
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.green,
+            content: Text('Product saved to collection!',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold)),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('User not authenticated!'),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error saving product to collection!'),
+        ),
+      );
+      print('Error: $e');
+    }
+  }
+
+  void navigateToCollectionPage(String appBarTitle) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CollectionPage(
+          appBarTitle: appBarTitle,
+        ),
       ),
     );
   }

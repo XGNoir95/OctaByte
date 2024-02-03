@@ -4,6 +4,6 @@ import 'package:flutter/material.dart';
 class GpuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ComponentScreen(collectionName: "gpu");
+    return ComponentScreen(collectionName: "gpu",appBarTitle: "GPU");
   }
 }

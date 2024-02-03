@@ -7,6 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 class MonitorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ComponentScreen(collectionName: "monitor");
+    return ComponentScreen(collectionName: "monitor",appBarTitle: "Monitor");
   }
 }

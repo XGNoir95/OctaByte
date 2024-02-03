@@ -7,6 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 class HeadphoneScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ComponentScreen(collectionName: "headphone");
+    return ComponentScreen(collectionName: "headphone",appBarTitle: "Headphones");
   }
 }

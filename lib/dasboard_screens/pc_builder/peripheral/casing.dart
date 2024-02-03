@@ -7,6 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 class CasingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ComponentScreen(collectionName: "casing");
+    return ComponentScreen(collectionName: "casing",appBarTitle: "Casing Coolers");
   }
 }

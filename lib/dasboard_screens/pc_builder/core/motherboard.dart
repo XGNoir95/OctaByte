@@ -4,6 +4,6 @@ import 'package:flutter/material.dart';
 class Motherboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ComponentScreen(collectionName: "motherboard");
+    return ComponentScreen(collectionName: "motherboard",appBarTitle: "Motherboard");
   }
 }

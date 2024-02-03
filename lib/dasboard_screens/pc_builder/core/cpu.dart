@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 class CpuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ComponentScreen(collectionName: "cpu");
+    return ComponentScreen(collectionName: "cpu",appBarTitle: "Processors",);
   }
 }
 
