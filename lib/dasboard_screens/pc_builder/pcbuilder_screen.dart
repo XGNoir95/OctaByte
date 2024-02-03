@@ -4,6 +4,11 @@ import 'package:fblogin/dasboard_screens/pc_builder/core/power.dart';
 import 'package:fblogin/dasboard_screens/pc_builder/core/ram.dart';
 import 'package:fblogin/dasboard_screens/pc_builder/models/reuseableBuildfield.dart';
 import 'package:fblogin/dasboard_screens/pc_builder/core/storage.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/peripheral/casing.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/peripheral/headphones.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/peripheral/keyboard.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/peripheral/monitor.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/peripheral/mouse.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../reusable_widgets/custom_scaffold2.dart';
@@ -69,7 +74,9 @@ class _PcBuilderScreenState extends State<PcBuilderScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CpuScreen()),
+                       MaterialPageRoute(builder: (context) => CpuScreen()),
+
+                      //MaterialPageRoute(builder: (context) => cpu_screen()),
                     );
                   },
                 ),
@@ -142,35 +149,50 @@ class _PcBuilderScreenState extends State<PcBuilderScreen> {
                   title: 'Monitor',
                   imagePath: 'assets/builder/monitor.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MonitorScreen()),
+                    );
                   },
                 ),
                 buildCard(
                   title: 'Keyboard',
                   imagePath: 'assets/builder/keyboard.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => KeyboardScreen()),
+                    );
                   },
                 ),
                 buildCard(
                   title: 'Mouse',
                   imagePath: 'assets/builder/mouse.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MouseScreen()),
+                    );
                   },
                 ),
                 buildCard(
                   title: 'Headphones',
                   imagePath: 'assets/builder/hx.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HeadphoneScreen()),
+                    );
                   },
                 ),
                 buildCard(
                   title: 'Casing Coolers',
                   imagePath: 'assets/builder/cooler.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CasingScreen()),
+                    );
                   },
                 ),
               ],
