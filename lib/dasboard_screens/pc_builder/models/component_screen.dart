@@ -3,6 +3,8 @@ import 'package:fblogin/navibar_screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'details.dart';
+
 class ComponentScreen extends StatefulWidget {
   final String collectionName;
 
@@ -21,15 +23,15 @@ class _ComponentScreenState extends State<ComponentScreen> {
 
   fetchProducts() async {
     QuerySnapshot qn =
-    await _firestoreInstance.collection(widget.collectionName).get();
+        await _firestoreInstance.collection(widget.collectionName).get();
     setState(() {
       _products = qn.docs
           .map((doc) => {
-        "product-name": doc["product-name"],
-        "product-description": doc["product-description"],
-        "product-price": doc["product-price"],
-        "product-img": doc["product-img"],
-      })
+                "product-name": doc["product-name"],
+                "product-description": doc["product-description"],
+                "product-price": doc["product-price"],
+                "product-img": doc["product-img"],
+              })
           .toList();
     });
   }
@@ -147,115 +149,115 @@ class _ComponentScreenState extends State<ComponentScreen> {
               Expanded(
                 child: showSearchResults
                     ? Container(
-                  child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection(widget.collectionName)
-                        .where("product-name",
-                        isGreaterThanOrEqualTo: inputText)
-                        .where("product-name",
-                        isLessThan: inputText + 'z')
-                        .snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text("Something went wrong"),
-                        );
-                      }
+                        child: StreamBuilder(
+                          stream: FirebaseFirestore.instance
+                              .collection(widget.collectionName)
+                              .where("product-name",
+                                  isGreaterThanOrEqualTo: inputText)
+                              .where("product-name",
+                                  isLessThan: inputText + 'z')
+                              .snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (snapshot.hasError) {
+                              return Center(
+                                child: Text("Something went wrong"),
+                              );
+                            }
 
-                      if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return Center(
-                          child: Text("Loading"),
-                        );
-                      }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(
+                                child: Text("Loading"),
+                              );
+                            }
 
-                      return ListView(
-                        children: snapshot.data!.docs
-                            .map((DocumentSnapshot document) {
-                          Map<String, dynamic> data =
-                          document.data() as Map<String, dynamic>;
-                          return Card(
-                            elevation: 5,
-                            child: ListTile(
-                              title: Text(data['product-name']),
-                              leading: Image.network(data['product-img']),
-                            ),
-                          );
-                        }).toList(),
-                      );
-                    },
-                  ),
-                )
+                            return ListView(
+                              children: snapshot.data!.docs
+                                  .map((DocumentSnapshot document) {
+                                Map<String, dynamic> data =
+                                    document.data() as Map<String, dynamic>;
+                                return Card(
+                                  elevation: 5,
+                                  child: ListTile(
+                                    title: Text(data['product-name']),
+                                    leading: Image.network(data['product-img']),
+                                  ),
+                                );
+                              }).toList(),
+                            );
+                          },
+                        ),
+                      )
                     : ListView.builder(
-                  itemCount: _products.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => SettingsScreen()),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[900],
-                            border: Border.all(
-                                color: Colors.grey[800]!, width: 2.0),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AspectRatio(
-                                aspectRatio: 2,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/bg.jpg'),
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                                    color: Colors.grey[900],
-                                    borderRadius:
-                                    BorderRadius.circular(10.0),
-                                  ),
-                                  child: Image.network(
-                                    _products[index]["product-img"],
-                                    fit: BoxFit.contain,
-                                  ),
+                        itemCount: _products.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) =>
+                                        ProductDetails(_products[index]))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[900],
+                                  border: Border.all(
+                                      color: Colors.grey[800]!, width: 2.0),
+                                  borderRadius: BorderRadius.circular(12.0),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
                                 child: Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "${_products[index]["product-name"]}",
-                                      style: GoogleFonts.bebasNeue(
-                                          fontSize: 27,
-                                          color: Colors.amber),
+                                    AspectRatio(
+                                      aspectRatio: 2,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                                'assets/images/bg.jpg'),
+                                            fit: BoxFit.fitWidth,
+                                          ),
+                                          color: Colors.grey[900],
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        child: Image.network(
+                                          _products[index]["product-img"],
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
                                     ),
-                                    Text(
-                                      "${_products[index]["product-price"].toString()}",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${_products[index]["product-name"]}",
+                                            style: GoogleFonts.bebasNeue(
+                                                fontSize: 27,
+                                                color: Colors.amber),
+                                          ),
+                                          Text(
+                                            "${_products[index]["product-price"].toString()}",
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
               ),
             ],
           ),
@@ -269,7 +271,8 @@ class SearchDialog extends StatefulWidget {
   final String collectionName;
   final VoidCallback onClose;
 
-  const SearchDialog({Key? key, required this.collectionName, required this.onClose})
+  const SearchDialog(
+      {Key? key, required this.collectionName, required this.onClose})
       : super(key: key);
 
   @override
@@ -288,7 +291,8 @@ class _SearchDialogState extends State<SearchDialog> {
         height: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/bg.jpg'), // Replace with the path to your image asset
+            image: AssetImage('assets/images/bg.jpg'),
+            // Replace with the path to your image asset
             fit: BoxFit.cover, // Adjust the BoxFit property as needed
           ),
         ),
@@ -306,7 +310,8 @@ class _SearchDialogState extends State<SearchDialog> {
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Colors.grey[800], // Set the background color
+                  fillColor: Colors.grey[800],
+                  // Set the background color
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                     //borderSide: BorderSide(color: Colors.amber),
@@ -316,20 +321,23 @@ class _SearchDialogState extends State<SearchDialog> {
                     borderSide: BorderSide(color: Colors.grey),
                   ),
                   hintText: "What are you searching for Today?",
-                  hintStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                  hintStyle: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Expanded(
                 child: Container(
-
                   child: StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection(widget.collectionName)
                         .where("product-name",
-                        isGreaterThanOrEqualTo: inputText)
-                        .where("product-name",
-                        isLessThan: inputText + 'z')
+                            isGreaterThanOrEqualTo: inputText)
+                        .where("product-name", isLessThan: inputText + 'z')
                         .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -339,8 +347,7 @@ class _SearchDialogState extends State<SearchDialog> {
                         );
                       }
 
-                      if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
                           child: Text("Loading"),
                         );
@@ -348,9 +355,9 @@ class _SearchDialogState extends State<SearchDialog> {
 
                       return ListView(
                         children: snapshot.data!.docs.map(
-                              (DocumentSnapshot document) {
+                          (DocumentSnapshot document) {
                             Map<String, dynamic> data =
-                            document.data() as Map<String, dynamic>;
+                                document.data() as Map<String, dynamic>;
                             return Padding(
                               padding: EdgeInsets.symmetric(vertical: 8),
                               child: Container(
@@ -359,26 +366,33 @@ class _SearchDialogState extends State<SearchDialog> {
                                 decoration: BoxDecoration(
                                     color: Colors.grey[900],
                                     border: Border.all(
-                                        color: Colors.grey[800]!,
+                                      color: Colors.grey[800]!,
                                       width: 2.0,
-
-                                    )
-                                ),
+                                    )),
 
                                 child: ListTile(
                                   //title:
                                   leading: Image.network(data['product-img']),
                                   subtitle: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         data['product-name'],
-                                        style: GoogleFonts.roboto(color: Colors.amber,fontSize: 16,fontWeight: FontWeight.bold),
+                                        style: GoogleFonts.roboto(
+                                            color: Colors.amber,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                      SizedBox(height: 10,),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
                                       Text(
                                         data['product-price'],
-                                        style: GoogleFonts.roboto(color: Colors.grey[200],fontSize: 16,fontWeight: FontWeight.bold),
+                                        style: GoogleFonts.roboto(
+                                            color: Colors.grey[200],
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ],
                                   ),
@@ -392,13 +406,19 @@ class _SearchDialogState extends State<SearchDialog> {
                   ),
                 ),
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.clear,
-                  color: Colors.amber,
-                  size: 30,
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey[800], // Light grey shade
                 ),
-                onPressed: widget.onClose,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.clear,
+                    color: Colors.amber,
+                    size: 30,
+                  ),
+                  onPressed: widget.onClose,
+                ),
               ),
             ],
           ),
