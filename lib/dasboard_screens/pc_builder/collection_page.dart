@@ -72,47 +72,187 @@ class CollectionPage extends StatelessWidget {
                   .map((doc) => doc.data() as Map<String, dynamic>)
                   .toList();
 
-              return ListView.builder(
-                itemCount: collection.length,
-                itemBuilder: (context, index) {
-                  var documentId = snapshot.data!.docs[index].id;
+              return Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: collection.length,
+                      itemBuilder: (context, index) {
+                        var documentId = snapshot.data!.docs[index].id;
 
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey[900],
-                          border: Border.all(
-                            color: Colors.grey[800]!,
-                            width: 2.0,
-                          )),
-                      //color: Colors.grey[800],
-                      child: ListTile(
-                        title: Text(documentId,style: GoogleFonts.bebasNeue(color: Colors.white,fontSize: 30)), // Display document ID
-                        subtitle: Row(
-                          children: [
-                            Image.network(collection[index]['product-img'], height: 80, width: 80),
-                            SizedBox(width: 20),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.grey[900],
+                                border: Border.all(
+                                  color: Colors.grey[800]!,
+                                  width: 2.0,
+                                )),
+                            child: ListTile(
+                              title: Text(
+                                documentId,
+                                style: GoogleFonts.bebasNeue(
+                                    color: Colors.white, fontSize: 30),
+                              ),
+                              subtitle: Row(
                                 children: [
-                                  Text(collection[index]['product-name'],style: GoogleFonts.bebasNeue(color: Colors.amber,fontSize: 25)),
-                                  Text(collection[index]['product-price'].toString(),style: GoogleFonts.bebasNeue(color: Colors.white,fontSize: 28)),
+                                  Image.network(
+                                    collection[index]['product-img'],
+                                    height: 60,
+                                    width: 60,
+                                  ),
+                                  SizedBox(width: 20),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          collection[index]['product-name'],
+                                          style: GoogleFonts.bebasNeue(
+                                              color: Colors.amber,
+                                              fontSize: 22),
+                                        ),
+                                        Text(
+                                          collection[index]['product-price']
+                                              .toString(),
+                                          style: GoogleFonts.bebasNeue(
+                                              color: Colors.white,
+                                              fontSize: 22),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () => saveToBuildsCollection(context, collection),
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: Size(100, 50),
+                            primary: Colors.grey[900], // Background color
+                          ),
+                          child: Text('Save', style: TextStyle(color: Colors.white,fontSize: 20)),
+                        ),
+
+                        ElevatedButton(
+                          onPressed: () => clearCollection(context, userEmail),
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: Size(100, 50),
+                            primary: Colors.grey[900],
+                            // Background color
+                          ),
+                          child: Text('Clear', style: TextStyle(color: Colors.white,fontSize: 20)),
+                        ),
+
+                      ],
+                    ),
+                  ),
+                ],
               );
             },
           ),
         ],
       ),
     );
+  }
+
+  void saveToBuildsCollection(BuildContext context, List<Map<String, dynamic>> collection) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final userEmail = user.email;
+
+        // Check if the user email is available
+        if (userEmail != null) {
+          // Reference to the user's document
+          final userDocumentRef = FirebaseFirestore.instance.collection('users').doc(userEmail);
+
+          // Get the current count of documents in the 'Builds' collection
+          final buildsQuerySnapshot = await userDocumentRef.collection('Builds').get();
+          final currentDocumentCount = buildsQuerySnapshot.size;
+
+          // Create a unique document ID based on the current count
+          final buildDocumentId = 'build_$currentDocumentCount';
+
+          // Add a new document to the 'Builds' collection with the unique ID
+          await userDocumentRef.collection('Builds').doc(buildDocumentId).set({'collection': collection});
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.green,
+              content: Text(
+                'Collection saved to Builds with ID: $buildDocumentId',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('User email is null!'),
+            ),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('User not authenticated!'),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error saving collection to Builds!'),
+        ),
+      );
+      print('Error: $e');
+    }
+  }
+
+
+  void clearCollection(BuildContext context, String? userEmail) async {
+    try {
+      // Clear the entire collection by deleting all documents
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userEmail)
+          .collection('collections')
+          .get()
+          .then((snapshot) {
+        for (DocumentSnapshot ds in snapshot.docs) {
+          ds.reference.delete();
+        }
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            'Collection cleared!',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error clearing collection!'),
+        ),
+      );
+      print('Error: $e');
+    }
   }
 }
