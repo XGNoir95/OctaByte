@@ -333,16 +333,20 @@ class _MyImageSliderState extends State<TrendingScreen> {
               ),
             ),
 
-            SizedBox(height: 50),
+            Expanded(
+                child: SizedBox(height: 50)
+            ),
 
-            Container(
-              child: Text(
-                "Year Ending Flash Sales ⚡",
-                style: TextStyle(
-                  fontFamily: 'RobotoCondensed',
-                  color: Colors.white,
-                  fontSize: 30,
-                  //  fontWeight: FontWeight.bold,
+            SingleChildScrollView(
+              child: Container(
+                child: Text(
+                  "Year Ending Flash Sales ⚡",
+                  style: TextStyle(
+                    fontFamily: 'RobotoCondensed',
+                    color: Colors.white,
+                    fontSize: 30,
+                    //  fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -375,7 +379,9 @@ class _MyImageSliderState extends State<TrendingScreen> {
                   },
                   child: Text('Previous',style: TextStyle(color: Colors.black,fontFamily: 'RobotoCondensed',fontSize: 20,fontWeight: FontWeight.bold)),
                 ),
-                SizedBox(width: 16),
+                Expanded(
+                    child: SizedBox(height: 30)
+                ),
 
                 ElevatedButton(
                   onPressed: () {

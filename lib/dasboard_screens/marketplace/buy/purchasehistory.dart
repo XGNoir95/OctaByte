@@ -69,9 +69,15 @@ class PurchaseHistoryPage extends StatelessWidget {
 
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                     return Center(
-                      child: Text('No purchase history available.'),
+                      child: Text(
+                        'No purchase history available.',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                     );
                   }
+
 
                   // Display the purchase history
                   return ListView(

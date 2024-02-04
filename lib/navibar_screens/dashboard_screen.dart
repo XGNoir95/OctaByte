@@ -49,7 +49,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.black.withOpacity(0.3),
                         ),
-                        child: Column(
+                        child: ListView(
                           children: [
                             Image.asset(
                               'assets/icons/icon1.png',
@@ -71,7 +71,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.black.withOpacity(0.3),
                         ),
-                        child: Column(
+                        child: ListView(
                           children: [
                             Image.asset(
                               'assets/icons/icon2.png',
@@ -93,7 +93,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.black.withOpacity(0.3),
                         ),
-                        child: Column(
+                        child: ListView(
                           children: [
                             Image.asset(
                               'assets/icons/icon3.png',
@@ -115,7 +115,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.black.withOpacity(0.2),
                         ),
-                        child: Column(
+                        child: ListView(
                           children: [
                             Image.asset(
                               'assets/icons/icon4.png',

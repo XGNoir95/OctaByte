@@ -209,7 +209,9 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
                 height: 95, // Adjust the height as needed
                 child: Row(
                   children: [
-                    SizedBox(width: 75),
+                    Expanded(
+                        child: SizedBox(width: 75)
+                    ),
                     _buildProductUploadSection(),
                     SizedBox(width: 50),
                   ],
