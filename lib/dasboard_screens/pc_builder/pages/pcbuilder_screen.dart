@@ -11,8 +11,8 @@ import 'package:fblogin/dasboard_screens/pc_builder/peripheral/monitor.dart';
 import 'package:fblogin/dasboard_screens/pc_builder/peripheral/mouse.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../reusable_widgets/custom_scaffold2.dart';
-import 'core/gpu.dart';
+import '../../../reusable_widgets/custom_scaffold2.dart';
+import '../core/gpu.dart';
 
 class PcBuilderScreen extends StatefulWidget {
   const PcBuilderScreen({super.key});

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fblogin/dasboard_screens/pc_builder/pcbuilder_screen.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/pages/pcbuilder_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -99,40 +99,43 @@ class PastBuildsPage extends StatelessWidget {
                 );
               }
 
-              return ListView.builder(
-                itemCount: buildsData.length,
-                itemBuilder: (context, index) {
-                  final buildData = buildsData[index];
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: 20.0),
+                child: ListView.builder(
+                  itemCount: buildsData.length,
+                  itemBuilder: (context, index) {
+                    final buildData = buildsData[index];
 
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BuildDetailsPage(buildData: buildData),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 16.0),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[900],
-                          borderRadius: BorderRadius.circular(10.0),
-                          border: Border.all(
-                            color: Colors.grey[700]!,
-                            width: 2.0,
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BuildDetailsPage(buildData: buildData),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 16.0),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[900],
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(
+                              color: Colors.grey[700]!,
+                              width: 2.0,
+                            ),
+                          ),
+                          child: ListTile(
+                            title: Text('Build ${index + 1}', style: GoogleFonts.bebasNeue(color: Colors.white, fontSize: 30)),
+                            // Customize the display of each build as needed
                           ),
                         ),
-                        child: ListTile(
-                          title: Text('Build ${index + 1}', style: GoogleFonts.bebasNeue(color: Colors.white, fontSize: 30)),
-                          // Customize the display of each build as needed
-                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               );
             },
           ),

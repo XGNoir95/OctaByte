@@ -133,27 +133,27 @@ class CollectionPage extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 13),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ElevatedButton(
                           onPressed: () => saveToBuildsCollection(context, collection),
                           style: ElevatedButton.styleFrom(
-                            fixedSize: Size(100, 50),
-                            primary: Colors.grey[900], // Background color
+                            fixedSize: Size(120, 30),
+                            backgroundColor: Colors.amber,// Background color
                           ),
-                          child: Text('Save', style: TextStyle(color: Colors.white,fontSize: 20)),
+                          child: Text('Save', style: GoogleFonts.bebasNeue(color: Colors.black,fontSize: 25,)),
                         ),
 
                         ElevatedButton(
                           onPressed: () => clearCollection(context, userEmail),
                           style: ElevatedButton.styleFrom(
-                            fixedSize: Size(100, 50),
-                            primary: Colors.grey[900],
+                            fixedSize: Size(120, 30),
+                            backgroundColor: Colors.amber,
                             // Background color
                           ),
-                          child: Text('Clear', style: TextStyle(color: Colors.white,fontSize: 20)),
+                          child: Text('Clear', style: GoogleFonts.bebasNeue(color: Colors.black,fontSize: 25,)),
                         ),
 
                       ],

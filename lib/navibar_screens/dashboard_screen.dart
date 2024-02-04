@@ -1,4 +1,4 @@
-import 'package:fblogin/dasboard_screens/pc_builder/pcbuilder_screen.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/pages/pcbuilder_screen.dart';
 import 'package:fblogin/dasboard_screens/tutorials/tutorials_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

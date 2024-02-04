@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fblogin/auth_screens/auth_page.dart';
-import 'package:fblogin/dasboard_screens/pc_builder/build_history.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/pages/build_history.dart';
 import 'package:fblogin/reusable_widgets/custom_scaffold3.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

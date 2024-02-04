@@ -1,16 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fblogin/dasboard_screens/pc_builder/collection_page.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/pages/collection_page.dart';
 import 'package:fblogin/navibar_screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'details.dart';
+import 'search_screen.dart';
 
 class ComponentScreen extends StatefulWidget {
   final String collectionName;
   final String appBarTitle;
 
-  const ComponentScreen({Key? key, required this.collectionName, required this.appBarTitle})
+  const ComponentScreen(
+      {Key? key, required this.collectionName, required this.appBarTitle})
       : super(key: key);
 
   @override
@@ -28,7 +30,8 @@ class _ComponentScreenState extends State<ComponentScreen> {
     await _firestoreInstance.collection(widget.collectionName).get();
     setState(() {
       _products = qn.docs
-          .map((doc) => {
+          .map((doc) =>
+      {
         "product-name": doc["product-name"],
         "product-description": doc["product-description"],
         "product-price": doc["product-price"],
@@ -113,6 +116,8 @@ class _ComponentScreenState extends State<ComponentScreen> {
                                     Navigator.of(context).pop();
                                   },
                                   navigateToCollectionPage: navigateToCollectionPage,
+                                  products: [], // Pass the _products list here
+                                  appBarTitle: widget.appBarTitle, // Pass the appBarTitle
                                 ),
                               );
                             },
@@ -125,11 +130,6 @@ class _ComponentScreenState extends State<ComponentScreen> {
                       height: 60,
                       width: 50,
                       child: GestureDetector(
-                        child: Icon(
-                          Icons.search,
-                          size: 40,
-                          color: Colors.amber,
-                        ),
                         onTap: () {
                           showDialog(
                             context: context,
@@ -142,10 +142,18 @@ class _ComponentScreenState extends State<ComponentScreen> {
                                 Navigator.of(context).pop();
                               },
                               navigateToCollectionPage: navigateToCollectionPage,
+                               // Pass the _products list here
+                              appBarTitle: widget.appBarTitle, products: [], // Pass the appBarTitle
                             ),
                           );
                         },
+                        child: Icon(
+                          Icons.search,
+                          size: 40,
+                          color: Colors.amber,
+                        ),
                       ),
+
                     ),
                     SizedBox(
                       width: 5,
@@ -203,10 +211,13 @@ class _ComponentScreenState extends State<ComponentScreen> {
                   itemCount: _products.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => ProductDetails(_products[index], appBarTitle: widget.appBarTitle))),
+                      onTap: () =>
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      ProductDetails(_products[index],
+                                          appBarTitle: widget.appBarTitle))),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
@@ -251,7 +262,8 @@ class _ComponentScreenState extends State<ComponentScreen> {
                                           color: Colors.amber),
                                     ),
                                     Text(
-                                      "${_products[index]["product-price"].toString()}",
+                                      "${_products[index]["product-price"]
+                                          .toString()}",
                                       style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
@@ -279,176 +291,18 @@ class _ComponentScreenState extends State<ComponentScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CollectionPage(
-          appBarTitle: appBarTitle,
-        ),
+        builder: (context) =>
+            CollectionPage(
+              appBarTitle: appBarTitle,
+            ),
       ),
     );
   }
 }
 
-class SearchDialog extends StatefulWidget {
-  final String collectionName;
-  final VoidCallback onClose;
-  final Function(String) navigateToCollectionPage;
 
-  const SearchDialog(
-      {Key? key, required this.collectionName, required this.onClose, required this.navigateToCollectionPage})
-      : super(key: key);
 
-  @override
-  _SearchDialogState createState() => _SearchDialogState();
-}
 
-class _SearchDialogState extends State<SearchDialog> {
-  var inputText = "";
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      insetPadding: EdgeInsets.all(0),
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/bg.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              TextFormField(
-                onChanged: (val) {
-                  setState(() {
-                    inputText = val;
-                    print(inputText);
-                  });
-                },
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey[800],
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  hintText: "What are you searching for Today?",
-                  hintStyle: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Expanded(
-                child: Container(
-                  child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection(widget.collectionName)
-                        .where("product-name",
-                        isGreaterThanOrEqualTo: inputText)
-                        .where("product-name", isLessThan: inputText + 'z')
-                        .snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text("Something went wrong"),
-                        );
-                      }
-
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: Text("Loading"),
-                        );
-                      }
-
-                      return ListView(
-                        children: snapshot.data!.docs.map(
-                              (DocumentSnapshot document) {
-                            Map<String, dynamic> data =
-                            document.data() as Map<String, dynamic>;
-                            return Padding(
-                              padding: EdgeInsets.symmetric(vertical: 8),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.grey[900],
-                                    border: Border.all(
-                                      color: Colors.grey[800]!,
-                                      width: 2.0,
-                                    )),
-                                child: ListTile(
-                                  leading: Image.network(data['product-img']),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        data['product-name'],
-                                        style: GoogleFonts.roboto(
-                                            color: Colors.amber,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        data['product-price'],
-                                        style: GoogleFonts.roboto(
-                                            color: Colors.grey[200],
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ).toList(),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey[800],
-                ),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.clear,
-                    color: Colors.amber,
-                    size: 30,
-                  ),
-                  onPressed: widget.onClose,
-                ),
-              ),
-              // Container(
-              //   child: ElevatedButton(
-              //     onPressed: () {
-              //       widget.navigateToCollectionPage(widget.collectionName);
-              //     },
-              //     child: Text('Navigate to Collection Page'),
-              //   ),
-              // ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 extension StringExtension on String {
   String capitalize() {
