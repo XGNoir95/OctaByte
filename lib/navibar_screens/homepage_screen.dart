@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fblogin/auth_screens/auth_page.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/build_history.dart';
 import 'package:fblogin/reusable_widgets/custom_scaffold3.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -218,6 +219,17 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => PurchaseHistoryPage()),
+                  );
+                },
+                // Add more ListTile items as needed
+              ),
+              ListTile(
+                leading: Icon(Icons.build,color: Colors.amber,size: 32),
+                title: Text('Past Builds', style: GoogleFonts.bebasNeue(color: Colors.white,fontSize: 25)),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PastBuildsPage()),
                   );
                 },
                 // Add more ListTile items as needed
