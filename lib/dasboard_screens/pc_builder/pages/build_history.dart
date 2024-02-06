@@ -182,47 +182,49 @@ class BuildDetailsPage extends StatelessWidget {
             width: double.infinity,
             alignment: Alignment.center,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text('Products:', style: GoogleFonts.bebasNeue(fontSize: 30, fontWeight: FontWeight.bold,color: Colors.amber)),
-              ),
-              for (var product in buildData) ...[
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey[900],
-                        border: Border.all(
-                          color: Colors.grey[800]!,
-                          width: 2.0,
-                        )),
-                    child: ListTile(
-                      //title:
-                      subtitle: Row(
-                        children: [
-                          Image.network(product['product-img'],height: 80,width: 80,),
-                          SizedBox(width: 12,),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-
-                                Text('${product['product-name']}',style: GoogleFonts.bebasNeue(color: Colors.amber,fontSize: 24)),
-                                Text('Price: ${product['product-price']}',style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.bold)),
-                              ],
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text('Products:', style: GoogleFonts.bebasNeue(fontSize: 30, fontWeight: FontWeight.bold,color: Colors.amber)),
+                ),
+                for (var product in buildData) ...[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey[900],
+                          border: Border.all(
+                            color: Colors.grey[800]!,
+                            width: 2.0,
+                          )),
+                      child: ListTile(
+                        //title:
+                        subtitle: Row(
+                          children: [
+                            Image.network(product['product-img'],height: 80,width: 80,),
+                            SizedBox(width: 12,),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+            
+                                  Text('${product['product-name']}',style: GoogleFonts.bebasNeue(color: Colors.amber,fontSize: 24)),
+                                  Text('Price: ${product['product-price']}',style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.bold)),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                        // Customize the display of each product as needed
                       ),
-                      // Customize the display of each product as needed
                     ),
                   ),
-                ),
+                ],
               ],
-            ],
+            ),
           ),
         ],
       ),
