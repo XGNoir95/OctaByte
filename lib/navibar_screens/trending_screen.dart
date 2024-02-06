@@ -283,8 +283,8 @@ class _MyImageSliderState extends State<TrendingScreen> {
         ),
         child: Column(
           children: [
-            SizedBox(height: AppBar().preferredSize.height),
-            SizedBox(height: 20),
+            Expanded(child: SizedBox(height: AppBar().preferredSize.height)),
+            Expanded(child: SizedBox(height: 20)),
 
             Container(
               padding: EdgeInsets.only(bottom: 16),
@@ -352,22 +352,24 @@ class _MyImageSliderState extends State<TrendingScreen> {
             ),
 
             // Second carousel slider
-            CarouselSlider(
-              carouselController: secondCarouselController,
-              options: CarouselOptions(
-                autoPlay: false,
-                height: 230,
-                viewportFraction: 0.8,
-                autoPlayCurve: Curves.linear,
-                enlargeCenterPage: true,
-                aspectRatio: 2.0,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    secondCarouselIndex = index;
-                  });
-                },
+            SingleChildScrollView(
+              child: CarouselSlider(
+                carouselController: secondCarouselController,
+                options: CarouselOptions(
+                  autoPlay: false,
+                  height: 330,
+                  viewportFraction: 0.8,
+                  autoPlayCurve: Curves.linear,
+                  enlargeCenterPage: true,
+                  aspectRatio: 2.0,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      secondCarouselIndex = index;
+                    });
+                  },
+                ),
+                items: myitems2.map((item) => Image.asset(item)).toList(),
               ),
-              items: myitems2.map((item) => Image.asset(item)).toList(),
             ),
 
             Row(
@@ -379,9 +381,8 @@ class _MyImageSliderState extends State<TrendingScreen> {
                   },
                   child: Text('Previous',style: TextStyle(color: Colors.black,fontFamily: 'RobotoCondensed',fontSize: 20,fontWeight: FontWeight.bold)),
                 ),
-                Expanded(
-                    child: SizedBox(height: 30)
-                ),
+                SizedBox(height: 30),
+
 
                 ElevatedButton(
                   onPressed: () {

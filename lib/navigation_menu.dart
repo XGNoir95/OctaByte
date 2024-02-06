@@ -20,7 +20,7 @@ class NavigationMenu extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: Obx(
         () => NavigationBar(
-          height: 70,
+          height: 75,
           backgroundColor: hexStringToColor('212121'),
           indicatorColor: Colors.white.withOpacity(0.1),
           elevation: 0,
@@ -29,88 +29,96 @@ class NavigationMenu extends StatelessWidget {
               controller.selectedIndex.value = index,
           destinations: const [
             NavigationDestination(
-              icon: Column(
-                children: [
-                  SizedBox(
-                    height: 14,
-                  ),
-                  Icon(
-                    Iconsax.home_1,
-                    color: Colors.amber,
-                    size: 32,
-                  ),
-                  Text(
-                    'Dashboard',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'RobotoCondensed',
-                        fontSize: 17,
-                        letterSpacing: 1),
-                  )
-                ],
-              ),
-              label: '',
-            ),
-            NavigationDestination(
-              icon: Column(
-                children: [
-                  SizedBox(
-                    height: 14,
-                  ),
-                  Icon(Iconsax.flash, color: Colors.amber, size: 33),
-                  Text('Trending',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'RobotoCondensed',
-                          fontSize: 16,
-                          letterSpacing: 1)),
-                ],
-              ),
-              label: '',
-            ),
-            NavigationDestination(
-              icon: Column(
-                children: [
-                  SizedBox(
-                    height: 14,
-                  ),
-                  Icon(
-                    Iconsax.notification,
-                    color: Colors.amber,
-                    size: 32,
-                  ),
-                  Text('Notifications',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'RobotoCondensed',
-                          fontSize: 16.5,
-                          letterSpacing: 1)),
-                ],
-              ),
-              label: '',
-            ),
-            NavigationDestination(
-              icon: Column(
-                children: [
-                  SizedBox(
-                    height: 14,
-                  ),
-                  Icon(
-                    Iconsax.security_user,
-                    color: Colors.amber,
-                    size: 32,
-                  ),
-                  Text('Profile',
+              icon: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 14,
+                    ),
+                    Icon(
+                      Iconsax.home_1,
+                      color: Colors.amber,
+                      size: 32,
+                    ),
+                    Text(
+                      'Dashboard',
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'RobotoCondensed',
                           fontSize: 17,
-                          letterSpacing: 1)),
-                ],
+                          letterSpacing: 1),
+                    )
+                  ],
+                ),
+              ),
+              label: '',
+            ),
+            NavigationDestination(
+              icon: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 14,
+                    ),
+                    Icon(Iconsax.flash, color: Colors.amber, size: 33),
+                    Text('Trending',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'RobotoCondensed',
+                            fontSize: 16,
+                            letterSpacing: 1)),
+                  ],
+                ),
+              ),
+              label: '',
+            ),
+            NavigationDestination(
+              icon: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 14,
+                    ),
+                    Icon(
+                      Iconsax.notification,
+                      color: Colors.amber,
+                      size: 32,
+                    ),
+                    Text('Notifications',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'RobotoCondensed',
+                            fontSize: 16.5,
+                            letterSpacing: 1)),
+                  ],
+                ),
+              ),
+              label: '',
+            ),
+            NavigationDestination(
+              icon: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 14,
+                    ),
+                    Icon(
+                      Iconsax.security_user,
+                      color: Colors.amber,
+                      size: 32,
+                    ),
+                    Text('Profile',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'RobotoCondensed',
+                            fontSize: 17,
+                            letterSpacing: 1)),
+                  ],
+                ),
               ),
               label: '',
             ),

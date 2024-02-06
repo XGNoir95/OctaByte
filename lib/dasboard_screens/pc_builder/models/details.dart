@@ -113,8 +113,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                               fontSize: 35,
                               color: Colors.amber),
                         ),
-                        SizedBox(
-                          width: 40,
+                        Expanded(
+                          child: SizedBox(
+                            width: 40,
+                          ),
                         ),
                         MaterialButton(
                           onPressed: saveToCollection,
