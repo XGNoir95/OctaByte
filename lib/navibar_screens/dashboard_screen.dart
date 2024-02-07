@@ -23,7 +23,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           child: Column(
             children: [
               Text(
-                'DASHBOARD: ',
+                'DASHBOARD:  ',
                 style: TextStyle(fontSize: 35,fontFamily: 'RobotoCondensed', color: Colors.amber,letterSpacing: 1),
               ),
               Padding(
