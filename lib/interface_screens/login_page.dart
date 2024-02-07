@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
       await service.showNotificationWithPayload(
         id: 1,
         title: 'Welcome',
-        body: 'Lets build PC.',
+        body: 'Get ready to power up your dream where customization meets performance!',
         payload: 'Hey, Explore the latest and new products ',
       );
 
