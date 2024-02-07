@@ -130,6 +130,10 @@ class _ChatPageState extends State<ChatPage> {
                         : CrossAxisAlignment.start,
                     children: [
                       Text(
+                        _formatTimestamp2(data['timestamp']),
+                        style: TextStyle(fontSize: 12, color: Colors.white,fontWeight: FontWeight.bold),
+                      ),
+                      Text(
                         data['senderEmail'],
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -138,6 +142,7 @@ class _ChatPageState extends State<ChatPage> {
                           fontFamily: 'RobotoCondensed',
                         ),
                       ),
+
                       Container(
                         margin: EdgeInsets.only(top: 4),
                         padding: EdgeInsets.all(8),
@@ -157,7 +162,7 @@ class _ChatPageState extends State<ChatPage> {
                             ),
                             SizedBox(height: 4),
                             Text(
-                              _formatTimestamp(data['timestamp']),
+                              _formatTimestamp1(data['timestamp']),
                               style: TextStyle(fontSize: 12, color: Colors.white),
                             ),
                           ],
@@ -186,8 +191,11 @@ class _ChatPageState extends State<ChatPage> {
 
 
 
-
-  String _formatTimestamp(Timestamp timestamp) {
+  String _formatTimestamp2(Timestamp timestamp) {
+    DateTime dateTime = timestamp.toDate();
+    return '${dateTime.day}-${dateTime.month}-${dateTime.year}';
+  }
+  String _formatTimestamp1(Timestamp timestamp) {
     DateTime dateTime = timestamp.toDate();
     return '${dateTime.hour}:${dateTime.minute}';
   }

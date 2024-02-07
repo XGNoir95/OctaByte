@@ -30,7 +30,7 @@ class PurchaseHistoryPage extends StatelessWidget {
             builder: (context, userSnapshot) {
               if (userSnapshot.connectionState == ConnectionState.waiting) {
                 return Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(color: Colors.amber),
                 );
               }
 
