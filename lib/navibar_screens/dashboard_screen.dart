@@ -52,7 +52,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           child: Column(
                             children: [
                               Image.asset(
-                                'assets/icons/icon1.png',
+                                'assets/icons/pc.png',
                                 height: 130,
                                 width: 130,
                               ),
