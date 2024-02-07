@@ -1,5 +1,7 @@
 //user login page
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fblogin/navibar_screens/dashboard_screen.dart';
+import 'package:fblogin/navibar_screens/notification/settings_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -7,6 +9,7 @@ import '../../reusable_widgets/reusable_widget.dart';
 import 'package:fblogin/reusable_widgets/custom_scaffold.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../navibar_screens/notification/notificationService.dart';
 import 'forgot_pw_page.dart';
 //import 'package:google_fonts/google_fonts.dart';
 
@@ -20,11 +23,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
+  late final LocalNotificationService service;
   //text controllers
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
+  void initState() {
+    service = LocalNotificationService();
+    service.initialize();
+    listenToNotification();
+    super.initState();
+  }
 
   //authenticates with firebase and returns a user
   Future signIn() async {
@@ -33,7 +41,13 @@ class _LoginPageState extends State<LoginPage> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-
+      await service.showNotificationWithPayload(
+        id: 1,
+        title: 'Welcome',
+        body: 'Lets build PC.',
+        payload:
+        'Hey, Explore the latest and new products ',
+      );
       // Login successful message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -44,7 +58,6 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Colors.green,
         ),
       );
-
     } catch (e) {
       String errorMessage = e.toString();
       ScaffoldMessenger.of(context).showSnackBar(
@@ -79,11 +92,16 @@ class _LoginPageState extends State<LoginPage> {
                 //logo
                 Padding(
                   padding: EdgeInsets.fromLTRB(
-                    20, MediaQuery.of(context).size.height * 0.0001, 20, 0,
+                    20,
+                    MediaQuery.of(context).size.height * 0.0001,
+                    20,
+                    0,
                   ),
-                  child: Image.asset("assets/images/logo.png",height:295,),
+                  child: Image.asset(
+                    "assets/images/logo.png",
+                    height: 295,
+                  ),
                 ),
-
 
                 //Sign in to continue text
                 Padding(
@@ -101,26 +119,25 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 25),
 
-
                 //email textbox
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: reusableTextField("Email-Address", Iconsax.profile_circle, false, _emailController),
+                  child: reusableTextField("Email-Address",
+                      Iconsax.profile_circle, false, _emailController),
                 ),
                 SizedBox(
                   height: 20,
                 ),
 
-
                 //password textbox
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: reusableTextField("Password", Iconsax.lock, true, _passwordController),
+                  child: reusableTextField(
+                      "Password", Iconsax.lock, true, _passwordController),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-
 
                 //forgot password text
                 Padding(
@@ -143,7 +160,6 @@ class _LoginPageState extends State<LoginPage> {
                           'Forgot Password?',
                           style: TextStyle(
                               color: Colors.amber,
-
                               fontSize: 16,
                               fontWeight: FontWeight.bold),
                         ),
@@ -157,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 //login in button
                 MaterialButton(
-                  onPressed: () {
+                  onPressed: () async {
                     signIn();
                   },
                   child: Container(
@@ -189,14 +205,19 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Text(
                       'Not a member? ',
-                      style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 15),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 15),
                     ),
                     GestureDetector(
                       onTap: widget.showRegisterPage,
                       child: Text(
                         'Register now!',
                         style: TextStyle(
-                            color: Colors.amber, fontWeight: FontWeight.bold,fontSize: 15),
+                            color: Colors.amber,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15),
                       ),
                     ),
                   ],
@@ -205,5 +226,19 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+
+  void onNoticationListener(String? payload) {
+    if (payload != null && payload.isNotEmpty) {
+      print('payload $payload');
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: ((context) => SettingsScreen(payload: payload))));
+    }
   }
 }

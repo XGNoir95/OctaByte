@@ -1,6 +1,6 @@
 import 'package:fblogin/navibar_screens/dashboard_screen.dart';
 import 'package:fblogin/navibar_screens/homepage_screen.dart';
-import 'package:fblogin/navibar_screens/settings_screen.dart';
+import 'package:fblogin/navibar_screens/notification/settings_screen.dart';
 import 'package:fblogin/navibar_screens/trending_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -136,7 +136,7 @@ class NavigationController extends GetxController {
   final screens = [
     DashBoardScreen(),
     const TrendingScreen(),
-    const SettingsScreen(),
+    const SettingsScreen(payload: '',),
     HomePage(),
   ];
 

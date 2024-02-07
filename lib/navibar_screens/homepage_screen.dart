@@ -11,7 +11,6 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../dasboard_screens/marketplace/buy/purchasehistory.dart';
 import '../navigation_menu.dart';
 import '../reusable_widgets/custom_scaffold.dart';
@@ -228,7 +227,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.grey[900],
         actions: [
           IconButton(
-            icon: Icon(Icons.menu, color: Colors.white),
+            icon: Icon(Icons.menu, color: Colors.white,size: 32),
             onPressed: () {
               _scaffoldKey.currentState?.openEndDrawer();
             },
@@ -248,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: Center(
                   child: Text(
-                    'Sidebar',
+                    'Octabyte',
                     style: GoogleFonts.bebasNeue(fontSize: 42, color: Colors.white),
                   ),
                 ),
@@ -284,6 +283,42 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               ),
+              SizedBox(height:340),
+              ListTile(
+                leading: Icon(Icons.logout, color: Colors.amber, size: 32),
+                title: Text('Log Out', style: GoogleFonts.bebasNeue(color: Colors.white, fontSize: 25)),
+                onTap: () {
+                  _signOut(context);
+
+                },
+              ),
+              // Row(
+              //   children: [
+              //     SizedBox(
+              //       width: 130,
+              //     ),
+              //     MaterialButton(
+              //       onPressed: () {
+              //         _signOut(context);
+              //       },
+              //       color: Colors.grey[900],
+              //       child: Row(
+              //         children: [
+              //           Icon(Icons.logout, color: Colors.amber, size: 30),
+              //           SizedBox(
+              //             width: 10,
+              //           ),
+              //           Text('Sign Out',
+              //               style: GoogleFonts.bebasNeue(
+              //                   fontSize: 30,
+              //                   letterSpacing: 1,
+              //                   fontWeight: FontWeight.bold,
+              //                   color: Colors.white)),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
@@ -306,8 +341,11 @@ class _HomePageState extends State<HomePage> {
                     stream: _auth.authStateChanges(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
+                        return Center(
+                          child: CircularProgressIndicator(color: Colors.amber,),
+                        );
                       }
+
 
                       if (snapshot.hasData && snapshot.data != null) {
                         User? currentUser = snapshot.data;
@@ -317,7 +355,7 @@ class _HomePageState extends State<HomePage> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
                               return const Center(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator(color: Colors.amber),
                               );
                             } else if (snapshot.hasError) {
                               return Text("Error: ${snapshot.error}");
@@ -354,20 +392,32 @@ class _HomePageState extends State<HomePage> {
                                             )
                                           else
                                             const Icon(Icons.person, size: 80, color: Colors.white),
-                                          Positioned(
-                                            bottom: -15,   // Adjust the bottom position
-                                            left: -15,     // Adjust the left position
-                                            child: IconButton(
-                                              icon: Icon(Icons.edit, color: Colors.amber),
-                                              onPressed: () async {
-                                                User? currentUser = _auth.currentUser;
-                                                DocumentSnapshot<Map<String, dynamic>> snapshot =
-                                                await getUserDetails(currentUser!.email!);
-                                                Map<String, dynamic> userData = snapshot.data()!;
-                                                _editUser(context, userData);
-                                              },
+                                          Container(
+                                            child: Positioned(
+                                              bottom: 0,
+                                              left: 0,
+                                              child: Container(
+                                                width: 30,
+                                                height: 30,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.grey[800],
+                                                ),
+                                                child: IconButton(
+                                                  icon: Icon(Icons.edit, color: Colors.amber,size: 15),
+                                                  onPressed: () async {
+                                                    User? currentUser = _auth.currentUser;
+                                                    DocumentSnapshot<Map<String, dynamic>> snapshot =
+                                                    await getUserDetails(currentUser!.email!);
+                                                    Map<String, dynamic> userData = snapshot.data()!;
+                                                    _editUser(context, userData);
+                                                  },
+                                                ),
+                                              ),
                                             ),
                                           ),
+
+
                                         ],
                                       ),
                                     ),
@@ -402,8 +452,8 @@ class _HomePageState extends State<HomePage> {
                                               Text(
                                                 ' User Information:',
                                                 style: GoogleFonts.bebasNeue(
-                                                  color: Colors.white,
-                                                  fontSize: 40,
+                                                  color: Colors.amber,
+                                                  fontSize: 46,
                                                 ),
                                                 textAlign: TextAlign.left,
                                               ),
@@ -416,7 +466,7 @@ class _HomePageState extends State<HomePage> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Container(
-                                                  height: 50,
+                                                  height: 56,
                                                   margin: EdgeInsets.symmetric(vertical: 5),
                                                   decoration: BoxDecoration(
                                                     color: Colors.grey[800],
@@ -450,7 +500,7 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                                 SizedBox(height: 5),
                                                 Container(
-                                                  height: 50,
+                                                  height: 56,
                                                   margin: EdgeInsets.symmetric(vertical: 5),
                                                   decoration: BoxDecoration(
                                                     color: Colors.grey[800],
@@ -484,7 +534,7 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                                 SizedBox(height: 5),
                                                 Container(
-                                                  height: 50,
+                                                  height: 56,
                                                   margin: EdgeInsets.symmetric(vertical: 5),
                                                   decoration: BoxDecoration(
                                                     color: Colors.grey[800],
@@ -518,7 +568,7 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                                 SizedBox(height: 5),
                                                 Container(
-                                                  height: 50,
+                                                  height: 56,
                                                   margin: EdgeInsets.symmetric(vertical: 5),
                                                   decoration: BoxDecoration(
                                                     color: Colors.grey[800],
@@ -571,33 +621,33 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SizedBox(height: 15),
                   SizedBox(height: 15),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 130,
-                      ),
-                      MaterialButton(
-                        onPressed: () {
-                          _signOut(context);
-                        },
-                        color: Colors.grey[900],
-                        child: Row(
-                          children: [
-                            Icon(Icons.logout, color: Colors.amber, size: 30),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text('Sign Out',
-                                style: GoogleFonts.bebasNeue(
-                                    fontSize: 30,
-                                    letterSpacing: 1,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white)),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     SizedBox(
+                  //       width: 130,
+                  //     ),
+                  //     MaterialButton(
+                  //       onPressed: () {
+                  //         _signOut(context);
+                  //       },
+                  //       color: Colors.grey[900],
+                  //       child: Row(
+                  //         children: [
+                  //           Icon(Icons.logout, color: Colors.amber, size: 30),
+                  //           SizedBox(
+                  //             width: 10,
+                  //           ),
+                  //           Text('Sign Out',
+                  //               style: GoogleFonts.bebasNeue(
+                  //                   fontSize: 30,
+                  //                   letterSpacing: 1,
+                  //                   fontWeight: FontWeight.bold,
+                  //                   color: Colors.white)),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                 ],
               ),
             ),

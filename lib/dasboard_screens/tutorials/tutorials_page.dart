@@ -1,5 +1,5 @@
 import 'package:fblogin/dasboard_screens/tutorials/tutorials_screen2.dart';
-import 'package:fblogin/navibar_screens/settings_screen.dart';
+import 'package:fblogin/navibar_screens/notification/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'tutorials_screen.dart';
@@ -39,7 +39,7 @@ class TutorialsPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => /*TutorialsScreen()*/ SettingsScreen()),
+                  MaterialPageRoute(builder: (context) => /*TutorialsScreen()*/ SettingsScreen(payload: '',)),
                 );
               },
               child: Center(
@@ -53,7 +53,7 @@ class TutorialsPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => /*TutorialsScreen2()*/SettingsScreen()),
+                  MaterialPageRoute(builder: (context) => /*TutorialsScreen2()*/SettingsScreen(payload: '',)),
                 );
               },
               child: Center(
