@@ -110,7 +110,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           style: GoogleFonts.bebasNeue(
                               //fontWeight: FontWeight.bold,
                               letterSpacing: 2,
-                              fontSize: 35,
+                              fontSize: 30,
                               color: Colors.amber),
                         ),
                         Expanded(
@@ -126,9 +126,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 Icons.add,
                                 color: Colors.amber,
                               ),
-                              Text('Add to collection',
-                                  style: GoogleFonts.bebasNeue(
-                                      color: Colors.amber, fontSize: 27)),
+                              SizedBox(
+                                child: Text('Add to collection',
+                                    style: GoogleFonts.bebasNeue(
+                                        color: Colors.amber, fontSize: 27)),
+                              ),
                             ],
                           ),
                         ),

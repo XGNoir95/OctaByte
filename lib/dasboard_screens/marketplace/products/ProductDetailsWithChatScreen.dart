@@ -130,9 +130,11 @@ class ProductDetailsWithChatScreen extends StatelessWidget {
                                   'Seller Email: ',
                                   style: GoogleFonts.bebasNeue(fontSize: 25, color: Colors.amber),
                                 ),
-                                Text(
-                                  ' $sellerEmail ',
-                                  style: TextStyle(fontSize: 20, color: Colors.white),
+                                Flexible(
+                                  child: Text(
+                                    ' $sellerEmail ',
+                                    style: TextStyle(fontSize: 20, color: Colors.white),
+                                  ),
                                 ),
                               ],
                             ),

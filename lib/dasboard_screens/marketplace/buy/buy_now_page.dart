@@ -242,8 +242,12 @@ class _BuyNowPageState extends State<BuyNowPage> {
           duration: Duration(seconds: 2),
         ),
       );
+
+      // Pop the current route from the navigation stack
+      Navigator.pop(context);
     }
   }
+
 
   Future<void> saveProductInfoToFirebase() async {
     User? user = FirebaseAuth.instance.currentUser;

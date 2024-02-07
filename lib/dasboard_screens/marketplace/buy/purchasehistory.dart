@@ -96,44 +96,39 @@ class PurchaseHistoryPage extends StatelessWidget {
                               width: 2.0,
                             ),
                           ),
-                          child: ListTile(
-                            //title:
-                            subtitle: Row(
-                              children: [
-                                Image.network(
-                                  purchaseData['Product Image'] ?? 'No Image',
-                                  fit: BoxFit.contain,
-                                  height: 100, // Adjust the height as needed
-                                  width: 50, // Adjust the width as needed
-                                ),
-                                SizedBox(width: 10,),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text('Product Name: ', style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 25)),
-                                        Text('${purchaseData['Product Name']}', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18)),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text('Price: ', style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 25)),
-                                        Text('${purchaseData['Product Price']}', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18)),
-                                      ],
-                                    ),
-                                    // Column(
-                                    //   children: [
-                                    //     Text('Purchased on: ', style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 25)),
-                                    //     Text('${purchaseData['Timestamp']}', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18)),
-                                    //   ],
-                                    // ),
-                                    // Display the image using Image.network
-                                  ],
-                                ),
-                              ],
+                          child: Flexible(
+                            child: ListTile(
+                              //title:
+                              subtitle: Row(
+                                children: [
+                                  Image.network(
+                                    purchaseData['Product Image'] ?? 'No Image',
+                                    fit: BoxFit.contain,
+                                    height: 100, // Adjust the height as needed
+                                    width: 50, // Adjust the width as needed
+                                  ),
+                                  SizedBox(width: 10,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text('Product Name: ', style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 25)),
+                                          Text('${purchaseData['Product Name']}', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18)),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text('Price: ', style: GoogleFonts.bebasNeue(color: Colors.amber, fontSize: 25)),
+                                          Text('${purchaseData['Product Price']}', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18)),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              // Add more details as needed
                             ),
-                            // Add more details as needed
                           ),
                         ),
                       );

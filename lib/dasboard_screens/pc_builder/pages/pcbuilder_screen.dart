@@ -186,7 +186,7 @@ class _PcBuilderScreenState extends State<PcBuilderScreen> {
                   },
                 ),
                 buildCard(
-                  title: 'Casing Coolers',
+                  title: 'Case Coolers',
                   imagePath: 'assets/builder/cooler.png',
                   onPressed: () {
                     Navigator.push(

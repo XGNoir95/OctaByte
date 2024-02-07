@@ -23,24 +23,30 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           padding: const EdgeInsets.fromLTRB(25, 108, 25, 10),
           child: Column(
             children: [
-              Text(
-                'DASHBOARD:  ',
-                style: GoogleFonts.bebasNeue(fontSize: 48,color: Colors.amber,letterSpacing: 1),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Text(
+                  'DASHBOARD:',
+                  style: GoogleFonts.bebasNeue(fontSize: 48,color: Colors.amber,letterSpacing: 1),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
                     Text(
-                      'Take a tour looking at our very own',
+                      'Take a tour looking at our very own personalised options',
 
                       style: TextStyle(fontSize: 23,fontFamily: 'RobotoCondensed', color: Colors.white,),
                     ),
+                    /*
                     Text(
                       'personalised options',
 
                       style: TextStyle(fontSize: 23,fontFamily: 'RobotoCondensed', color: Colors.white,),
                     ),
+                    */
+
                   ],
                 ),
 
@@ -62,11 +68,11 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              SizedBox(height: 5,),
+                              SizedBox(height: 12,),
                               Image.asset(
                                 'assets/icons/pc.png',
-                                height: 130,
-                                width: 130,
+                                height: 110,
+                                width: 110,
                                 color: Colors.white.withOpacity(0.5),
                               ),
                               SizedBox(height: 2,),
@@ -88,10 +94,11 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
+                              SizedBox(height: 10,),
                               Image.asset(
                                 'assets/icons/market.png',
-                                height: 130,
-                                width: 130,
+                                height: 110,
+                                width: 110,
                                 color: Colors.white.withOpacity(0.5),
                               ),
                               SizedBox(height: 4),
@@ -113,10 +120,11 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
+                              SizedBox(height: 12,),
                               Image.asset(
                                 'assets/icons/comm.png',
-                                height: 130,
-                                width: 130,
+                                height: 110,
+                                width: 110,
                                 color: Colors.white.withOpacity(0.5),
                               ),
                               SizedBox(height: 1,),
@@ -138,10 +146,11 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
+                              SizedBox(height: 12,),
                               Image.asset(
                                 'assets/icons/tuto1.png',
-                                height: 130,
-                                width: 130,
+                                height: 110,
+                                width: 110,
                                 color: Colors.white.withOpacity(0.5),
                               ),
                               SizedBox(height: 1,),

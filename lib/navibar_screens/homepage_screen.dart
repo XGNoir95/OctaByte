@@ -283,7 +283,7 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               ),
-              SizedBox(height:340),
+              //SizedBox(height:340),
               ListTile(
                 leading: Icon(Icons.logout, color: Colors.amber, size: 32),
                 title: Text('Log Out', style: GoogleFonts.bebasNeue(color: Colors.white, fontSize: 25)),
