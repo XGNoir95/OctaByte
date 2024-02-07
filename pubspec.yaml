@@ -43,7 +43,10 @@ dependencies:
   iconsax: ^0.0.8
   carousel_slider: ^4.2.1
   smooth_page_indicator: ^1.1.0
-
+  firebase_messaging: ^14.7.15
+  flutter_local_notifications: ^16.3.0
+  rxdart: ^0.27.7
+  permission_handler: ^11.1.0
 
   firebase_storage: ^11.6.0
   google_fonts: ^6.1.0

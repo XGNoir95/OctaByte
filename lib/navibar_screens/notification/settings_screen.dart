@@ -2,15 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:fblogin/reusable_widgets/custom_scaffold3.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+import 'notificationService.dart';
 
+class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({Key? key,  required this.payload}) : super(key: key);
+  final String payload;
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 class _SettingsScreenState extends State<SettingsScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  late final LocalNotificationService service;
 
+  void initState() {
+    service = LocalNotificationService();
+    service.initialize();
+    listenToNotification();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +71,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ListTile(
                 leading: Icon(Icons.notifications, color: Colors.white),
                 title: Text('Notifications', style: TextStyle(color: Colors.white)),
-                onTap: () {
+                onTap: () async {
+                  await service.showNotificationWithPayload(
+                    id: 0,
+                    title: 'Welcome',
+                    body: 'Lets build PC.',
+                    payload:
+                    'Hey Explore the latest and new products. ',
+                  );
                   // Handle notifications item tap
                   Navigator.pop(context); // Close the drawer
                   // Add your logic for notifications screen navigation if needed
@@ -84,12 +100,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           Center(
             child: Text(
-              "bye",
+              widget.payload,
               style: TextStyle(fontSize: 40, color: Colors.white),
             ),
           ),
         ],
       ),
     );
+  }
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+
+  void onNoticationListener(String? payload) {
+    if (payload != null && payload.isNotEmpty) {
+      print('payload $payload');
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: ((context) => SettingsScreen (payload: payload))));
+    }
   }
 }
