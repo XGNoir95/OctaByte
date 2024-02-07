@@ -290,7 +290,7 @@ class _MyImageSliderState extends State<TrendingScreen> {
               padding: EdgeInsets.only(bottom: 16),
               child: Column(
                 children: [
-                  SizedBox(height: 40,),
+                  SizedBox(height: 69,),
                   Text(
                     "Your Passport to Trendy Discounts",
                     style: TextStyle(

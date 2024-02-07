@@ -76,7 +76,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           child: Column(
                             children: [
                               Image.asset(
-                                'assets/icons/icon2.png',
+                                'assets/icons/market.png',
                                 height: 130,
                                 width: 130,
                               ),
@@ -100,7 +100,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           child: Column(
                             children: [
                               Image.asset(
-                                'assets/icons/icon3.png',
+                                'assets/icons/comm.png',
                                 height: 130,
                                 width: 130,
                               ),
@@ -124,7 +124,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           child: Column(
                             children: [
                               Image.asset(
-                                'assets/icons/icon4.png',
+                                'assets/icons/tuto1.png',
                                 height: 130,
                                 width: 130,
                               ),
