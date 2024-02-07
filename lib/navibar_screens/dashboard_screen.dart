@@ -1,5 +1,6 @@
 import 'package:fblogin/dasboard_screens/tutorials/tutorials_page.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../dasboard_screens/marketplace/marketplace_screen.dart';
 import '../dasboard_screens/pc_builder/pages/pcbuilder_screen.dart';
 import '../reusable_widgets/custom_scaffold3.dart';
@@ -24,15 +25,25 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             children: [
               Text(
                 'DASHBOARD:  ',
-                style: TextStyle(fontSize: 35,fontFamily: 'RobotoCondensed', color: Colors.amber,letterSpacing: 1),
+                style: GoogleFonts.bebasNeue(fontSize: 48,color: Colors.amber,letterSpacing: 1),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Take a tour looking at our very own '
-                      '\n            personalised options',
-                  style: TextStyle(fontSize: 23,fontFamily: 'RobotoCondensed', color: Colors.white,),
+                child: Column(
+                  children: [
+                    Text(
+                      'Take a tour looking at our very own',
+
+                      style: TextStyle(fontSize: 23,fontFamily: 'RobotoCondensed', color: Colors.white,),
+                    ),
+                    Text(
+                      'personalised options',
+
+                      style: TextStyle(fontSize: 23,fontFamily: 'RobotoCondensed', color: Colors.white,),
+                    ),
+                  ],
                 ),
+
               ),
               SizedBox(height: 20),
               Expanded(
@@ -51,13 +62,15 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
+                              SizedBox(height: 5,),
                               Image.asset(
                                 'assets/icons/pc.png',
                                 height: 130,
                                 width: 130,
+                                color: Colors.white.withOpacity(0.5),
                               ),
                               SizedBox(height: 2,),
-                              Text('PC BUILDER',style: TextStyle(fontSize: 24,fontFamily: 'RobotoCondensed',color: Colors.white)),
+                              Text('PC BUILDER',style: TextStyle(fontSize: 24,fontFamily: 'RobotoCondensed',color: Colors.amber)),
                             ],
                           ),
                         ),
@@ -79,9 +92,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 'assets/icons/market.png',
                                 height: 130,
                                 width: 130,
+                                color: Colors.white.withOpacity(0.5),
                               ),
-                              SizedBox(height: 1,),
-                              Text('MARKETPLACE',style: TextStyle(fontSize: 24,fontFamily: 'RobotoCondensed',color: Colors.white)),
+                              SizedBox(height: 4),
+                              Text('MARKETPLACE',style: TextStyle(fontSize: 24,fontFamily: 'RobotoCondensed',color: Colors.amber)),
                             ],
                           ),
                         ),
@@ -103,9 +117,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 'assets/icons/comm.png',
                                 height: 130,
                                 width: 130,
+                                color: Colors.white.withOpacity(0.5),
                               ),
                               SizedBox(height: 1,),
-                              Text('COMMUNITY',style: TextStyle(fontSize: 24,fontFamily: 'RobotoCondensed',color: Colors.white)),
+                              Text('COMMUNITY',style: TextStyle(fontSize: 24,fontFamily: 'RobotoCondensed',color: Colors.amber)),
                             ],
                           ),
                         ),
@@ -127,9 +142,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 'assets/icons/tuto1.png',
                                 height: 130,
                                 width: 130,
+                                color: Colors.white.withOpacity(0.5),
                               ),
                               SizedBox(height: 1,),
-                              Text('TUTORIALS',style: TextStyle(fontSize: 24,fontFamily: 'RobotoCondensed',color: Colors.white)),
+                              Text('TUTORIALS',style: TextStyle(fontSize: 24,fontFamily: 'RobotoCondensed',color: Colors.amber)),
                             ],
                           ),
                         ),
