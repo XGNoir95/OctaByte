@@ -1,6 +1,5 @@
 import 'package:fblogin/navibar_screens/dashboard_screen.dart';
 import 'package:fblogin/navibar_screens/homepage_screen.dart';
-import 'package:fblogin/navibar_screens/notification/settings_screen.dart';
 import 'package:fblogin/navibar_screens/trending_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,14 +18,14 @@ class NavigationMenu extends StatelessWidget {
 
     return Scaffold(
       bottomNavigationBar: Obx(
-        () => NavigationBar(
+            () => NavigationBar(
           height: 75,
           backgroundColor: hexStringToColor('212121'),
           indicatorColor: Colors.white.withOpacity(0.1),
           elevation: 0,
           selectedIndex: controller.selectedIndex.value,
           onDestinationSelected: (index) =>
-              controller.selectedIndex.value = index,
+          controller.selectedIndex.value = index,
           destinations: const [
             NavigationDestination(
               icon: SingleChildScrollView(
@@ -82,30 +81,6 @@ class NavigationMenu extends StatelessWidget {
                       height: 14,
                     ),
                     Icon(
-                      Iconsax.notification,
-                      color: Colors.amber,
-                      size: 32,
-                    ),
-                    Text('Notifications',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'RobotoCondensed',
-                            fontSize: 16.5,
-                            letterSpacing: 1)),
-                  ],
-                ),
-              ),
-              label: '',
-            ),
-            NavigationDestination(
-              icon: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 14,
-                    ),
-                    Icon(
                       Iconsax.security_user,
                       color: Colors.amber,
                       size: 32,
@@ -136,11 +111,6 @@ class NavigationController extends GetxController {
   final screens = [
     DashBoardScreen(),
     const TrendingScreen(),
-    const SettingsScreen(payload: '',),
-    HomePage(),
+    HomePage(), // Changed to HomePage
   ];
-
-// void resetToDashboard() {
-//   selectedIndex.value = 0;
-// }
 }

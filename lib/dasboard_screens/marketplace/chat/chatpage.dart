@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'chat_message.dart';
 
@@ -61,18 +62,45 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.receiverUserEmail),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: _buildMessageList(),
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: Colors.grey[900],
+        elevation: 0,
+        title: Text(
+          widget.receiverUserEmail,
+          style: GoogleFonts.bebasNeue(
+            color: Colors.amber,
+            fontSize: 25,
+            letterSpacing: 1,
           ),
-          _buildMessageInput(),
-        ],
+        ),
+        centerTitle: true,
+
       ),
-    );
+      body: Stack(
+        children:[
+          Image.asset(
+            'assets/images/bg.jpg',
+            fit: BoxFit.cover,
+            height: double.infinity,
+            width: double.infinity,
+            alignment: Alignment.center,
+          ),
+          Container(
+            //color: Colors.grey[900], // Change this line to set the background color of the body
+            child: Column(
+              children: [
+                Expanded(
+                  child: _buildMessageList(),
+                ),
+                _buildMessageInput(),
+              ], // Removed unnecessary semicolon and added closing square bracket
+            ), // Added closing parenthesis for Container
+          ), // Added closing parenthesis for Container
+        ], // Added closing square bracket for children
+      ), // Added closing parenthesis for Stack
+    ); // Added closing parenthesis for Scaffold
   }
+
 
   Widget _buildMessageList() {
     String currentUserEmail = _firebaseAuth.currentUser?.email ?? '';

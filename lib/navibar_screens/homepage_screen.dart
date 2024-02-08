@@ -206,7 +206,7 @@ class _HomePageState extends State<HomePage> {
       String firstName,
       String lastName,
       String userName,
-      String? imageUrl, // Make imageUrl nullable
+      String? imageUrl,
       ) async {
     try {
       Map<String, dynamic> userData = {
@@ -216,7 +216,7 @@ class _HomePageState extends State<HomePage> {
       };
 
       if (imageUrl != null && imageUrl.isNotEmpty) {
-        userData['Image URL'] = imageUrl; // Only add imageUrl to userData if it's not null and not empty
+        userData['Image URL'] = imageUrl;
       }
 
       await FirebaseFirestore.instance.collection('users').doc(email).update(userData);
@@ -291,7 +291,7 @@ class _HomePageState extends State<HomePage> {
               ),
               ListTile(
                 leading: Icon(Icons.notifications, color: Colors.amber, size: 32),
-                title: Text('notification', style: GoogleFonts.bebasNeue(color: Colors.white, fontSize: 25)),
+                title: Text('Notifications', style: GoogleFonts.bebasNeue(color: Colors.white, fontSize: 25)),
                 onTap: () async {
                   await service.showNotificationWithPayload(
                     id: 0,
@@ -302,6 +302,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.pop(context);
                 },
               ),
+              SizedBox(height: 50,),
               ListTile(
                 leading: Icon(Icons.logout, color: Colors.amber, size: 32),
                 title: Text('Log Out', style: GoogleFonts.bebasNeue(color: Colors.white, fontSize: 25)),

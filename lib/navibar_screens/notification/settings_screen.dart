@@ -59,15 +59,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
               ),
-              ListTile(
-                leading: Icon(Icons.settings, color: Colors.white),
-                title: Text('Settings', style: TextStyle(color: Colors.white)),
-                onTap: () {
-                  // Handle settings item tap
-                  Navigator.pop(context); // Close the drawer
-                  // Add your logic for settings screen navigation if needed
-                },
-              ),
+              // ListTile(
+              //   leading: Icon(Icons.settings, color: Colors.white),
+              //   title: Text('Settings', style: TextStyle(color: Colors.white)),
+              //   onTap: () {
+              //     // Handle settings item tap
+              //     Navigator.pop(context); // Close the drawer
+              //     // Add your logic for settings screen navigation if needed
+              //   },
+              // ),
               ListTile(
                 leading: Icon(Icons.notifications, color: Colors.white),
                 title: Text('Notifications', style: TextStyle(color: Colors.white)),

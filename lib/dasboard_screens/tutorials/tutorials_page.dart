@@ -39,7 +39,7 @@ class TutorialsPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => /*TutorialsScreen()*/ SettingsScreen(payload: '',)),
+                  MaterialPageRoute(builder: (context) => /*TutorialsScreen()*/ TutorialsScreen2()),
                 );
               },
               child: Center(
@@ -53,7 +53,7 @@ class TutorialsPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => /*TutorialsScreen2()*/SettingsScreen(payload: '',)),
+                  MaterialPageRoute(builder: (context) => TutorialsScreen2()),
                 );
               },
               child: Center(
