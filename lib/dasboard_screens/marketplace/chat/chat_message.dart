@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class Message {
   final String senderId;
@@ -28,7 +28,7 @@ class Message {
   }
 }
 
-class ChatService extends ChangeNotifier {
+class ChatService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -48,6 +48,11 @@ class ChatService extends ChangeNotifier {
     String chatRoomId = getChatRoomId(currentUserEmail, receiverEmail);
     CollectionReference messagesCollection = _firestore.collection('chatRoom').doc(chatRoomId).collection('messages');
     await messagesCollection.add(newMessage.toMap());
+
+    // Show notification if the sender is not the current user
+    if (newMessage.senderEmail != currentUserEmail) {
+      showNotification('New Message', 'You have received a new message');
+    }
   }
 
   Stream<QuerySnapshot> getMessage(String? userEmail, String otherUserEmail) {
@@ -64,37 +69,31 @@ class ChatService extends ChangeNotifier {
         .snapshots();
   }
 
-  Future<List<String>> getBuyersForSeller(String sellerEmail) async {
-    try {
-      QuerySnapshot<Map<String, dynamic>> chatRoomsSnapshot = await _firestore
-          .collection('chatRoom')
-          .where('sellerEmail', isEqualTo: sellerEmail)
-          .get();
-
-      List<String> buyers = [];
-
-      for (QueryDocumentSnapshot<Map<String, dynamic>> chatRoomSnapshot
-      in chatRoomsSnapshot.docs) {
-        String buyerEmail = extractBuyerEmail(chatRoomSnapshot.id, sellerEmail);
-        buyers.add(buyerEmail);
-      }
-
-      return buyers;
-    } catch (error) {
-      print('Error getting buyers for seller: $error');
-      return [];
-    }
-  }
-
-  String extractBuyerEmail(String chatRoomId, String sellerEmail) {
-    String emailsPart = chatRoomId.replaceAll('$sellerEmail-', '');
-    List<String> emailParts = emailsPart.split('-');
-    return emailParts[0]; // Assuming the buyer's email is the first part
-  }
-
   String getChatRoomId(String userEmail1, String userEmail2) {
     List<String> emails = [userEmail1, userEmail2];
     emails.sort();
     return emails.join("-");
+  }
+
+  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+
+  static Future<void> showNotification(String title, String body) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+      'your channel id',
+      'your channel name',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    const NotificationDetails platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      platformChannelSpecifics,
+      payload: 'item x',
+    );
   }
 }

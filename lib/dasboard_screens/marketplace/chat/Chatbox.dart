@@ -26,7 +26,7 @@ class Inbox extends StatelessWidget {
               width: double.infinity,
               alignment: Alignment.center,
             ),
-          const inboxCollection(),
+            const inboxCollection(),
           ]
       ),
     );
@@ -103,9 +103,9 @@ class InboxCard extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ChatPage(
+                        builder: (context) => ChatPage(
                           receiverUserEmail: receiverId,
-                      )
+                        )
                     ),
                   );
                 },

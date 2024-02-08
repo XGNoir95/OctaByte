@@ -1,19 +1,21 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fblogin/auth_screens/auth_page.dart';
-import 'package:fblogin/dasboard_screens/pc_builder/pages/build_history.dart';
-import 'package:fblogin/reusable_widgets/custom_scaffold3.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:fblogin/reusable_widgets/custom_scaffold2.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import '../auth_screens/auth_page.dart';
 import '../dasboard_screens/marketplace/buy/purchasehistory.dart';
+import '../dasboard_screens/pc_builder/pages/build_history.dart';
 import '../navigation_menu.dart';
+
 import '../reusable_widgets/custom_scaffold.dart';
+import '../reusable_widgets/custom_scaffold2.dart';
+import '../reusable_widgets/custom_scaffold3.dart';
+import 'notification/notificationService.dart';
+import 'notification/settings_screen.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -27,13 +29,18 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isUpdating = false;
 
+  late final LocalNotificationService service;
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails(
-      String email) {
-    return FirebaseFirestore.instance
-        .collection('users')
-        .doc(email)
-        .get();
+  @override
+  void initState() {
+    service = LocalNotificationService();
+    service.initialize();
+    listenToNotification();
+    super.initState();
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails(String email) {
+    return FirebaseFirestore.instance.collection('users').doc(email).get();
   }
 
   void _signOut(BuildContext context) async {
@@ -153,7 +160,8 @@ class _HomePageState extends State<HomePage> {
 
                 String? imageUrl;
                 if (_pickedImage != null) {
-                  imageUrl = await _uploadImage(_pickedImage!, 'user_images/${currentUser!.uid}');
+                  imageUrl = await _uploadImage(
+                      _pickedImage!, 'user_images/${currentUser!.uid}');
                 }
 
                 await updateUserData(
@@ -193,13 +201,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
   Future<void> updateUserData(
       String email,
       String firstName,
       String lastName,
       String userName,
-      String? imageUrl,  // Make imageUrl nullable
+      String? imageUrl, // Make imageUrl nullable
       ) async {
     try {
       Map<String, dynamic> userData = {
@@ -209,7 +216,7 @@ class _HomePageState extends State<HomePage> {
       };
 
       if (imageUrl != null && imageUrl.isNotEmpty) {
-        userData['Image URL'] = imageUrl;  // Only add imageUrl to userData if it's not null and not empty
+        userData['Image URL'] = imageUrl; // Only add imageUrl to userData if it's not null and not empty
       }
 
       await FirebaseFirestore.instance.collection('users').doc(email).update(userData);
@@ -227,7 +234,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.grey[900],
         actions: [
           IconButton(
-            icon: Icon(Icons.menu, color: Colors.white,size: 32),
+            icon: Icon(Icons.menu, color: Colors.white, size: 32),
             onPressed: () {
               _scaffoldKey.currentState?.openEndDrawer();
             },
@@ -253,12 +260,11 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.settings_outlined, color: Colors.amber, size: 32,),
+                leading: Icon(Icons.settings_outlined, color: Colors.amber, size: 32),
                 title: Text('Edit User details', style: GoogleFonts.bebasNeue(color: Colors.white, fontSize: 25)),
                 onTap: () async {
                   User? currentUser = _auth.currentUser;
-                  DocumentSnapshot<Map<String, dynamic>> snapshot =
-                  await getUserDetails(currentUser!.email!);
+                  DocumentSnapshot<Map<String, dynamic>> snapshot = await getUserDetails(currentUser!.email!);
                   Map<String, dynamic> userData = snapshot.data()!;
                   _editUser(context, userData);
                 },
@@ -283,42 +289,26 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               ),
-              //SizedBox(height:340),
+              ListTile(
+                leading: Icon(Icons.notifications, color: Colors.amber, size: 32),
+                title: Text('notification', style: GoogleFonts.bebasNeue(color: Colors.white, fontSize: 25)),
+                onTap: () async {
+                  await service.showNotificationWithPayload(
+                    id: 0,
+                    title: 'Welcome',
+                    body: 'Lets build PC.',
+                    payload: 'Hey Explore the latest and new products. ',
+                  );
+                  Navigator.pop(context);
+                },
+              ),
               ListTile(
                 leading: Icon(Icons.logout, color: Colors.amber, size: 32),
                 title: Text('Log Out', style: GoogleFonts.bebasNeue(color: Colors.white, fontSize: 25)),
                 onTap: () {
                   _signOut(context);
-
                 },
               ),
-              // Row(
-              //   children: [
-              //     SizedBox(
-              //       width: 130,
-              //     ),
-              //     MaterialButton(
-              //       onPressed: () {
-              //         _signOut(context);
-              //       },
-              //       color: Colors.grey[900],
-              //       child: Row(
-              //         children: [
-              //           Icon(Icons.logout, color: Colors.amber, size: 30),
-              //           SizedBox(
-              //             width: 10,
-              //           ),
-              //           Text('Sign Out',
-              //               style: GoogleFonts.bebasNeue(
-              //                   fontSize: 30,
-              //                   letterSpacing: 1,
-              //                   fontWeight: FontWeight.bold,
-              //                   color: Colors.white)),
-              //         ],
-              //       ),
-              //     ),
-              //   ],
-              // ),
             ],
           ),
         ),
@@ -342,10 +332,9 @@ class _HomePageState extends State<HomePage> {
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
-                          child: CircularProgressIndicator(color: Colors.amber,),
+                          child: CircularProgressIndicator(color: Colors.amber),
                         );
                       }
-
 
                       if (snapshot.hasData && snapshot.data != null) {
                         User? currentUser = snapshot.data;
@@ -385,10 +374,10 @@ class _HomePageState extends State<HomePage> {
                                       padding: const EdgeInsets.all(25),
                                       child: Stack(
                                         children: [
-                                          if (user!['Image URL'] != null && user!['Image URL'].isNotEmpty)
+                                          if (user!['Image URL'] != null && user['Image URL'].isNotEmpty)
                                             CircleAvatar(
                                               radius: 50,
-                                              backgroundImage: NetworkImage(user!['Image URL']),
+                                              backgroundImage: NetworkImage(user['Image URL']),
                                             )
                                           else
                                             const Icon(Icons.person, size: 80, color: Colors.white),
@@ -404,7 +393,7 @@ class _HomePageState extends State<HomePage> {
                                                   color: Colors.grey[800],
                                                 ),
                                                 child: IconButton(
-                                                  icon: Icon(Icons.edit, color: Colors.amber,size: 15),
+                                                  icon: Icon(Icons.edit, color: Colors.amber, size: 15),
                                                   onPressed: () async {
                                                     User? currentUser = _auth.currentUser;
                                                     DocumentSnapshot<Map<String, dynamic>> snapshot =
@@ -416,17 +405,14 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ),
                                           ),
-
-
                                         ],
                                       ),
                                     ),
-
                                     SizedBox(
                                       height: 15,
                                     ),
                                     Text(
-                                      user!['User Name'],
+                                      user['User Name'],
                                       style: GoogleFonts.bebasNeue(
                                         fontSize: 53,
                                         color: Colors.amber,
@@ -487,7 +473,7 @@ class _HomePageState extends State<HomePage> {
                                                       ),
                                                       Spacer(),
                                                       Text(
-                                                        user!['First Name'],
+                                                        user['First Name'],
                                                         style: TextStyle(
                                                           fontSize: 24,
                                                           color: Colors.white,
@@ -521,7 +507,7 @@ class _HomePageState extends State<HomePage> {
                                                       ),
                                                       Spacer(),
                                                       Text(
-                                                        user!['Last Name'],
+                                                        user['Last Name'],
                                                         style: TextStyle(
                                                           fontSize: 24,
                                                           color: Colors.white,
@@ -555,7 +541,7 @@ class _HomePageState extends State<HomePage> {
                                                       ),
                                                       Spacer(),
                                                       Text(
-                                                        user!['User Name'],
+                                                        user['User Name'],
                                                         style: TextStyle(
                                                           fontSize: 24,
                                                           color: Colors.white,
@@ -589,7 +575,7 @@ class _HomePageState extends State<HomePage> {
                                                       ),
                                                       Spacer(),
                                                       Text(
-                                                        user!['Email'],
+                                                        user['Email'],
                                                         style: TextStyle(
                                                           fontSize: 24,
                                                           color: Colors.white,
@@ -621,33 +607,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SizedBox(height: 15),
                   SizedBox(height: 15),
-                  // Row(
-                  //   children: [
-                  //     SizedBox(
-                  //       width: 130,
-                  //     ),
-                  //     MaterialButton(
-                  //       onPressed: () {
-                  //         _signOut(context);
-                  //       },
-                  //       color: Colors.grey[900],
-                  //       child: Row(
-                  //         children: [
-                  //           Icon(Icons.logout, color: Colors.amber, size: 30),
-                  //           SizedBox(
-                  //             width: 10,
-                  //           ),
-                  //           Text('Sign Out',
-                  //               style: GoogleFonts.bebasNeue(
-                  //                   fontSize: 30,
-                  //                   letterSpacing: 1,
-                  //                   fontWeight: FontWeight.bold,
-                  //                   color: Colors.white)),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
                 ],
               ),
             ),
@@ -656,4 +615,17 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  void onNotificationListener(String? payload) {
+    if (payload != null && payload.isNotEmpty) {
+      print('payload $payload');
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SettingsScreen(payload: payload)),
+      );
+    }
+  }
+
+  void listenToNotification() => service.onNotificationClick.stream.listen(onNotificationListener);
 }
