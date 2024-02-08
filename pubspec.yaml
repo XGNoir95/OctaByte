@@ -43,7 +43,10 @@ dependencies:
   iconsax: ^0.0.8
   carousel_slider: ^4.2.1
   smooth_page_indicator: ^1.1.0
-
+  firebase_messaging: ^14.7.15
+  flutter_local_notifications: ^16.3.0
+  rxdart: ^0.27.7
+  permission_handler: ^11.1.0
 
   firebase_storage: ^11.6.0
   google_fonts: ^6.1.0
@@ -52,6 +55,7 @@ dependencies:
   lottie: ^2.7.0
   image_picker: ^1.0.7
   get_it: ^7.6.6
+  flutter_screenutil: ^5.9.0
 
 
 dev_dependencies:
@@ -92,6 +96,7 @@ flutter:
     - assets/icons/
     - assets/banner/
     - assets/builder/
+#    - assets/icon/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "108564660658",
+    "project_id": "sddemo-89128",
+    "storage_bucket": "sddemo-89128.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:108564660658:android:1c23e95c5d900087d464ab",
+        "android_client_info": {
+          "package_name": "com.example.fblogin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACyEXBSFqW7ugjAqB48V8TrokPZ2BQco0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

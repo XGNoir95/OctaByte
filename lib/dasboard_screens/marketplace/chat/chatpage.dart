@@ -1,10 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fblogin/dasboard_screens/marketplace/chat_message.dart';
-import 'package:fblogin/reusable_widgets/reusable_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'chat_message.dart';
 
 class ChatPage extends StatefulWidget {
   final String receiverUserEmail;
@@ -23,11 +23,39 @@ class _ChatPageState extends State<ChatPage> {
   final ChatService _chatService = ChatService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  void sendMessage() async {
-    if (_messageController.text.isNotEmpty) {
-      await _chatService.sendMessage(widget.receiverUserEmail, _messageController.text);
-      _messageController.clear();
-    }
+  void initializeLocalNotifications() {
+    var initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    var initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+
+    );
+    flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+    );
+  }
+
+  Future<void> showNotification(String title, String body) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'your_channel_id',
+      'your_channel_name',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+    );
+
+    var platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+
+    );
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      platformChannelSpecifics,
+      payload: 'item x',
+    );
   }
 
   @override
@@ -46,6 +74,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ),
         centerTitle: true,
+
       ),
       body: Stack(
         children:[
@@ -56,20 +85,20 @@ class _ChatPageState extends State<ChatPage> {
             width: double.infinity,
             alignment: Alignment.center,
           ),
-        Container(
-          //color: Colors.grey[900], // Change this line to set the background color of the body
-          child: Column(
-            children: [
-              Expanded(
-                child: _buildMessageList(),
-              ),
-              _buildMessageInput(),
-            ],
-          ),
-        ),
-      ],
-      ),
-    );
+          Container(
+            //color: Colors.grey[900], // Change this line to set the background color of the body
+            child: Column(
+              children: [
+                Expanded(
+                  child: _buildMessageList(),
+                ),
+                _buildMessageInput(),
+              ], // Removed unnecessary semicolon and added closing square bracket
+            ), // Added closing parenthesis for Container
+          ), // Added closing parenthesis for Container
+        ], // Added closing square bracket for children
+      ), // Added closing parenthesis for Stack
+    ); // Added closing parenthesis for Scaffold
   }
 
 
@@ -82,7 +111,20 @@ class _ChatPageState extends State<ChatPage> {
           return Text('Error ${snapshot.error}');
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text('Loading......');
+          return Text('Loading......');
+        }
+
+        // Fetch the last message
+        QueryDocumentSnapshot? lastMessage = snapshot.data!.docs.isEmpty ? null : snapshot.data!.docs.first;
+
+        if (lastMessage != null) {
+          Map<String, dynamic> data = lastMessage.data() as Map<String, dynamic>;
+          String receiverEmail = data['receiverEmail'];
+
+          // Show a local notification if the receiver is the current user
+          if (receiverEmail == currentUserEmail) {
+            showNotification('New Message', 'You have received a new message');
+          }
         }
 
         return ListView(
@@ -92,6 +134,7 @@ class _ChatPageState extends State<ChatPage> {
       },
     );
   }
+
 
   Widget _buildMessageItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
@@ -117,18 +160,20 @@ class _ChatPageState extends State<ChatPage> {
                   CircleAvatar(
                     radius: 20,
                     backgroundColor: Colors.grey[900],
-                    // You can customize the user avatar based on the senderEmail or other information
-                    // For now, using a generic user icon
-                    child: Icon(Icons.account_circle, size: 40,color: Colors.amber),
+                    child: Icon(Icons.account_circle, size: 40, color: Colors.amber),
                   ),
                 SizedBox(width: 8),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.7, // Adjust the width based on your needs
+                  width: MediaQuery.of(context).size.width * 0.7,
                   child: Column(
                     crossAxisAlignment: (data['senderEmail'] == currentUserEmail)
                         ? CrossAxisAlignment.end
                         : CrossAxisAlignment.start,
                     children: [
+                      Text(
+                        _formatTimestamp2(data['timestamp']),
+                        style: TextStyle(fontSize: 12, color: Colors.white,fontWeight: FontWeight.bold),
+                      ),
                       Text(
                         data['senderEmail'],
                         style: TextStyle(
@@ -157,7 +202,7 @@ class _ChatPageState extends State<ChatPage> {
                             ),
                             SizedBox(height: 4),
                             Text(
-                              _formatTimestamp(data['timestamp']),
+                              _formatTimestamp1(data['timestamp']),
                               style: TextStyle(fontSize: 12, color: Colors.white),
                             ),
                           ],
@@ -168,13 +213,10 @@ class _ChatPageState extends State<ChatPage> {
                 ),
                 SizedBox(width: 8),
                 if (data['senderEmail'] == currentUserEmail)
-
                   CircleAvatar(
                     radius: 20,
                     backgroundColor: Colors.grey[900],
-                    // You can customize the user avatar based on the senderEmail or other information
-                    // For now, using a generic user icon
-                    child: Icon(Icons.account_circle, size: 40,color: Colors.amber),
+                    child: Icon(Icons.account_circle, size: 40, color: Colors.amber),
                   ),
               ],
             ),
@@ -184,10 +226,12 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+  String _formatTimestamp2(Timestamp timestamp) {
+    DateTime dateTime = timestamp.toDate();
+    return '${dateTime.day}-${dateTime.month}-${dateTime.year}';
+  }
 
-
-
-  String _formatTimestamp(Timestamp timestamp) {
+  String _formatTimestamp1(Timestamp timestamp) {
     DateTime dateTime = timestamp.toDate();
     return '${dateTime.hour}:${dateTime.minute}';
   }
@@ -210,12 +254,11 @@ class _ChatPageState extends State<ChatPage> {
                   child: TextField(
                     controller: _messageController,
                     style: TextStyle(color: Colors.white),
-                    cursorColor: Colors.amber,// Set text color
+                    cursorColor: Colors.amber,
                     decoration: InputDecoration(
                       hintText: 'Type a message...',
                       hintStyle: TextStyle(color: Colors.white,fontSize: 18),
-
-                      border: InputBorder.none, // Remove default border
+                      border: InputBorder.none,
                     ),
                   ),
                 ),
@@ -245,4 +288,13 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+  void sendMessage() async {
+    if (_messageController.text.isNotEmpty) {
+      await _chatService.sendMessage(widget.receiverUserEmail, _messageController.text);
+      _messageController.clear();
+    }
+  }
 }
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();

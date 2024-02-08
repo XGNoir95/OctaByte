@@ -1,6 +1,5 @@
 import 'package:fblogin/navibar_screens/dashboard_screen.dart';
 import 'package:fblogin/navibar_screens/homepage_screen.dart';
-import 'package:fblogin/navibar_screens/settings_screen.dart';
 import 'package:fblogin/navibar_screens/trending_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,62 +19,81 @@ class NavigationMenu extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: Obx(
             () => NavigationBar(
-          height: 70,
+          height: 75,
           backgroundColor: hexStringToColor('212121'),
           indicatorColor: Colors.white.withOpacity(0.1),
           elevation: 0,
           selectedIndex: controller.selectedIndex.value,
-          onDestinationSelected: (index) => controller.selectedIndex.value = index,
+          onDestinationSelected: (index) =>
+          controller.selectedIndex.value = index,
           destinations: const [
             NavigationDestination(
-              icon: Column(
-                children: [
-                  SizedBox(height: 14,),
-                  Icon(
-                    Iconsax.home_1,
-                    color: Colors.amber,
-                    size: 32,
-                  ),
-                  Text('Dashboard',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 17,letterSpacing: 1),
-                  )],
+              icon: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 14,
+                    ),
+                    Icon(
+                      Iconsax.home_1,
+                      color: Colors.amber,
+                      size: 32,
+                    ),
+                    Text(
+                      'Dashboard',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'RobotoCondensed',
+                          fontSize: 17,
+                          letterSpacing: 1),
+                    )
+                  ],
+                ),
               ),
               label: '',
             ),
             NavigationDestination(
-              icon: Column(
-                children: [
-                  SizedBox(height: 14,),
-                  Icon(Iconsax.flash, color: Colors.amber, size: 33),
-                  Text('Trending',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 16,letterSpacing: 1)),
-                ],
+              icon: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 14,
+                    ),
+                    Icon(Iconsax.flash, color: Colors.amber, size: 33),
+                    Text('Trending',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'RobotoCondensed',
+                            fontSize: 16,
+                            letterSpacing: 1)),
+                  ],
+                ),
               ),
               label: '',
             ),
             NavigationDestination(
-              icon: Column(
-                children: [
-                  SizedBox(height: 14,),
-                  Icon(
-                    Iconsax.setting_3,
-                    color: Colors.amber,
-                    size: 32,
-                  ),
-                  Text('Settings',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 16.5,letterSpacing: 1)),
-                ],
-              ),
-              label: '',
-            ),
-            NavigationDestination(
-              icon: Column(
-                children: [
-                  SizedBox(height: 14,),
-                  Icon(
-                    Iconsax.security_user,
-                    color: Colors.amber,
-                    size: 32,
-                  ),
-                  Text('Profile',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'RobotoCondensed',fontSize: 17,letterSpacing: 1)),
-                ],
+              icon: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 14,
+                    ),
+                    Icon(
+                      Iconsax.security_user,
+                      color: Colors.amber,
+                      size: 32,
+                    ),
+                    Text('Profile',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'RobotoCondensed',
+                            fontSize: 17,
+                            letterSpacing: 1)),
+                  ],
+                ),
               ),
               label: '',
             ),
@@ -91,13 +109,8 @@ class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 
   final screens = [
-    const DashBoardScreen(),
+    DashBoardScreen(),
     const TrendingScreen(),
-    const SettingsScreen(),
-    HomePage(),
+    HomePage(), // Changed to HomePage
   ];
-
-  // void resetToDashboard() {
-  //   selectedIndex.value = 0;
-  // }
 }

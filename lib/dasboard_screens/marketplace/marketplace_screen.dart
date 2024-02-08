@@ -1,5 +1,5 @@
 
-import 'package:fblogin/dasboard_screens/marketplace/product_Item_Widget.dart';
+import 'package:fblogin/dasboard_screens/marketplace/products/product_Item_Widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,8 +8,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '../../navigation_menu.dart';
-import 'Chatbox.dart';
-import 'product.dart';
+import 'chat/Chatbox.dart';
+import 'products/product.dart';
 
 class MarketPlaceScreen extends StatefulWidget {
   const MarketPlaceScreen({Key? key}) : super(key: key);
@@ -112,7 +112,7 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.chat),
+            icon: Icon(Icons.chat,color: Colors.amber,size: 30),
             onPressed: () {
               Navigator.push(
                 context,
@@ -196,18 +196,29 @@ class _MarketPlaceScreenState extends State<MarketPlaceScreen> {
                   },
                 ),
               ),
-              SizedBox(height: 10,),
+              //SizedBox(height: 10,),
               Container(
-                height: 88,
-                color: Colors.grey[900],
+                decoration: BoxDecoration(
+                  color: Colors.grey[900],
+                  borderRadius: BorderRadius.circular(0),
+                  border: Border.all(
+                    color: Colors.grey[700]!,
+                    width: 2.0,
+                  ),
+                ),
+                height: 95, // Adjust the height as needed
                 child: Row(
                   children: [
-                    SizedBox(width: 75,),
+                    Expanded(
+                        child: SizedBox(width: 75)
+                    ),
                     _buildProductUploadSection(),
-                    SizedBox(width: 50,),
+                    SizedBox(width: 50),
                   ],
                 ),
               ),
+
+
             ],
           ),
         ],

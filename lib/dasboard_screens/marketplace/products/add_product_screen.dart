@@ -97,4 +97,3 @@ class _AddProductScreenState extends State<AddProductScreen> {
     }
   }
 }
-

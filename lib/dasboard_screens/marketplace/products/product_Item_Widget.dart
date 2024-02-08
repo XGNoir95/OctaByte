@@ -1,8 +1,8 @@
-import 'package:fblogin/dasboard_screens/marketplace/ProductDetailsWithChatScreen.dart';
+import 'package:fblogin/dasboard_screens/marketplace/products/ProductDetailsWithChatScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fblogin/dasboard_screens/marketplace/product.dart';
+import 'package:fblogin/dasboard_screens/marketplace/products/product.dart';
 //import 'package:fblogin/dasboard_screens/marketplace/product_details_with_chat.dart';
 
 class ProductItem extends StatelessWidget {
@@ -23,7 +23,7 @@ class ProductItem extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        leading: Image.network(product.imageUrl, width: 100, height: 100),
+        leading: Image.network(product.imageUrl, fit: BoxFit.cover,width: 100, height: 300),
         title: Text(product.name, style: GoogleFonts.bebasNeue(fontSize: 32, color: Colors.amber)),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

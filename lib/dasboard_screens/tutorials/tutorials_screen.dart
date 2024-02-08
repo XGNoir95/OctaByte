@@ -11,7 +11,8 @@
 //   _FirestoreVideoDisplayState createState() => _FirestoreVideoDisplayState();
 // }
 //
-// class _FirestoreVideoDisplayState extends State<TutorialsScreen> {
+// class _FirestoreVideoDisplayState extends State<TutorialsScreen>
+// {
 //   late List<FlickManager> _flickManagers = [];
 //   final storage = FirebaseStorage.instance;
 //   final String storageFolder = 'video';

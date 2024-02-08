@@ -1,7 +1,18 @@
-import 'package:fblogin/dasboard_screens/pc_builder/reuseableBuildfield.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/core/cpu.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/core/motherboard.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/core/power.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/core/ram.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/models/reuseableBuildfield.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/core/storage.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/peripheral/casing.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/peripheral/headphones.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/peripheral/keyboard.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/peripheral/monitor.dart';
+import 'package:fblogin/dasboard_screens/pc_builder/peripheral/mouse.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../reusable_widgets/custom_scaffold2.dart';
+import '../../../reusable_widgets/custom_scaffold2.dart';
+import '../core/gpu.dart';
 
 class PcBuilderScreen extends StatefulWidget {
   const PcBuilderScreen({super.key});
@@ -61,42 +72,62 @@ class _PcBuilderScreenState extends State<PcBuilderScreen> {
                   title: 'CPU',
                   imagePath: 'assets/builder/cpu.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                       MaterialPageRoute(builder: (context) => CpuScreen()),
+
+                      //MaterialPageRoute(builder: (context) => cpu_screen()),
+                    );
                   },
                 ),
                 buildCard(
                   title: 'Motherboard',
                   imagePath: 'assets/builder/motherboard.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Motherboard()),
+                    );
                   },
                 ),
                 buildCard(
                   title: 'RAM',
                   imagePath: 'assets/builder/RAM.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RAM()),
+                    );
                   },
                 ),
                 buildCard(
                   title: 'Storage',
                   imagePath: 'assets/builder/storagex.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Storage()),
+                    );
                   },
                 ),
                 buildCard(
                   title: 'Graphics Card',
                   imagePath: 'assets/builder/gcard.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => GpuScreen()),
+                    );
                   },
                 ),
                 buildCard(
                   title: 'Power-Supply',
                   imagePath: 'assets/builder/power.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PowerSupply()),
+                    );
                   },
                 ),
                 SizedBox(height: 10,),
@@ -118,35 +149,50 @@ class _PcBuilderScreenState extends State<PcBuilderScreen> {
                   title: 'Monitor',
                   imagePath: 'assets/builder/monitor.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MonitorScreen()),
+                    );
                   },
                 ),
                 buildCard(
                   title: 'Keyboard',
                   imagePath: 'assets/builder/keyboard.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => KeyboardScreen()),
+                    );
                   },
                 ),
                 buildCard(
                   title: 'Mouse',
                   imagePath: 'assets/builder/mouse.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MouseScreen()),
+                    );
                   },
                 ),
                 buildCard(
                   title: 'Headphones',
                   imagePath: 'assets/builder/hx.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HeadphoneScreen()),
+                    );
                   },
                 ),
                 buildCard(
-                  title: 'Casing Coolers',
+                  title: 'Case Coolers',
                   imagePath: 'assets/builder/cooler.png',
                   onPressed: () {
-                    // Your onPressed logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CasingScreen()),
+                    );
                   },
                 ),
               ],
